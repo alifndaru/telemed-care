@@ -1,4 +1,4 @@
-@extends('layouts.home')
+@extends('layouts.app')
 
 @section('title', 'Home Page | Labschool Cirendeu')
 
