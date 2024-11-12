@@ -20,7 +20,8 @@ use Filament\Tables\Columns\ImageColumn;
 
 class ModulWebResource extends Resource
 {
-    protected static ?string $model = ModulWeb::class;
+    // protected static ?string $model = ModulWeb::class;
+    protected static ?string $navigationGroup = 'Modul Web';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
