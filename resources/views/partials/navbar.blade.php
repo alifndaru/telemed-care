@@ -1,10 +1,10 @@
-<div class="navigation">
+<div class="navigation border-b">
   <div class="container">
     <div class="row">
       <div class="w-full">
         <nav class="flex items-center justify-between navbar navbar-expand-md">
           <a class="mr-4 navbar-brand" href="">
-            <img src="{{ url('img/logo-nav.png') }}" alt="Logo" width="200" height="90">
+            <img src="{{ url('images/pkbi.png') }}" alt="Logo" class="w-[100px]">
           </a>
 
           <!-- Tombol Hamburger untuk Mobile -->
