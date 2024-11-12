@@ -7,7 +7,7 @@
           <div class="items-end justify-between block mb-8 footer-logo-support md:flex">
             <div class="flex items-end footer-logo">
               <a class="mt-8" href="index.html">
-                <img src="{{ asset('img/home-logo.png') }}" alt="Logo" width="120">
+                <img src="{{ asset('images/pkbi.png') }}" alt="Logo" width="120">
               </a>
               <ul class="flex mt-8 ml-8 footer-social">
                 <li><a target="_blank" href="https://web.facebook.com/SMPLabschoolCirendeu?_rdc=1&_rdr"><i
