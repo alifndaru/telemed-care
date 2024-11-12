@@ -15,6 +15,7 @@ use Filament\Tables\Columns\TextColumn;
 class UserManagementResource extends Resource
 {
     protected static ?string $model = User::class;
+    protected static ?string $navigationGroup = 'Users Management';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
