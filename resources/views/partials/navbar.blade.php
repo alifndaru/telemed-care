@@ -1,4 +1,4 @@
-<div class="navigation border-b">
+<div class="navigation bg-white border-b z-50">
   <div class="container">
     <div class="row">
       <div class="w-full">
@@ -22,17 +22,17 @@
 
               <!-- BERANDA -->
               <li class="nav-item active">
-                <a class="page-scroll font-bold" href="">BERANDA</a>
+                <a class="page-scroll" href="">Beranda</a>
               </li>
 
               <!-- SARAN & KRITIK -->
               <li class="nav-item relative group">
-                <a class="page-scroll font-bold dropdown-toggle" href="javascript:void(0)">SARAN & KRITIK</a>
+                <a class="page-scroll" href="javascript:void(0)">Saran & Kritik</a>
               </li>
 
               <!-- KONSULTASI -->
               <li class="nav-item">
-                <a class="page-scroll font-bold" href="">KONSULTASI</a>
+                <a class="page-scroll" href="">Konsultasi</a>
               </li>
           </div>
 
