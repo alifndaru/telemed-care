@@ -14,22 +14,22 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\FileUpload;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Actions\Action;
 
 class ModulWebResource extends Resource
 {
     protected static ?string $model = ModulWeb::class;
     protected static ?string $navigationGroup = 'Modul Web';
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationLabel = 'Website Settings';
-    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([TextInput::make('namaWebsite')
-                ->label('Nama Website')
-                ->required()
-                ->maxLength(255),
+            ->schema([
+                TextInput::make('namaWebsite')
+                    ->label('Nama Website')
+                    ->required()
+                    ->maxLength(255),
 
             TextInput::make('Email')
                 ->label('Email')
@@ -46,24 +46,19 @@ class ModulWebResource extends Resource
             Textarea::make('alamat')
                 ->label('Alamat')
                 ->required()
-                ->rows(3)
                 ->maxLength(500),
 
             FileUpload::make('logo')
                 ->label('Logo')
                 ->image()
                 ->required()
-                ->maxSize(5024)
-                ->directory('website-logos')
-                ->visibility('public')
-                ->imageResizeMode('contain')
-                ->imageCropAspectRatio('16:9'),
+            ->maxSize(5024)
+            ->directory('website-logos'),
 
             Textarea::make('metaDeskripsi')
                 ->label('Meta Description')
                 ->required()
-                ->maxLength(160)
-                ->rows(2),
+            ->maxLength(160),
 
             TextInput::make('metaKeyword')
                 ->label('Meta Keywords')
@@ -75,57 +70,46 @@ class ModulWebResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->columns([ImageColumn::make('logo')
-                ->label('Logo')
-                ->size(50)
-                ->circular(),
-
-            TextColumn::make('namaWebsite')
-                ->label('Nama Website')
-                ->searchable()
-                ->sortable(),
+            ->columns([
+                TextColumn::make('namaWebsite')
+                    ->label('Nama Website')
+                    ->searchable()
+                    ->sortable(),
 
             TextColumn::make('Email')
                 ->label('Email')
-                ->searchable()
-                ->sortable(),
+            ->searchable(),
 
             TextColumn::make('noTelp')
-                ->label('Nomor Telepon')
-                ->searchable(),
+            ->label('Nomor Telepon'),
 
             TextColumn::make('alamat')
                 ->label('Alamat')
-                ->limit(50)
-                ->searchable(),
+            ->limit(50),
 
-            TextColumn::make('metaDeskripsi')
-                ->label('Meta Description')
-                ->limit(50)
-                ->searchable(),
-
-            TextColumn::make('metaKeyword')
-                ->label('Meta Keywords')
-                ->limit(50)
-                ->searchable(),
-            ])
-            ->filters([
-                // Add filters if needed
+            ImageColumn::make('logo')
+            ->label('Logo')
+            ->size(50),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
+            Action::make('detail')
+            ->label('Detail')
+            ->icon('heroicon-o-eye')
+            ->color('primary')
+            ->modalContent(fn(ModulWeb $record) => view(
+                'filament.modals.modul-web-details',
+                ['modulWeb' => $record]
+            ))
+                ->modalSubmitAction(false)
+                ->modalCancelAction(false),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [];
     }
 
     public static function getPages(): array

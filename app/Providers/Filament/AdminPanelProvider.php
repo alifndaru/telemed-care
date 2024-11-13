@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Models\ModulWeb;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -23,8 +24,12 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $modulWeb = ModulWeb::first();
+        $brandName = $modulWeb && $modulWeb->namaWebsite ? $modulWeb->namaWebsite : 'Telemed-Care';
+
         return $panel
             ->default()
+            ->brandName($brandName)
             ->sidebarCollapsibleOnDesktop()
             ->id('admin')
             ->path('admin')
