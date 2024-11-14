@@ -4,16 +4,16 @@
 
 @section('content')
     <div class="provider-container container mt-36 h-auto  ">
-        <div class="provider-list md:flex flex-row p-10 justify-between h-full divide-y-2 lg:divide-x-2 lg:divide-inherit divide-sky-600">
-            <div class="provider-category w-10/12">
+        <div class="provider-list md:flex flex-row p-10 justify-between h-full divide-y-2 lg:divide-y-0 lg:divide-x-4  divide-sky-600">
+            <div class="provider-category w-96">
                 <h3 class="text-xl font-bold text-sky-600">DATA PROVIDER KAMI</h3>
                 <div class="flex flex-col  p-5 gap-3">
-                    <a href="" class="font-semibold text-sky-600 text-md">Dokter Spesialis</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Dokter Umum</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Bidan</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Perawat</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Konselor Psikologi</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Konselor Remaja / Sebaya</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Dokter Spesialis</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Dokter Umum</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Bidan</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Perawat</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Konselor Psikologi</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Konselor Remaja / Sebaya</a>
                 </div>
             </div>
             

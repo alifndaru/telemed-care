@@ -114,7 +114,7 @@ class ModulKlinikResource extends Resource
                 ImageColumn::make('logo')
                     ->label('Logo')
                     ->square()
-                    ->defaultImageUrl(asset('images/kliniks/default-logo.png'))
+                ->defaultImageUrl(url('images/kliniks/default-image.png'))
                     ->disk('public')
                     ->visibility('public'), // Tambahkan ini
                 TextColumn::make('namaKlinik')
