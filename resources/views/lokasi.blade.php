@@ -1,9 +1,9 @@
-@extends('layouts.lokasi')
+@extends('layouts.app')
 
 @section('title', 'Home Page | Labschool Cirendeu')
 
 @section('content')
-<section class="mt-36 bg-gray-100">
+<section class="mt-36 h-[50rem] bg-gray-100">
 <body class="bg-gray-100 p-4 sm:p-8">
 
 <div class="container mx-auto mt-10">
