@@ -8,12 +8,12 @@
             <div class="provider-category w-96">
                 <h3 class="text-xl font-bold text-sky-600">DATA PROVIDER KAMI</h3>
                 <div class="flex flex-col  p-5 gap-3">
-                    <a href="" class="font-semibold text-sky-600 text-md">Dokter Spesialis</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Dokter Umum</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Bidan</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Perawat</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Konselor Psikologi</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Konselor Remaja / Sebaya</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Dokter Spesialis</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Dokter Umum</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Bidan</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Perawat</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Konselor Psikologi</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Konselor Remaja / Sebaya</a>
                 </div>
             </div>
             

@@ -4,26 +4,26 @@
 
 @section('content')
     <div class="provider-container container mt-36 h-auto  ">
-        <div class="provider-list md:flex flex-row p-10 justify-between h-full  lg:divide-x-2 lg:divide-inherit divide-sky-600">
-            <div class="provider-category w-10/12">
+        <div class="provider-list md:flex flex-row p-10 justify-between h-full  lg:divide-x-4 divide-sky-600">
+            <div class="provider-category w-auto">
                 <h3 class="text-xl font-bold text-sky-600">DATA LAYANAN KAMI</h3>
                 <div class="flex flex-col  p-5 gap-3">
-                    <a href="" class="font-semibold text-sky-600 text-md">Kontrasepsi</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Infeksi Menular Seksual & Infeksi Saluran Reproduksi</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">HIV / AIDS</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Konseling KTD</a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Kesehatan Ibu & Anak </a>
-                    <a href="" class="font-semibold text-sky-600 text-md">Papsmear</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Kontrasepsi</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Infeksi Menular Seksual & Infeksi Saluran Reproduksi</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>HIV / AIDS</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Konseling KTD</a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Kesehatan Ibu & Anak </a>
+                    <a href="" class="font-semibold text-sky-600 text-md"><i class="fas fa-caret-right mr-2"></i>Papsmear</a>
                     <div>
-                        <a href="#" onclick="toggleDropdown('dropdownSGBV')" class="text-blue-600 hover:text-blue-800 font-semibold block">SGBV</a>
+                        <a href="#" onclick="toggleDropdown('dropdownSGBV')" class="text-blue-600 hover:text-blue-800 font-semibold block"><i class="fas fa-caret-right mr-2"></i>SGBV</a>
                         <div id="dropdownSGBV" class="hidden pl-4 mt-2 space-y-2">
-                          <a href="#" class="text-blue-500 hover:text-blue-700 block">Kekerasan Dalam Rumah Tangga</a>
-                          <a href="#" class="text-blue-500 hover:text-blue-700 block">Kekerasan Dalam Berpacaran</a>
-                          <a href="#" class="text-blue-500 hover:text-blue-700 block">Kekerasan Seksual</a>
+                          <a href="#" class="text-blue-500 hover:text-blue-700 block"><i class="fas fa-caret-right mr-2"></i>Kekerasan Dalam Rumah Tangga</a>
+                          <a href="#" class="text-blue-500 hover:text-blue-700 block"><i class="fas fa-caret-right mr-2"></i>Kekerasan Dalam Berpacaran</a>
+                          <a href="#" class="text-blue-500 hover:text-blue-700 block"><i class="fas fa-caret-right mr-2"></i>Kekerasan Seksual</a>
                         </div>
                       </div>
 
-                    <a href="" class="font-semibold text-sky-600 text-lg">Psikologi </a>
+                    <a href="" class="font-semibold text-sky-600 text-lg"><i class="fas fa-caret-right mr-2"></i>Psikologi </a>
                 </div>
             </div>
             
