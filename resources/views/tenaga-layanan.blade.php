@@ -8,12 +8,12 @@
             <div class="provider-category w-10/12">
                 <h3 class="text-xl font-bold text-sky-600">DATA LAYANAN KAMI</h3>
                 <div class="flex flex-col  p-5 gap-3">
-                    <a href="" class="font-semibold text-sky-600 text-lg">Kontrasepsi</a>
-                    <a href="" class="font-semibold text-sky-600 text-lg">Infeksi Menular Seksual & Infeksi Saluran Reproduksi</a>
-                    <a href="" class="font-semibold text-sky-600 text-lg">HIV / AIDS</a>
-                    <a href="" class="font-semibold text-sky-600 text-lg">Konseling KTD</a>
-                    <a href="" class="font-semibold text-sky-600 text-lg">Kesehatan Ibu & Anak </a>
-                    <a href="" class="font-semibold text-sky-600 text-lg">Papsmear</a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Kontrasepsi</a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Infeksi Menular Seksual & Infeksi Saluran Reproduksi</a>
+                    <a href="" class="font-semibold text-sky-600 text-md">HIV / AIDS</a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Konseling KTD</a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Kesehatan Ibu & Anak </a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Papsmear</a>
                     <div>
                         <a href="#" onclick="toggleDropdown('dropdownSGBV')" class="text-blue-600 hover:text-blue-800 font-semibold block">SGBV</a>
                         <div id="dropdownSGBV" class="hidden pl-4 mt-2 space-y-2">
