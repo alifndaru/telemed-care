@@ -13,4 +13,9 @@ Route::get('/tenaga-provider', function () {
     return view('tenaga-provider');
 });
 
+Route::get('/lokasi', function () {
+    return view('lokasi');
+});
+
+
 

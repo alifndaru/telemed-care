@@ -20,6 +20,7 @@
     @include('partials.navbar')
   </header>
 
+
   {{-- Include Main Content --}}
   <div>
     @yield('content')
