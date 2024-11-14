@@ -4,7 +4,7 @@
 
 @section('content')
 
-  {{-- HERO SECTION --}}
+  <section class="mt-36 h-[50rem] bg-gray-100">
   <section class="">
     <div class="hero-section">
       <div
@@ -38,6 +38,7 @@
         </div>
       </div>
     </div>
+>>>>>>> 4ef13a386b26e5809a07389b19b73d8e894c783b
   </section>
 
 
