@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserManagementResource\Pages;
 use App\Models\User;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -35,10 +36,11 @@ class UserManagementResource extends Resource
                     ->required()
                     ->minLength(8)
                     ->maxLength(255),
-                Select::make('role_id')
-                    ->relationship('role', 'name')
-                    ->required()
-                    ->label('Role'),
+            Select::make('roles')
+            ->relationship('roles', 'name')
+            ->multiple()
+                ->preload()
+                ->searchable(),
             ]);
     }
 
