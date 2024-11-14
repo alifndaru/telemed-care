@@ -6,45 +6,43 @@
 
   {{-- HERO SECTION --}}
   <section class="">
-    <div class="slider-wrapper">
-      <section class="slider-section ">
-        <div class="slider-active slick-style ">
-          <div class="single-slider pt-[100px] bg-cover bg-top img-bg min-h-screen flex items-center"
-            style="background-image:url('{{ asset('images/news-image2.jpg') }}');">
-            <div class="container">
-              <div class="row">
-                <div class="col-xl-7 col-lg-8 col-md-10">
-                  <div class="mr-auto place-self-center lg:col-span-7">
-                    <h1 class="max-w-2xl mb-4 text-5xl text-white font-extrabold leading-tight tracking-tight">
-                      Konsultasi Pribadi, Keamanan Terjamin, Hasil Optimal
-                    </h1>
-                    <p class="max-w-2xl mb-6 font-light text-white lg:mb-8 md:text-lg lg:text-xl leading-relaxed">
-                      Dapatkan solusi terbaik dengan privasi dan keamanan data yang terjaga.
-                    </p>
-                    <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                      <a href="https://www.youtube.com/@smalabschoolcirendeu996" target="_blank">
-                        <button
-                          class="px-10 mt-1  bg-yellow-400 text-blue-900 font-semibold py-5 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300 shadow-lg">
-                          <i class="fa-solid fa-comments text-xl mr-4"></i>
-                          KONSULTASI
-                          SEKARANG
-                        </button>
-                      </a>
-                    </div>
-                  </div>
+    <div class="hero-section">
+      <div
+        class="hero-wrap relative z-[1] pt-[100px] bg-cover bg-top img-bg min-h-screen flex items-center bg-none md:bg-none"
+        style="background-image:url('{{ asset('images/news-image2.jpg') }}');">
+        <div class="container">
+          <div class="row">
+            <div class="col-xl-7 col-lg-8 col-md-10">
+              <div class="mr-auto place-self-center text-center md:text-start lg:col-span-7">
+                <p class="mb-4 text-white m-0 text-2xl">PKBI</p>
+                <h1
+                  class="max-w-2xl mb-4 text-2xl md:text-3xl lg:text-5xl text-white font-extrabold leading-tight tracking-tight">
+                  Konsultasi Pribadi, Keamanan Terjamin, Hasil Optimal
+                </h1>
+                <p class="max-w-2xl mb-6 font-light text-white lg:mb-8 md:text-lg lg:text-xl leading-relaxed">
+                  Dapatkan solusi terbaik dengan privasi dan keamanan data yang terjaga.
+                </p>
+                <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
+                  <a href="https://www.youtube.com/@smalabschoolcirendeu996" target="_blank">
+                    <button
+                      class="px-10 mt-1  bg-yellow-400 text-blue-900 font-semibold py-5 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300 shadow-lg">
+                      <i class="fa-solid fa-comments text-xl mr-4"></i>
+                      KONSULTASI
+                      SEKARANG
+                    </button>
+                  </a>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </section>
-      <!-- ========================= slider-section end ========================= -->
+      </div>
     </div>
   </section>
 
 
 
-  <section id="about" class="relative bg-gray-100 py-24">
+  <section id="about" class="relative bg-gray-100 py-20 md:py-24">
     <div class="container">
       <div class="flex flex-row-reverse flex-wrap">
         <!-- Left column -->
@@ -114,7 +112,7 @@
           <div class="abouts-image">
             <div class="image">
               <img src="{{ asset('images/news-image1.jpg') }}" alt="abouts"
-                class="w-full !h-[430px] object-cover shadow-md" loading="lazy">
+                class="w-full !h-[200px] md:!h-[350px] lg:!h-[430px] object-cover shadow-md" loading="lazy">
             </div>
           </div>
         </div>
@@ -126,7 +124,7 @@
               DAPATKAN SOLUSI DARI TENAGA KERJA PROFESIONAL KAMI
             </h2>
             <img src="{{ asset('images/logo_telemedicine.png') }}" alt="pkbi"
-              class="w-52 h-auto mx-auto object-cover shadow-md" loading="lazy">
+              class="w-36 md:w-44 lg:w-52 h-auto mx-auto object-cover shadow-md" loading="lazy">
             <a href="https://www.youtube.com/@smalabschoolcirendeu996" target="_blank">
               <button
                 class="px-10 mt-1  bg-yellow-400 text-blue-900 font-semibold py-5 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300 shadow-lg">
@@ -142,15 +140,15 @@
   </section>
 
   <!------- DOCTOR SECTION -------->
-  <section class="py-24 bg-gray-100">
+  <section class="py-20 md:py-24 bg-gray-100">
     <div class="max-w-7xl mx-auto px-4 text-center">
-      <h4 class="text-3xl font-semibold mb-5 text-blue-600 md:text-5xl md:mb-20">Tenaga Profesional Kami</h4>
+      <h4 class="text-3xl font-semibold text-blue-600 mb-10 md:text-5xl md:mb-20">Tenaga Profesional Kami</h4>
 
-      <!-- Horizontal Scrollable Container -->
-      <div class="overflow-x-auto">
-        <div class="flex gap-6 w-max">
+      <!-- Horizontal Scrollable Container with Scroll Snap -->
+      <div class="overflow-x-auto scroll-snap-container">
+        <div class="flex gap-6 w-max scroll-snap-inner">
           <!-- Card Start -->
-          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80">
+          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
             <img src="https://via.placeholder.com/300x200" alt="Professional Image" class="w-full h-48 object-cover">
             <div class="p-6">
               <h3 class="text-2xl font-semibold text-blue-900">dr. Muvitasari</h3>
@@ -173,7 +171,7 @@
               </div>
             </div>
           </div>
-          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80">
+          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
             <img src="https://via.placeholder.com/300x200" alt="Professional Image" class="w-full h-48 object-cover">
             <div class="p-6">
               <h3 class="text-2xl font-semibold text-blue-900">dr. Muvitasari</h3>
@@ -196,7 +194,7 @@
               </div>
             </div>
           </div>
-          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80">
+          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
             <img src="https://via.placeholder.com/300x200" alt="Professional Image" class="w-full h-48 object-cover">
             <div class="p-6">
               <h3 class="text-2xl font-semibold text-blue-900">dr. Muvitasari</h3>
@@ -219,7 +217,7 @@
               </div>
             </div>
           </div>
-          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80">
+          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
             <img src="https://via.placeholder.com/300x200" alt="Professional Image" class="w-full h-48 object-cover">
             <div class="p-6">
               <h3 class="text-2xl font-semibold text-blue-900">dr. Muvitasari</h3>
@@ -242,7 +240,7 @@
               </div>
             </div>
           </div>
-          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80">
+          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
             <img src="https://via.placeholder.com/300x200" alt="Professional Image" class="w-full h-48 object-cover">
             <div class="p-6">
               <h3 class="text-2xl font-semibold text-blue-900">dr. Muvitasari</h3>
@@ -267,7 +265,9 @@
           </div>
         </div>
       </div>
+    </div>
   </section>
+
 
 
 

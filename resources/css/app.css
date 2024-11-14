@@ -1825,17 +1825,12 @@ p {
     border-radius: 0.25rem;
 }
 
-/* SLIDER  */
-.slider-section {
+/* HERO  */
+.hero-section {
     position: relative;
 }
 
-.slider-section .single-slider {
-    position: relative;
-    z-index: 1;
-}
-
-.slider-section .single-slider::after {
+.hero-section .hero-wrap::after {
     content: "";
     position: absolute;
     width: 100%;
@@ -1859,29 +1854,45 @@ p {
     );
 }
 
-.slider-section .single-slider .slider-content {
+.hero-section .hero-wrap .slider-content {
     padding: 190px 0 200px;
 }
 
+/* Scroll Snap CSS */
+.scroll-snap-container {
+    scroll-snap-type: x mandatory;
+}
+
+.scroll-snap-inner {
+    display: flex;
+    gap: 1.5rem;
+    scroll-snap-align: start;
+}
+
+.scroll-snap-item {
+    scroll-snap-align: center;
+    min-width: 20rem; /* Adjust this to the width of your card */
+}
+
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    .slider-section .single-slider .slider-content {
+    .hero-section .hero-wrap .slider-content {
         padding: 160px 0;
     }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    .slider-section .single-slider .slider-content {
+    .hero-section .hero-wrap .slider-content {
         padding: 110px 0px;
     }
 }
 
 @media (max-width: 767px) {
-    .slider-section .single-slider .slider-content {
+    .hero-section .hero-wrap .slider-content {
         padding: 100px 0px;
     }
 }
 
-.slider-section .single-slider .slider-content h1 {
+.hero-section .hero-wrap .slider-content h1 {
     font-size: 65px;
     line-height: 76px;
     font-weight: 900;
@@ -1890,57 +1901,57 @@ p {
 }
 
 @media only screen and (min-width: 992px) and (max-width: 1199px) {
-    .slider-section .single-slider .slider-content h1 {
+    .hero-section .hero-wrap .slider-content h1 {
         font-size: 60px;
         line-height: 72px;
     }
 }
 
 @media only screen and (min-width: 768px) and (max-width: 991px) {
-    .slider-section .single-slider .slider-content h1 {
+    .hero-section .hero-wrap .slider-content h1 {
         font-size: 54px;
         line-height: 66px;
     }
 }
 
 @media (max-width: 767px) {
-    .slider-section .single-slider .slider-content h1 {
+    .hero-section .hero-wrap .slider-content h1 {
         font-size: 36px;
         line-height: 48px;
     }
 }
 
 @media only screen and (min-width: 480px) and (max-width: 767px) {
-    .slider-section .single-slider .slider-content h1 {
+    .hero-section .hero-wrap .slider-content h1 {
         font-size: 45px;
         line-height: 55px;
     }
 }
 
-.slider-section .single-slider .slider-content p {
+.hero-section .hero-wrap .slider-content p {
     color: #fff;
     margin-bottom: 30px;
 }
 
-.slider-section .single-slider .slider-content .theme-btn {
+.hero-section .hero-wrap .slider-content .theme-btn {
     background: #fff;
     color: #00adb5;
 }
 
-.slider-section .single-slider .slider-content .theme-btn:hover {
+.hero-section .hero-wrap .slider-content .theme-btn:hover {
     -webkit-box-shadow: 0 10px 25px rgba(255, 255, 255, 0.5);
     box-shadow: 0 10px 25px rgba(255, 255, 255, 0.5);
 }
 
-.slider-section .tns-nav {
+.hero-section .tns-nav {
     bottom: 60px;
 }
 
-.slider-section .tns-nav button {
+.hero-section .tns-nav button {
     background: rgba(255, 255, 255, 0.4);
 }
 
-.slider-section .tns-nav button.tns-nav-active {
+.hero-section .tns-nav button.tns-nav-active {
     background: #fff;
     -webkit-transform: scale(1.2);
     transform: scale(1.2);
