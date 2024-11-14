@@ -3,12 +3,12 @@
 @section('title', 'Home Page | Labschool Cirendeu')
 
 @section('content')
-<section class="mt-36 h-[50rem] bg-gray-100">
+<section class="mt-36 bg-gray-100">
 <body class="bg-gray-100 p-4 sm:p-8">
 
 <div class="container mx-auto mt-10">
     <!-- Title -->
-    <h1 class="text-lg font-bold text-blue-600 mb-6 text-center">LOKASI PKBI</h1>
+    <h1 class="text-lg font-bold text-blue-600 mb-6">LOKASI PKBI</h1>
 
     <!-- Grid Layout -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
