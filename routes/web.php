@@ -9,4 +9,8 @@ Route::get('/tenaga', function () {
     return view('tenaga-layanan');
 });
 
+Route::get('/tenaga-provider', function () {
+    return view('tenaga-provider');
+});
+
 

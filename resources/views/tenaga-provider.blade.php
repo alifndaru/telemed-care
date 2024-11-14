@@ -6,35 +6,19 @@
     <div class="provider-container container mt-36 h-auto  ">
         <div class="provider-list md:flex flex-row p-10 justify-between h-full  lg:divide-x-2 lg:divide-inherit divide-sky-600">
             <div class="provider-category w-10/12">
-                <h3 class="text-xl font-bold text-sky-600">DATA LAYANAN KAMI</h3>
+                <h3 class="text-xl font-bold text-sky-600">DATA PROVIDER KAMI</h3>
                 <div class="flex flex-col  p-5 gap-3">
-                    <a href="" class="font-semibold text-sky-600 text-lg">Kontrasepsi</a>
-                    <a href="" class="font-semibold text-sky-600 text-lg">Infeksi Menular Seksual & Infeksi Saluran Reproduksi</a>
-                    <a href="" class="font-semibold text-sky-600 text-lg">HIV / AIDS</a>
-                    <a href="" class="font-semibold text-sky-600 text-lg">Konseling KTD</a>
-                    <a href="" class="font-semibold text-sky-600 text-lg">Kesehatan Ibu & Anak </a>
-                    <a href="" class="font-semibold text-sky-600 text-lg">Papsmear</a>
-                    <div>
-                        <a href="#" onclick="toggleDropdown('dropdownSGBV')" class="text-blue-600 hover:text-blue-800 font-semibold block">SGBV</a>
-                        <div id="dropdownSGBV" class="hidden pl-4 mt-2 space-y-2">
-                          <a href="#" class="text-blue-500 hover:text-blue-700 block">Kekerasan Dalam Rumah Tangga</a>
-                          <a href="#" class="text-blue-500 hover:text-blue-700 block">Kekerasan Dalam Berpacaran</a>
-                          <a href="#" class="text-blue-500 hover:text-blue-700 block">Kekerasan Seksual</a>
-                        </div>
-                      </div>
-
-                    <a href="" class="font-semibold text-sky-600 text-lg">Psikologi </a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Dokter Spesialis</a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Dokter Umum</a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Bidan</a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Perawat</a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Konselor Psikologi</a>
+                    <a href="" class="font-semibold text-sky-600 text-md">Konselor Remaja / Sebaya</a>
                 </div>
             </div>
             
               
             <div class="dokter-details  mt-12 lg:mt-0 divide-y-2 divide-dashed divide-sky-600   ">
-                <div class="dokter-desc hidden lg:block mt-10 lg:mt-0 lg:ml-10 mb-10">
-                    <p class="text-sky-600">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius ipsum tenetur
-                        expedita facere culpa;
-                        alias pariatur voluptas cupiditate ipsa saepe. Voluptates nam, laboriosam quo dolor earum id!
-                        Inventore, quidem quo.</p>
-                </div>
                 <div class="dokter-list lg:ml-10 ">
                     <div class="flex flex-col lg:flex-row p-3 lg:items-center ">
                         <div class="dokter-profile flex flex-row items-center">
