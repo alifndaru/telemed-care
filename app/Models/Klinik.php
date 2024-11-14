@@ -23,12 +23,6 @@ class Klinik extends Model
 
     protected static function booted()
     {
-        static::saving(function ($klinik) {
-            if (empty($klinik->logo)) {
-                $klinik->logo = 'default-image.png'; // Path gambar default
-            }
-        });
-
         // Event to delete logo file from storage when Klinik is deleted
         static::deleting(function ($klinik) {
             if ($klinik->logo && $klinik->logo !== 'default-image.png') {
