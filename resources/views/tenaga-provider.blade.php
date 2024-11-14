@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="provider-container container mt-36 h-auto  ">
-        <div class="provider-list md:flex flex-row p-10 justify-between h-full  lg:divide-x-2 lg:divide-inherit divide-sky-600">
+        <div class="provider-list md:flex flex-row p-10 justify-between h-full divide-y-2 lg:divide-x-2 lg:divide-inherit divide-sky-600">
             <div class="provider-category w-10/12">
                 <h3 class="text-xl font-bold text-sky-600">DATA PROVIDER KAMI</h3>
                 <div class="flex flex-col  p-5 gap-3">
@@ -18,7 +18,7 @@
             </div>
             
               
-            <div class="dokter-details  mt-12 lg:mt-0 divide-y-2 divide-dashed divide-sky-600   ">
+            <div class="dokter-details  mt-12 lg:mt-0 divide-y-2 divide-sky-600   ">
                 <div class="dokter-list lg:ml-10 ">
                     <div class="flex flex-col lg:flex-row p-3 lg:items-center ">
                         <div class="dokter-profile flex flex-row items-center">

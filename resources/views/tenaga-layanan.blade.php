@@ -28,7 +28,7 @@
             </div>
             
               
-            <div class="dokter-details  mt-12 lg:mt-0 divide-y-2 divide-dashed divide-sky-600   ">
+            <div class="dokter-details  mt-12 lg:mt-0 divide-y-2 divide-sky-600   ">
                 <div class="dokter-desc hidden lg:block mt-10 lg:mt-0 lg:ml-10 mb-10">
                     <p class="text-sky-600">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius ipsum tenetur
                         expedita facere culpa;
