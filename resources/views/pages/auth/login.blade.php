@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('title', 'Login PKBI')
 
@@ -44,7 +44,7 @@
       <!-- Divider -->
       <div class="mt-6 flex items-center justify-center">
         <span class="text-sm text-gray-600">Don't have an account?</span>
-        <a href="#" class="ml-2 text-sm text-blue-600 font-medium hover:underline">Sign up</a>
+        <a href="{{ route('register') }}" class="ml-2 text-sm text-blue-600 font-medium hover:underline">Sign up</a>
       </div>
     </div>
   </section>

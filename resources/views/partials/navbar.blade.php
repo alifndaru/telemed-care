@@ -40,12 +40,13 @@
           <div class="items-center justify-end hidden lg:flex">
             <ul class="flex space-x-4">
               <li>
-                <a href="/login" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
+                <a href="{{ route('login') }}" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
                   Login
                 </a>
               </li>
               <li>
-                <a href="/register" class="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600">
+                <a href="{{ route('register') }}"
+                  class="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600">
                   Register
                 </a>
               </li>

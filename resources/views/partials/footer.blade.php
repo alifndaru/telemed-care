@@ -93,7 +93,7 @@
             <p class="text-white">
               Copyright @
               <a class="text-blue-500 duration-300 hover:text-blue-700" rel="nofollow"
-                href="https://tailwindtemplates.co">Labschool UNJ. All rights reserved.</a>
+                href="https://tailwindtemplates.co">PKBI. All rights reserved.</a>
             </p>
           </div>
         </div>
