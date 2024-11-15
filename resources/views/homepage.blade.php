@@ -7,9 +7,8 @@
   <section class="bg-gray-100">
     <section class="">
       <div class="hero-section">
-        <div
-          class="hero-wrap relative z-[1] pt-[100px] bg-cover bg-top img-bg min-h-screen flex items-center bg-none md:bg-none"
-          style="background-image:url('{{ asset('images/news-image2.jpg') }}');">
+        <div class="hero-wrap relative z-[1] pt-[100px] bg-top img-bg min-h-screen flex items-center bg-none md:bg-none"
+          style="background-image:url('{{ asset('images/slider-1.jpg') }}');">
           <div class="container">
             <div class="row">
               <div class="col-xl-7 col-lg-8 col-md-10">
@@ -75,27 +74,27 @@
           <!-- Box 1 -->
           <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center">
             <i class="fa-solid fa-user-doctor text-4xl"></i>
-            <div>
+            <div class="px-2">
               <p class="text-center text-3xl font-bold text-white">112</p>
-              <p class="text-center mt-2 text-white">TENAGA PROFESIONAL dan TERPERCAYA</p>
+              <p class="text-center mt-2 font-bold text-white">TENAGA PROFESIONAL & TERPERCAYA</p>
             </div>
           </div>
 
           <!-- Box 2 -->
           <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center">
             <i class="fa-solid fa-file-medical text-4xl"></i>
-            <div>
+            <div class="px-2">
               <p class="text-center text-3xl font-bold text-white">10</p>
-              <p class="text-center mt-2 text-white">LAYANAN KESPRO SESUAI STANDARD WHO</p>
+              <p class="text-center mt-2 font-bold text-white">LAYANAN KESPRO SESUAI STANDARD WHO</p>
             </div>
           </div>
 
           <!-- Box 3 -->
           <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center">
             <i class="fa-solid fa-map-location-dot text-4xl"></i>
-            <div>
+            <div class="px-2">
               <p class="text-center text-3xl font-bold text-white">31</p>
-              <p class="text-center mt-2 text-white">LOKASI DI SELURUH WILAYAH INDONESIA</p>
+              <p class="text-center mt-2 font-bold text-white">LOKASI DI SELURUH WILAYAH INDONESIA</p>
             </div>
           </div>
         </div>

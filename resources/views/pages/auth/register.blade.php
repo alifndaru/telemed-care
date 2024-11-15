@@ -12,7 +12,7 @@
       <form class="mt-8 space-y-6">
         <!-- Name Field -->
         <div>
-          <label for="name" class="block text-sm font-medium text-gray-700">Full Name</label>
+          <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
           <input type="text" id="name"
             class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
             placeholder="John Doe" required>
@@ -24,6 +24,21 @@
           <input type="email" id="email"
             class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
             placeholder="you@example.com" required>
+        </div>
+
+        <!-- Jenis Kelamin Field -->
+        <div>
+          <label for="Jenis Kelamin" class="block text-sm mb-3 font-medium text-gray-700">Jenis Kelamin</label>
+
+          <div class="inline">
+            <input type="radio" value="Pria">
+            <label for="pria">Pria</label>
+          </div>
+          <div class="m-3 inline">
+            <input type="radio" value="Wanita">
+            <label for="wanita">Wanita</label>
+          </div>
+
         </div>
 
         <!-- Password Field -->

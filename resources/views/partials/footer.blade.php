@@ -1,6 +1,7 @@
 <footer id="footer" class="footer-area">
   <div class="mb-16 footer-widget">
     <div class="container">
+
       {{-- Footer Header --}}
       <div class="row">
         <div class="w-full">
