@@ -3,7 +3,7 @@
 @section('title', 'Home Page | Labschool Cirendeu')
 
 @section('content')
-<section class="mt-36 bg-gray-100 p-4 sm:p-8">
+<section class="mt-36 p-4 sm:p-8">
     <div class="container mx-auto mt-10">
         <h1 class="text-lg font-bold text-blue-600 mb-6">LOKASI PKBI</h1>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -39,21 +39,20 @@
 
         <!-- Pagination -->
         @if ($kliniks->hasPages())
-    <div class="flex items-center justify-between mt-6 px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
-        <div class="flex-1 flex justify-start ">
-            {{ $kliniks->links('pagination::simple-tailwind') }}
+        <div class="flex items-center justify-between mt-6 px-4 py-3 bg-white border-t border-gray-200 sm:px-6">
+            <div class="flex-1 flex justify-start">
+                {{ $kliniks->links('pagination::simple-tailwind') }}
+            </div>
+            <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
+                <p class="text-sm text-gray-700 justify-end">
+                    Showing <span class="font-medium">{{ $kliniks->firstItem() }}</span> to 
+                    <span class="font-medium">{{ $kliniks->lastItem() }}</span> of 
+                    <span class="font-medium">{{ $kliniks->total() }}</span> results
+                </p>
+            </div>
         </div>
-        <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
-            <p class="text-sm text-gray-700 justify-end">
-                Showing <span class="font-medium">{{ $kliniks->firstItem() }}</span> to 
-                <span class="font-medium">{{ $kliniks->lastItem() }}</span> of 
-                <span class="font-medium">{{ $kliniks->total() }}</span> results
-            </p>
-        </div>
+        @endif
     </div>
-@endif
-
-        </div>
 
     <script>
         function openModal(modalId) {
