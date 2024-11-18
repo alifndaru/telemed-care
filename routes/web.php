@@ -14,6 +14,10 @@ Route::get('/register', function () {
     return view('pages.auth.register');
 })->name('register');
 
+Route::get('/chat', function () {
+    return view('pages.chat.index');
+})->name('chat');
+
 Route::get('/tenaga', function () {
     return view('tenaga-layanan');
 });
