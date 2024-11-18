@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LokasiController;
+
 
 Route::get('/', function () {
     return view('homepage');
@@ -30,9 +32,8 @@ Route::get('/konsultasi', function () {
     return view('konsultasi');
 });
 
-Route::get('/lokasi', function () {
-    return view('lokasi');
-});
+Route::get('/lokasi', [LokasiController::class, 'index'])->name('lokasi.index');
+
 Route::get('/history-konsultasi', function () {
     return view('history-konsultasi');
 });
