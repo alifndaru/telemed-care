@@ -20,9 +20,12 @@
             </aside>
             <section class=" konsultasi w-full lg:ml-20">
 
-                {{-- <div class="konsultasi-step my-6">
-                    <ol
-                        class="flex items-center w-full p-3 space-x-[5px] lg:space-x-4 text-md font-medium text-center text-gray-500 bg-white">
+              <form action="" enctype="multipart/form-data" class="transaksiForm">
+                <div class="lg:mt-6 p-4 shadow-lg rounded-md">
+                    <div class="p-4">
+
+                        <ol
+                        class="flex items-center w-full p-1 space-x-[5px] lg:space-x-4 text-md font-medium text-center text-gray-500 bg-white">
                         <li class="step flex items-center active text-sm lg:text-lg" data-step="1">
                             <span
                                 class="flex items-center justify-center w-5 lg:h-5 me-2 text-xs border border-blue-600 rounded-full shrink-0 ">
@@ -66,12 +69,9 @@
                             </span>
                             Mulai <span class=" flex ml-1 ">Konsultasi</span>
                         </li>
-                    </ol>
-
-
-
-                </div> --}}
-                <div class="konsultasi-section lg:mt-6 p-4 shadow-lg rounded-md">
+                        </ol>
+                    </div>
+                <div class="konsultasi-section hidden ">
                     <h3 class="flex items-center text-sky-600 font-bold">KONSULTASI  <svg class="w-4 h-4 m-2 rtl:rotate-180" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 12 10">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -295,7 +295,7 @@
                     
                 </div>
 
-                <div class=" tarif-konsultasi mt-4 lg:mt-6 p-4 shadow-lg rounded-md">
+                <div class=" konsultasi-section hidden ">
                     <h3 class="font-bold text-sky-600">PEMBAYARAN</h3>
                     <hr class="font-bold text-sky-600 text-bold ">
 
@@ -364,14 +364,55 @@
                         
                         
                     </div>
-                    <div class="text-end p-2">
-                        <a href=""
-                        class="p-3 mt-10 text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-sky-600 font-medium rounded-lg text-sm px-4">
-                        Selanjutnya
-                    </a>
-                    </div>
                 </div>
+                <div class="btn-navigation">
+                    <button type="button" class="next text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Selanjutnya</button>
+                    <button type="button" class="previous text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Sebelumnya</button>
+                    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Kirim</button>
+                </div>
+            </div>
+              </form>
             </section>
         </div>
     </div>
+@endsection
+@section('script')
+    
+<script>
+    $(function(){
+
+        var $sections=$('.konsultasi-section');
+    
+        function navigateTo(index){
+            $sections.removeClass('hidden').eq(index).addClass('hidden');
+            $('.btn-navigation .previous').toggle(index > 0);
+            var atTheEnd = index >= $sections.length;
+            $('.btn-navigation .next').toggle(!atTheEnd);
+            $('.btn-navigation [Type=submit]').toggle(atTheEnd);
+        }
+
+        function curlIndex(){
+            return $sections.filter(':not(hidden)').index();
+
+        }
+
+        $('.btn-navigation .previous').click(function(){
+            navigateTo(curlIndex() - 1);
+        })
+        $('.btn-navigation .next').click(function(){
+        //   $('.transaksiForm').parsley().whenValidate({
+        //     group:'hidden'+curlIndex()
+        //   }).done(function(){
+        //     navigateTo(curlIndex() + 1);
+        //   });
+        navigateTo(curlIndex() + 1);
+
+        });
+$sections.each(function(index,section){
+    $(section).find(':input').attr('data-parsley-group','block-'+index);
+})
+navigateTo(0);
+
+    });
+</script>
 @endsection

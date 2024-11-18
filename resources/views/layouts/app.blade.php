@@ -8,6 +8,7 @@
   <link rel="icon" href="{{ asset('img/logo icon.png') }}" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&display=swap"
     rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/parsley.js/2.9.2/parsley.min.js"></script>
   <script src="https://kit.fontawesome.com/494c64a86b.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
   @vite('resources/css/app.css')
