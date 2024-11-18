@@ -321,13 +321,16 @@
                                 Total Bayar <span class="text-red-600 font-bold">Rp. 45.123</span>
                             </p>
 
-                            <div class="mt-4">
+                            <div class="mt-4 ">
 
                                 <p class="text-black font-semibold w-10/12">
                                     Transfer Via Rekening
                                     BANK MANDIRI
+                                </p>
+                                <p class="text-black font-semibold w-10/12">
                                     No rek 123 456 789 0123
                                     a.n PKBI NTT
+                                </p>
                             </div>
 
                             <div class="w-full flex flex-row mt-4 gap-2 ">
@@ -336,10 +339,10 @@
                                     <input type="file" id="default-input"
                                         class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
                                 </div>
-                                <button type="button"
+                                {{-- <button type="button"
                                     class="w-50 h-9 mt-9 text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-sky-600 font-medium rounded-lg text-sm px-4">
                                     Konfirmasi
-                                </button>
+                                </button> --}}
                             </div>
 
 
@@ -361,10 +364,12 @@
                         
                         
                     </div>
-                    <a href=""
-                    class="p-3 mt-10 text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-sky-600 font-medium rounded-lg text-sm px-4">
-                    Selanjutnya
-                </a>
+                    <div class="text-end p-2">
+                        <a href=""
+                        class="p-3 mt-10 text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-sky-600 font-medium rounded-lg text-sm px-4">
+                        Selanjutnya
+                    </a>
+                    </div>
                 </div>
             </section>
         </div>
