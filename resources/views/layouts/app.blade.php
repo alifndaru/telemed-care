@@ -37,16 +37,7 @@
   <script src="{{ asset('js/user_app/vendor/jquery-1.12.4.min.js') }}"></script>
   <script src="{{ asset('js/user_app/main.js') }}"></script>
 
-  <script>
-     function toggleDropdown(id) {
-    var dropdown = document.getElementById(id);
-    if (dropdown.classList.contains('hidden')) {
-      dropdown.classList.remove('hidden');
-    } else {
-      dropdown.classList.add('hidden');
-    }
-  }
-  </script>
+  @yield('script')
 
 </body>
 
