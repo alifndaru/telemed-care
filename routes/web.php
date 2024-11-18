@@ -22,6 +22,10 @@ Route::get('/tenaga-provider', function () {
     return view('tenaga-provider');
 });
 
+Route::get('/konsultasi', function () {
+    return view('konsultasi');
+});
+
 Route::get('/lokasi', function () {
     return view('lokasi');
 });
