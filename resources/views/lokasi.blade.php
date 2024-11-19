@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Home Page | Labschool Cirendeu')
+@section('title', 'Lokasi Klinik')
 
 @section('content')
 <section class="mt-36 p-4 sm:p-8">
