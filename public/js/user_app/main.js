@@ -137,3 +137,6 @@ setTimeout(() => {
     closeAlert();
 }, 5000); // 5000 ms = 5 seconds
 // =============Function for alert=============== //
+
+
+

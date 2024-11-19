@@ -3,7 +3,7 @@
 @section('title', 'Home Page | PKBI CARE')
 
 @section('content')
-    <div class="provider-container container ">
+    <div class="provider-container mt-36 container ">
         <div class="provider-list md:flex flex-row p-10 justify-between h-full  lg:divide-x-4 divide-sky-600">
             <div class="provider-category w-auto">
                 <h3 class="text-xl font-bold text-sky-600">DATA LAYANAN KAMI</h3>
