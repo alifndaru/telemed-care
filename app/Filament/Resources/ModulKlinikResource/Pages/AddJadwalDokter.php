@@ -24,6 +24,8 @@ class AddJadwalDokter extends Page
     public $end;
     public $kuota;
 
+    public $schedules; // Variable to hold the list of schedules
+
     // Form schema definition
     protected function getFormSchema(): array
     {
@@ -78,6 +80,10 @@ class AddJadwalDokter extends Page
 
     public function mount()
     {
+        // Fetch all existing schedules
+        $this->schedules = Jadwal::with(['user', 'klinik'])->get();
+
+        // Initialize form
         $this->form->fill();
     }
 }
