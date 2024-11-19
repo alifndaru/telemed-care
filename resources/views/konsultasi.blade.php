@@ -458,14 +458,28 @@
 
 
 
-                        <div class="btn-navigation flex justify-between  mt-4">
-                            <button type="button"
-                                class="next text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Selanjutnya</button>
-                            <button type="button"
-                                class="previous text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Sebelumnya</button>
-                            <button type="submit"
-                                class="text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 ">Kirim</button>
-                        </div>
+                        <div class="btn-navigation flex justify-between mt-4">
+                    <button type="button"
+                        class="next text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                        onclick="showConfirmationPopup()">Selanjutnya</button>
+                    <button type="button"
+                        class="previous text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Sebelumnya</button>
+                    <button type="submit"
+                        class="text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Kirim</button>
+                </div>
+
+                <!-- Popup -->
+                <div id="confirmationPopup" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                    <div class="bg-white rounded-lg p-6 text-center shadow-lg max-w-sm">
+                        <!-- Gambar ceklis hijau -->
+                        <img src="https://cdn-icons-png.flaticon.com/512/845/845646.png" alt="Checkmark"
+                            class="w-16 h-16 mx-auto mb-4">
+                        <h2 class="text-xl font-semibold text-gray-800 mb-2">Berhasil Konfirmasi Pembayaran</h2>
+                        <p class="text-gray-700 mb-6">Terimakasih telah melakukan pembayaran, mohon tunggu untuk langkah selanjutnya.</p>
+                        <button class="text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5"
+                            onclick="closeConfirmationPopup()">Tutup</button>
+                    </div>
+                </div>
                     </div>
                 </form>
             </section>
@@ -475,6 +489,17 @@
 @section('script')
 
     <script>
+
+        // Function to show the confirmation popup
+    function showConfirmationPopup() {
+        document.getElementById('confirmationPopup').classList.remove('hidden');
+    }
+
+    // Function to close the confirmation popup
+    function closeConfirmationPopup() {
+        document.getElementById('confirmationPopup').classList.add('hidden');
+    }
+
         document.addEventListener("DOMContentLoaded", function() {
             const sections = document.querySelectorAll('.konsultasi-section');
             const previousButton = document.querySelector('.btn-navigation .previous');
