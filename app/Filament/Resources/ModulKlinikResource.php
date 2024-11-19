@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\ModulKlinikResource\Pages;
 use App\Models\Klinik;
+use App\Models\Province;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Checkbox;
@@ -17,7 +18,9 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Filters\SelectFilter;
+use App\Filament\Resources\ModulKlinikResource\Pages\AddJadwalDokter;
 
 class ModulKlinikResource extends Resource
 {
@@ -25,6 +28,7 @@ class ModulKlinikResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static ?string $navigationLabel = 'Manajemen Klinik';
     protected static ?string $pluralModelLabel = 'Klinik';
+    protected static ?string $navigationGroup = 'Modul Klinik';
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -40,6 +44,35 @@ class ModulKlinikResource extends Resource
                             ->maxLength(255)
                             ->placeholder('Masukkan nama klinik')
                             ->unique(ignorable: fn($record) => $record),
+                Select::make('province_id')  // Use a Select input for the provinsi_id
+                ->label('Provinsi')
+                ->relationship('provinsi', 'name')  // Set up the relationship with Province
+                ->required()
+                ->searchable()  // Makes the dropdown searchable
+                ->placeholder('Pilih Provinsi'),
+
+                Select::make('regency_id')
+                ->label('Kabupaten/Kota')
+                ->relationship('kabupaten', 'name') // Use relationship properly
+                ->required()
+                ->searchable() // Add searchable if necessary
+                ->placeholder('Pilih Kabupaten/Kota'),
+
+                Select::make('district_id')
+                ->label('Kecamatan')
+                ->relationship('kecamatan', 'name') // Use relationship properly
+                ->required()
+                ->searchable() // Add searchable if necessary
+                ->placeholder('Pilih Kecamatan'),
+
+                Select::make('village_id')
+                ->label('Desa/Kelurahan')
+                ->relationship('desa', 'name') // Use relationship properly
+                ->required()
+                ->searchable() // Add searchable if necessary
+                ->placeholder('Pilih Desa/Kelurahan'),
+
+
 
                         TextInput::make('alamat')
                             ->label('Alamat Klinik')
@@ -123,6 +156,28 @@ class ModulKlinikResource extends Resource
                     ->searchable()
                     ->wrap(),
 
+            TextColumn::make('provinsi.name')
+            ->label('Provinsi')
+            ->sortable()
+            ->searchable(),
+
+            TextColumn::make('kabupaten.name')
+            ->label('Kabupaten/Kota')
+            ->sortable()
+            ->searchable(),
+
+            TextColumn::make('kecamatan.name')
+            ->label('Kecamatan')
+            ->sortable()
+            ->searchable(),
+
+            TextColumn::make('desa.name')
+            ->label('Desa/Kelurahan')
+            ->sortable()
+            ->searchable(),
+
+
+
                 TextColumn::make('alamat')
                     ->label('Alamat Klinik')
                     ->sortable()
@@ -157,7 +212,7 @@ class ModulKlinikResource extends Resource
                 Tables\Actions\EditAction::make()
                     ->tooltip('Edit Klinik'),
                 Tables\Actions\DeleteAction::make()
-                    ->tooltip('Hapus Klinik'),
+            ->tooltip('Hapus Klinik'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
