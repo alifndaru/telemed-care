@@ -20,7 +20,7 @@ use Filament\Tables\Columns\ToggleColumn;
 class JadwalDokterResource extends Resource
 {
     protected static ?string $model = Jadwal::class;
-    protected static ?string $navigationGroup = 'Modul Klinik';
+    protected static ?string $navigationGroup = 'Modul Klinik'; // Organize navigation
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -29,15 +29,15 @@ class JadwalDokterResource extends Resource
             ->schema([
                 Forms\Components\Select::make('users_id')
                     ->label('Doctor')
-                    ->options(User::where('role_id', 3)->pluck('name', 'id')->toArray()) // Adjusted toArray for better compatibility
+                ->options(User::where('role_id', 3)->pluck('name', 'id')->toArray()) // Select only doctors with role_id = 3
                     ->required()
-                    ->searchable(), // Enable searching if the list of doctors is large
+                ->searchable(), // Make searchable for large lists of doctors
 
                 Forms\Components\Select::make('klinik_id')
                     ->label('Clinic')
-                    ->options(Klinik::pluck('namaKlinik', 'id')->toArray())
+            ->options(Klinik::pluck('namaKlinik', 'id')->toArray()) // Get clinic names
                     ->required()
-                    ->searchable(), // Searchable for easier selection
+                ->searchable(), // Make searchable for large lists of clinics
 
                 Forms\Components\TimePicker::make('start')
                     ->label('Start Time')
@@ -49,12 +49,12 @@ class JadwalDokterResource extends Resource
 
                 TextInput::make('biaya')
                     ->label('Cost')
-                    ->numeric()
+                ->numeric() // Ensure cost is a numeric value
                     ->required(),
 
-                Forms\Components\TextInput::make('kuota')
+            TextInput::make('kuota')
                     ->label('Quota')
-                    ->numeric()
+                ->numeric() // Ensure quota is numeric
                     ->required(),
             ]);
     }
@@ -85,21 +85,20 @@ class JadwalDokterResource extends Resource
                     ->label('Quota')
                     ->sortable(),
 
-                ToggleColumn::make('status')
-                    ->label('Status')
-                    ->onColor('success')
-                    ->offColor('danger'),
-
             TextColumn::make('biaya')
                 ->label('Cost')
-                ->sortable(),
+                ->sortable(), // Make cost sortable for easy comparison
+
+                ToggleColumn::make('status')
+                    ->label('Status')
+                ->onColor('success') // Green when active
+                ->offColor('danger'), // Red when inactive
             ])
             ->filters([
-                // You can add filters here if needed
+                // You can add filters here if needed, e.g., to filter by status or doctor
             ])
             ->actions([
-                EditAction::make(),
-                DeleteAction::make(), // Adding delete action per row
+                EditAction::make(),DeleteAction::make(), // Enable delete action for each row
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(), // Enable bulk delete
@@ -109,7 +108,7 @@ class JadwalDokterResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Add relations here if needed
+            // Define any relations here if necessary
         ];
     }
 

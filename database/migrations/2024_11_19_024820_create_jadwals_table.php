@@ -12,16 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('jadwals', function (Blueprint $table) {
-            $table->id();
-            $table->bigInteger('users_id');
-            $table->bigInteger('klinik_id');
+            $table->id(); // Primary key otomatis
+            $table->bigInteger('users_id')->unsigned();
+            $table->bigInteger('klinik_id')->unsigned();
             $table->time('start');
             $table->time('end');
             $table->bigInteger('kuota');
+            $table->bigInteger('biaya'); // Menggunakan tipe data decimal untuk biaya
             $table->string('timezone')->default('UTC');
             $table->boolean('status')->default(true);
-            $table->bigInteger('biaya')->nullable();
-            $table->timestamps();
+            $table->timestamps(); // Kolom created_at dan updated_at
         });
     }
 

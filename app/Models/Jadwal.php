@@ -16,7 +16,8 @@ class Jadwal extends Model
         'end',
         'kuota',
         'timezone',
-        'status'
+        'status',
+        'biaya'
     ];
 
     public function klinik()
