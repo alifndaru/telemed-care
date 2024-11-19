@@ -20,6 +20,7 @@ return new class extends Migration
             $table->bigInteger('kuota');
             $table->string('timezone')->default('UTC');
             $table->boolean('status')->default(true);
+            $table->bigInteger('biaya')->nullable();
             $table->timestamps();
         });
     }

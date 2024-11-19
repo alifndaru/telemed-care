@@ -28,6 +28,7 @@ class ModulKlinikResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
     protected static ?string $navigationLabel = 'Manajemen Klinik';
     protected static ?string $pluralModelLabel = 'Klinik';
+    protected static ?string $navigationGroup = 'Modul Klinik';
     protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
@@ -212,11 +213,6 @@ class ModulKlinikResource extends Resource
                     ->tooltip('Edit Klinik'),
                 Tables\Actions\DeleteAction::make()
             ->tooltip('Hapus Klinik'),
-            Tables\Actions\Action::make('addJadwal')
-            ->label('Add Jadwal Dokter')
-            ->icon('heroicon-o-plus')
-            ->url(fn($record) => AddJadwalDokter::getUrl(['record' => $record]))
-            ->color('primary')
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -238,7 +234,6 @@ class ModulKlinikResource extends Resource
             'index' => Pages\ListModulKliniks::route('/'),
             'create' => Pages\CreateModulKlinik::route('/create'),
             'edit' => Pages\EditModulKlinik::route('/{record}/edit'),
-            'add-jadwal-dokter' => Pages\AddJadwalDokter::route('/{record}/add-jadwal-dokter'),
         ];
     }
 
