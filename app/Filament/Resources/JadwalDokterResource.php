@@ -89,6 +89,10 @@ class JadwalDokterResource extends Resource
                     ->label('Status')
                     ->onColor('success')
                     ->offColor('danger'),
+
+            TextColumn::make('biaya')
+                ->label('Cost')
+                ->sortable(),
             ])
             ->filters([
                 // You can add filters here if needed
