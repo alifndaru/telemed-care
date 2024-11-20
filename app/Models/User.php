@@ -12,35 +12,20 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable, HasRoles, HasPanelShield;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
         'password',
+        'role_id',
+        'spesialis_id',
+        'klinik_id',
+        'pelayanan_id'
     ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
-
-    /**
-     * Get the attributes that should be cast.
-     *
-     * @return array<string, string>
-     */
     protected function casts(): array
     {
         return [
@@ -51,5 +36,19 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo(Role::class);
+    }
+
+    public function spesialis()
+    {
+        return $this->belongsTo(SpesialisasiDokter::class, 'spesialis_id', 'id');
+    }
+
+    public function klinik()
+    {
+        return $this->belongsTo(Klinik::class, 'klinik_id', 'id');
+    }
+    public function pelayanan()
+    {
+        return $this->belongsTo(Pelayanan::class, 'pelayanan_id', 'id');
     }
 }

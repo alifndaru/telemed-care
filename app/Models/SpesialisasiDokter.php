@@ -11,4 +11,9 @@ class SpesialisasiDokter extends Model
         'name',
         'status'
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'specialis_id', 'id');
+    }
 }
