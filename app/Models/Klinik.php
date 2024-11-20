@@ -54,4 +54,8 @@ class Klinik extends Model
     {
         return $this->belongsTo(Village::class, 'village_id', 'id');
     }
+    public function users()
+    {
+        return $this->hasMany(User::class, 'klinik_id', 'id');
+    }
 }
