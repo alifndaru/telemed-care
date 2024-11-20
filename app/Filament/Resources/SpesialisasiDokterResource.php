@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\PelayananResource\Pages;
-use App\Filament\Resources\PelayananResource\RelationManagers;
-use App\Models\Pelayanan;
+use App\Filament\Resources\SpesialisasiDokterResource\Pages;
+use App\Filament\Resources\SpesialisasiDokterResource\RelationManagers;
+use App\Models\SpesialisasiDokter;
 use Filament\Forms;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -16,20 +16,21 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class PelayananResource extends Resource
+class SpesialisasiDokterResource extends Resource
 {
-    protected static ?string $model = Pelayanan::class;
+    protected static ?string $model = SpesialisasiDokter::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-cog';
     protected static ?string $navigationGroup = 'Users Management';
-    protected static ?string $navigationLabel = 'Kategori Pelayanan Dokter';
+    protected static ?string $navigationLabel = 'Kategori Spesialisasi Dokter';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
-                    ->label('Nama')
+                    ->label('Nama Spesialisasi')
                     ->required()
                     ->unique(),
             ]);
@@ -40,9 +41,10 @@ class PelayananResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->label('Nama')
+                    ->label('Nama Spesialisasi')
                     ->searchable()
                     ->sortable(),
+
                 ToggleColumn::make('status')
                     ->label('Status')
                     ->alignRight(),
@@ -71,9 +73,9 @@ class PelayananResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPelayanans::route('/'),
-            'create' => Pages\CreatePelayanan::route('/create'),
-            'edit' => Pages\EditPelayanan::route('/{record}/edit'),
+            'index' => Pages\ListSpesialisasiDokters::route('/'),
+            'create' => Pages\CreateSpesialisasiDokter::route('/create'),
+            'edit' => Pages\EditSpesialisasiDokter::route('/{record}/edit'),
         ];
     }
 }
