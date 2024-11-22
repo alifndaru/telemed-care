@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SpesialisasiDokter;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-class TenagaProviderController extends Controller
+class TenagaLayananController extends Controller
 {
     public function index()
     {
@@ -20,10 +19,10 @@ class TenagaProviderController extends Controller
             ->orderBy('name')
             ->take(10)
             ->get();
-        return view('tenaga-provider', compact('data'));
+        return view('tenaga-layanan', compact('data'));
     }
 
-    public function getSpesialis($category)
+    public function getLayanan($category)
     {
         $data = User::where('spesialis_id', $category)
             ->with([

@@ -81,67 +81,59 @@
 
         @section('script')
             <script>
-                document.addEventListener('DOMContentLoaded', function() {
-                    document.querySelectorAll('.category').forEach(function(category) {
-                        category.addEventListener('click', function(e) {
-                            e.preventDefault();
+                $(document).ready(function(){
+            $('.category').on('click', function(){
+                let category = $(this).data('category');
+                let categoryName = this.textContent.trim();
 
-                            let categoryId = this.getAttribute('data-category');
-                            let categoryName = this.textContent.trim();
+                let breadcrumbCategory = document.getElementById('breadcrumb-category');
+                breadcrumbCategory.textContent = categoryName;
 
-                            let breadcrumbCategory = document.getElementById('breadcrumb-category');
-                            breadcrumbCategory.textContent = categoryName;
-                            
-
-                            document.querySelectorAll('.category i').forEach(icon=>{
+                document.querySelectorAll('.category i').forEach(icon=>{
                                 icon.classList.remove('text-black');
                             });
 
-                            const icon = this.querySelector('i');
-                            icon.classList.add('text-black');
-                            fetch(`/tenaga/${categoryId}`)
-                                .then(response => response.json())
-                                .then(data => {
-                                
-                                    let container = document.getElementById('result-container');
-                                    container.innerHTML = '';
+                const icon = this.querySelector('i');
+                icon.classList.add('text-black');
 
-                                   
-                                    data.forEach(item => {
-                                        let div = document.createElement('div');
-                                        div.classList.add('dokter-list');
+                $.ajax({
+                    url: `/tenaga/${category}`,
 
-                                        div.innerHTML = `
-                                        
-                                        <div class="flex flex-col lg:flex-row justify-between p-3 lg:items-center shadow-lg rounded-lg mb-4 border">
-                                        <div class="dokter-profile flex flex-row items-center">
-                                          <img src="https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="h-auto max-w-40" alt="image:" />
-                                            <div class="dokter-info ml-8 p-2">
-                                            <div class="dokter-name font-bold text-sky-600 text-lg">${item.name}</div>
-                                            <div class="dokter-title font-normal  font-bold text-slate-300 text-sm">${item.spesialis.name}</div>
-                                        <div class="dokter-desc mt-4">
-                                         <p class="flex gap-[13px] text-sky-600 items-center text-sm"><i class="fas fa-clinic-medical   "></i>${item.klinik.name}</p>
-                                        <p class="flex gap-4 text-sky-600 items-center text-sm"><i class="fas fa-map-marker-alt ml-[3px]  "></i>${item.klinik.provinsi.name}</p>
-                                        </div>
-                                        </div>
-                                        </div>
-                                        <div class="profile-action flex lg:flex-col justify-end lg:justify-start gap-1">
-                                        <a href="#" class="flex lg:flex-col gap-2 lg:gap-0 rounded-lg text-xs lg:text-sm py-1 px-2 lg:py-1 lg:px-2 bg-sky-600 lg:justify-center items-center text-white text-center font-bold">
-                                            <span><i class="far fa-user"></i></span>PROFILE
-                                        </a>
-                                        <a href="#" class="flex lg:flex-col gap-2 lg:gap-0 rounded-lg text-xs lg:text-sm py-1 px-2 lg:py-1 lg:px-2 bg-yellow-400 lg:justify-center items-center text-sky-700 font-bold">
-                                        <span><i class="far fa-comments"></i></span>KONSULTASI
-                                        </a>
-                                        </div>
-                                        </div>`;
-            document.getElementById('result-container').appendChild(div);
-                                    });
+                    type: 'GET',
+                    success: function(data){
+                        let htmlContent = "";
 
-                                })
-                                .catch(error => console.error('Error:', error));
+                        data.forEach(function(item){
+                            htmlContent += `
+                             <div class="flex flex-col lg:flex-row justify-between p-3 lg:items-center shadow-lg rounded-lg mb-4 border">
+                        <div class="dokter-profile flex flex-row items-center">
+                            <img src="https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="h-auto max-w-40" alt="image:" />
+                            <div class="dokter-info ml-8 p-2">
+                            <div class="dokter-name font-bold text-sky-600 text-lg">${item.name}</div>
+                            <div class="dokter-title font-bold text-slate-300 text-sm">${item.spesialis.name}</div>
+                        <div class="dokter-desc mt-4">
+                         <p class="flex gap-[13px] text-sky-600 items-center text-sm"><i class="fas fa-clinic-medical   "></i>${item.klinik.name}</p>
+                         <p class="flex gap-4 text-sky-600 items-center text-sm"><i class="fas fa-map-marker-alt ml-[3px]  "></i>${item.klinik.provinsi.name}</p>
+                        </div>
+                        </div>
+                        </div>
+                        <div class="profile-action flex lg:flex-col justify-end lg:justify-start gap-1">
+                        <a href="#" class="flex lg:flex-col gap-2 lg:gap-0 rounded-lg text-xs lg:text-sm py-1 px-2 lg:py-1 lg:px-2 bg-sky-600 lg:justify-center items-center text-white text-center font-bold">
+                            <span><i class="far fa-user"></i></span>PROFILE
+                        </a>
+                        <a href="#" class="flex lg:flex-col gap-2 lg:gap-0 rounded-lg text-xs lg:text-sm py-1 px-2 lg:py-1 lg:px-2 bg-yellow-400 lg:justify-center items-center text-sky-700 font-bold">
+                        <span><i class="far fa-comments"></i></span>KONSULTASI
+                        </a>
+                        </div>
+                    </div>`;
                         });
-                    });
+                        $('#result-container').html(htmlContent);
+                    },
+                    error: function(error){console.error('error fetching data', error);
+                    }
                 });
+            })
+         })
             </script>
 
         @endsection
