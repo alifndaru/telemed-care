@@ -51,4 +51,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Pelayanan::class, 'pelayanan_id', 'id');
     }
+    public function province()
+    {
+        return $this->belongsTo(Province::class, 'province_id', 'id');
+    }
 }
