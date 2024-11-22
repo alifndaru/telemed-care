@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LokasiController;
-
+use App\Http\Controllers\TenagaProviderController;
 
 Route::get('/', function () {
     return view('homepage');
@@ -20,9 +20,9 @@ Route::get('/chat', function () {
     return view('pages.chat.index');
 })->name('chat');
 
-Route::get('/tenaga', function () {
-    return view('tenaga-layanan');
-});
+Route::get('/tenaga', [TenagaProviderController::class, 'index'])->name('tenaga.index');
+Route::get('/tenaga/{category}', [TenagaProviderController::class, 'getSpesialis'])->name('tenaga.getSpesialis');
+
 
 Route::get('/tenaga-provider', function () {
     return view('tenaga-provider');
