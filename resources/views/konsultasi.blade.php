@@ -30,27 +30,19 @@
                                 
                                 <li class="relative step0 flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b  after:border-4 after:inline-block  ">
                                     <p class="absolute flex gap-1 left-[-30px] bottom-7 w-6 "><strong>Pilih</strong> <strong>Provider</strong> </p>
-                                    <span class="step0 flex items-center justify-center border border-black rounded-full h-5 w-5  shrink-0">
-                                           
-                                    </span>
+                                    <span class="step0 flex items-center justify-center border border-black rounded-full h-5 w-5  shrink-0"></span>
                                 </li>
                                 <li class="step1 relative flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b  after:border-4 after:inline-block ">
                                     <p class="absolute flex gap-1 left-[-30px] bottom-7 w-6"><strong>Pembayaran</strong> </p>
-                                    <span class="circle flex items-center justify-center  border border-black rounded-full h-5 w-5  shrink-0">
-                                      
-                                    </span>
+                                    <span class="circle flex items-center justify-center  border border-black rounded-full h-5 w-5  shrink-0"></span>
                                 </li>
                                 <li class="step2 relative flex items-center w-full  after:w-full after:h-1 after:border-b  after:border-4 after:inline-block ">
                                     <p class="absolute flex gap-1 left-[-20px] bottom-7 w-6"><strong>Validasi</strong></p>
-                                    <span class="circle flex items-center justify-center  border border-black rounded-full h-5 w-5  shrink-0">
-                                    
-                                    </span>
+                                    <span class="circle flex items-center justify-center  border border-black rounded-full h-5 w-5  shrink-0"></span>
                                 </li>
                                 <li class="step3 relative flex items-center w-full ">
                                     <p class="absolute flex gap-1 left-[-38px] bottom-7 w-6"><strong>Mulai</strong> <strong>konsultasi</strong> </p>
-                                    <span class="circle flex items-center justify-center  border border-black rounded-full h-5 w-5  shrink-0">
-                                       
-                                    </span>
+                                    <span class="circle flex items-center justify-center  border border-black rounded-full h-5 w-5  shrink-0"></span>
                                 </li>
                             </ol>
                             
@@ -181,9 +173,6 @@
                                                             class="text-sky-600 font-bold mr-2">|</span>Kuota : 10</p>
 
                                                 </div>
-
-
-
                                             </div>
 
                                         </div>
@@ -269,15 +258,10 @@
                                                             class="text-sky-600 font-bold mr-2">|</span>Kuota : 10</p>
 
                                                 </div>
-
-
-
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                             <div class="mt-4 p-4 text-center text-white font-bold bg-red-600">
                                 <h3>TARIF LAYANAN KONSULTASI : RP.60.000</h3>
@@ -500,57 +484,59 @@
         document.getElementById('confirmationPopup').classList.add('hidden');
     }
 
-        document.addEventListener("DOMContentLoaded", function() {
-            const sections = document.querySelectorAll('.konsultasi-section');
-            const previousButton = document.querySelector('.btn-navigation .previous');
-            const nextButton = document.querySelector('.btn-navigation .next');
-            const submitButton = document.querySelector('.btn-navigation [type="submit"]');
+     
+    $(document).ready(function () {
+    const sections = $('.konsultasi-section');
+    const previousButton = $('.btn-navigation .previous');
+    const nextButton = $('.btn-navigation .next');
+    const submitButton = $('.btn-navigation [type="submit"]');
 
-
-            function navigateTo(index) {
-                sections.forEach((section, i) => {
-                    if (i == index) {
-                        section.classList.remove('hidden');
-                    } else {
-                        section.classList.add('hidden');
-                        section.classList.remove('after:border-black');
-                    }
-                });
-
-
-
-                previousButton.style.display = index > 0 ? 'inline-block' : 'none';
-                const atTheEnd = index >= sections.length - 1;
-                nextButton.style.display = atTheEnd ? 'none' : 'inline-block';
-                submitButton.style.display = atTheEnd ? 'inline-block' : 'none';
-
-                const step = document.querySelector('.step' + index);
-                step.classList.add('after:border-sky-600');
-
-                const circle = step.querySelector('span');
-                if(circle){
-                    circle.classList.add('bg-sky-600');
-                    circle.classList.remove('border-black');
-                };
-              
-                
+    function navigateTo(index) {
+        sections.each(function (i) {
+            if (i === index) {
+                $(this).removeClass('hidden');
+            } else {
+                $(this).addClass('hidden').removeClass('after:border-black');
             }
-
-
-
-            function currentIndex() {
-                return Array.from(sections).findIndex(section => !section.classList.contains('hidden'));
-            }
-
-            previousButton.addEventListener('click', function() {
-                navigateTo(currentIndex() - 1);
-            });
-
-            nextButton.addEventListener('click', function() {
-                navigateTo(currentIndex() + 1);
-            });
-
-            navigateTo(0);
         });
+
+        previousButton.css('display', index > 0 ? 'inline-block' : 'none');
+
+        const atTheEnd = index >= sections.length - 1;
+        nextButton.css('display', atTheEnd ? 'none' : 'inline-block');
+        submitButton.css('display', atTheEnd ? 'inline-block' : 'none');
+
+        const step = $('.step' + index);
+        step.addClass('after:border-sky-600');
+
+        const circle = step.find('span');
+        if (circle.length) {
+            circle.addClass('bg-sky-600').removeClass('border-black');
+        }
+    }
+
+    function currentIndex() {
+        return sections.toArray().findIndex(section => !$(section).hasClass('hidden'));
+    }
+
+    previousButton.on('click', function () {
+    const current = currentIndex();
+
+    
+    const currentStep = $('.step' + current);
+    currentStep.removeClass('bg-sky-600 after:border-sky-600');
+    currentStep.find('span').removeClass('bg-sky-600').addClass('border-black');
+
+    navigateTo(current - 1);
+});
+
+
+    nextButton.on('click', function () {
+        navigateTo(currentIndex() + 1);
+    });
+
+    navigateTo(0);
+});
+
     </script>
 @endsection
