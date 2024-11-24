@@ -33,6 +33,7 @@ Route::get('/tenaga-layanan/{category}', [TenagaLayananController::class, 'getLa
 Route::get('/konsultasi', [KonsultasiController::class, 'index'])->name('konsultasi.index');
 Route::get('/getProvinsi', [KonsultasiController::class, 'getProvinsi']);
 Route::get('/getKlinik', [KonsultasiController::class, 'getKlinik']);
+Route::get('/getProvider', [KonsultasiController::class, 'getProvider']);
 
 Route::get('/lokasi', [LokasiController::class, 'index'])->name('lokasi.index');
 

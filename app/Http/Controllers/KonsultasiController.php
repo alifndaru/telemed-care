@@ -7,6 +7,7 @@ use App\Models\Province;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
+use PhpParser\Node\Expr\FuncCall;
 
 class KonsultasiController extends Controller
 {
@@ -43,7 +44,7 @@ class KonsultasiController extends Controller
 
 
     }
-    public function getKlinik(Request $request)
+public function getKlinik(Request $request)
     {
         $provinsi_id = $request->input('provinsi_id');
 
@@ -53,5 +54,15 @@ class KonsultasiController extends Controller
 
   return response()->json($data);
     }
+
+public function getPRovider(Request $request){
+    $klinik_id = $request->input('klinik_id');
+
+    $data = User::where('klinik_id', $klinik_id )
+    ->with(['klinik','spesialis'])
+    ->orderBy('name')
+    ->get();
+    return response()->json($data);
+}
 
 }
