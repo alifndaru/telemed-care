@@ -3,6 +3,7 @@
 @section('title', 'Konsultasi Home | PKBI CARE')
 
 @section('content')
+
     <div class="container mt-36 h-auto  ">
         <div class="flex flex-col lg:flex-row p-10 justify-between h-full">
             <aside class="bg-white p-6  w-full md:w-1/3 flex flex-col items-center">
@@ -63,24 +64,15 @@
                                 <div class="lg:w-1/2 flex  items-center gap-[36px] lg:gap-4">
                                     <label for="provinsi"
                                         class="block mb-2 text-md font-bold text-sky-600 ">Provinsi</label>
-                                    <select id="provinsi"
-                                        class=" border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 ">
-                                        <option selected>Choose a country</option>
-                                        <option value="US">United States</option>
-                                        <option value="CA">Canada</option>
-                                        <option value="FR">France</option>
-                                        <option value="DE">Germany</option>
+                                    <select
+                                        class="provinsi border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 ">
                                     </select>
                                 </div>
-                                <div class="lg:w-1/2 flex items-center gap-[50px] lg:gap-4">
-                                    <label for="countries" class="block mb-2 text-md font-bold text-sky-600 ">Klinik</label>
-                                    <select id="countries"
-                                        class=" border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 ">
-                                        <option selected>Choose a country</option>
-                                        <option value="US">United States</option>
-                                        <option value="CA">Canada</option>
-                                        <option value="FR">France</option>
-                                        <option value="DE">Germany</option>
+                               
+                                <div class=" lg:w-1/2 flex items-center gap-[50px] lg:gap-4">
+                                    <label for="klinik" class="block mb-2 text-md font-bold text-sky-600 ">Klinik</label>
+                                    <select id="klinik" class="klinik border border-black text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 ">
+                                       
                                     </select>
                                 </div>
                             </div>
@@ -92,7 +84,8 @@
                                 dari WIT.
                             </blockquote>
                             <div class="grid lg:grid-cols-2 mt-6 lg:mt-0">
-
+                                @foreach ($data as $item)
+                                    
                                 <div class="list-provider mt-4 lg:mt-8">
                                     <div class="flex flex-row gap-2 items-center">
                                         <div class="img-provider">
@@ -100,8 +93,8 @@
                                         </div>
                                         <div class="provider-desc">
                                             <div class="nama-provider">
-                                                <p class="font-bold text-sky-600 text-sm">Andhika Prasetya</p>
-                                                <p class="text-sky-600 text-sm">Konselor Psikolog</p>
+                                                <p class="font-bold text-sky-600 text-sm">{{$item->name}}</p>
+                                                <p class="text-sky-600 text-sm">{{$item->spesialis->name}}</p>
                                             </div>
                                             <div class="provider-jadwal lg:mt-4">
 
@@ -137,131 +130,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="list-provider mt-4 lg:mt-8">
-                                    <div class="flex flex-row gap-2 items-center">
-                                        <div class="img-provider">
-                                            <img src="\images\user.png" class="w-20 h-20" alt="image:" />
-                                        </div>
-                                        <div class="provider-desc">
-                                            <div class="nama-provider">
-                                                <p class="font-bold text-sky-600 text-sm">Andhika Prasetya</p>
-                                                <p class="text-sky-600 text-sm">Konselor Psikolog</p>
-                                            </div>
-                                            <div class="provider-jadwal lg:mt-4">
-
-                                                <div class="flex items-center">
-
-                                                    <input id="default-radio-1" type="radio" value=""
-                                                        name="default-radio"
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-                                                    <label for="default-radio-1"
-                                                        class="ms-2 text-sm font-medium text-sky-600 ">24:00-00:00</label>
-
-                                                    <p class="ml-10 text-red-700 font-bold"><span
-                                                            class="text-sky-600 font-bold mr-2">|</span>Kuota : 10</p>
-
-                                                </div>
-                                                <div class="flex items-center">
-
-                                                    <input id="default-radio-1" type="radio" value=""
-                                                        name="default-radio"
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-                                                    <label for="default-radio-1"
-                                                        class="ms-2 text-sm font-medium text-sky-600 ">24:00-00:00</label>
-
-                                                    <p class="ml-10 text-red-700 font-bold"><span
-                                                            class="text-sky-600 font-bold mr-2">|</span>Kuota : 10</p>
-
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-provider mt-4 lg:mt-8">
-                                    <div class="flex flex-row gap-2 items-center">
-                                        <div class="img-provider">
-                                            <img src="\images\user.png" class="w-20 h-20" alt="image:" />
-                                        </div>
-                                        <div class="provider-desc">
-                                            <div class="nama-provider">
-                                                <p class="font-bold text-sky-600 text-sm">Andhika Prasetya</p>
-                                                <p class="text-sky-600 text-sm">Konselor Psikolog</p>
-                                            </div>
-                                            <div class="provider-jadwal lg:mt-4">
-
-                                                <div class="flex items-center">
-
-                                                    <input id="default-radio-1" type="radio" value=""
-                                                        name="default-radio"
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-                                                    <label for="default-radio-1"
-                                                        class="ms-2 text-sm font-medium text-sky-600 ">24:00-00:00</label>
-
-                                                    <p class="ml-10 text-red-700 font-bold"><span
-                                                            class="text-sky-600 font-bold mr-2">|</span>Kuota : 10</p>
-
-                                                </div>
-                                                <div class="flex items-center">
-
-                                                    <input id="default-radio-1" type="radio" value=""
-                                                        name="default-radio"
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-                                                    <label for="default-radio-1"
-                                                        class="ms-2 text-sm font-medium text-sky-600 ">24:00-00:00</label>
-
-                                                    <p class="ml-10 text-red-700 font-bold"><span
-                                                            class="text-sky-600 font-bold mr-2">|</span>Kuota : 10</p>
-
-                                                </div>
-
-
-
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-provider mt-4 lg:mt-8">
-                                    <div class="flex flex-row gap-2 items-center">
-                                        <div class="img-provider">
-                                            <img src="\images\user.png" class="w-20 h-20" alt="image:" />
-                                        </div>
-                                        <div class="provider-desc">
-                                            <div class="nama-provider">
-                                                <p class="font-bold text-sky-600 text-sm">Andhika Prasetya</p>
-                                                <p class="text-sky-600 text-sm">Konselor Psikolog</p>
-                                            </div>
-                                            <div class="provider-jadwal lg:mt-4">
-
-                                                <div class="flex items-center">
-
-                                                    <input id="default-radio-1" type="radio" value=""
-                                                        name="default-radio"
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-                                                    <label for="default-radio-1"
-                                                        class="ms-2 text-sm font-medium text-sky-600 ">24:00-00:00</label>
-
-                                                    <p class="ml-10 text-red-700 font-bold"><span
-                                                            class="text-sky-600 font-bold mr-2">|</span>Kuota : 10</p>
-
-                                                </div>
-                                                <div class="flex items-center">
-
-                                                    <input id="default-radio-1" type="radio" value=""
-                                                        name="default-radio"
-                                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 ">
-                                                    <label for="default-radio-1"
-                                                        class="ms-2 text-sm font-medium text-sky-600 ">24:00-00:00</label>
-
-                                                    <p class="ml-10 text-red-700 font-bold"><span
-                                                            class="text-sky-600 font-bold mr-2">|</span>Kuota : 10</p>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                              
+                                @endforeach
+                             
+                             
                             </div>
                             <div class="mt-4 p-4 text-center text-white font-bold bg-red-600">
                                 <h3>TARIF LAYANAN KONSULTASI : RP.60.000</h3>
@@ -443,11 +315,11 @@
 
 
                         <div class="btn-navigation flex justify-between mt-4">
-                    <button type="button"
-                        class="next text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-                        onclick="showConfirmationPopup()">Selanjutnya</button>
-                    <button type="button"
-                        class="previous text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Sebelumnya</button>
+                            <button type="button"
+                            class="previous text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Sebelumnya</button>
+                            <button type="button"
+                                class="next text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+                                onclick="showConfirmationPopup()">Selanjutnya</button>
                     <button type="submit"
                         class="text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Kirim</button>
                 </div>
@@ -532,10 +404,73 @@
 
 
     nextButton.on('click', function () {
+        const current = currentIndex();
+
+        
         navigateTo(currentIndex() + 1);
     });
 
     navigateTo(0);
+});
+
+
+
+
+$(document).ready(function() {
+
+    $('.provinsi').select2({
+        ajax: {
+            url: '/getProvinsi', 
+            dataType: 'json',
+            delay: 250,
+            data: function (params) {
+                return {
+                    search: params.term 
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(function (category) {
+                        return {
+                            id: category.id,
+                            text: category.name
+                        };
+                    })
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 1,
+    });
+
+   
+    $('.klinik').select2({
+        ajax: {
+            url: '/getKlinik', 
+            dataType: 'json',
+            delay: 250,
+            data: function () {
+                return {
+                    provinsi_id: $('.provinsi').val() 
+                };
+            },
+            processResults: function (data) {
+                return {
+                    results: data.map(function (klinik) {
+                        return {
+                            id: klinik.id,
+                            text: klinik.name
+                        };
+                    })
+                };
+            },
+            cache: true
+        },
+        minimumInputLength: 0,
+    });
+
+
+    
 });
 
     </script>

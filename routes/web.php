@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\KonsultasiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\TenagaLayananController;
@@ -29,9 +30,9 @@ Route::get('/tenaga-layanan', [TenagaLayananController::class, 'index'])->name('
 Route::get('/tenaga-layanan/{category}', [TenagaLayananController::class, 'getLayanan'])->name('tenaga-layanan.getLayanan');
 
 
-Route::get('/konsultasi', function () {
-    return view('konsultasi');
-});
+Route::get('/konsultasi', [KonsultasiController::class, 'index'])->name('konsultasi.index');
+Route::get('/getProvinsi', [KonsultasiController::class, 'getProvinsi']);
+Route::get('/getKlinik', [KonsultasiController::class, 'getKlinik']);
 
 Route::get('/lokasi', [LokasiController::class, 'index'])->name('lokasi.index');
 

@@ -10,6 +10,8 @@
     rel="stylesheet">
   <link href="\js\user_app\summernote-0.9.0-dist\summernote-lite.css"
     rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
   
   <script src="https://kit.fontawesome.com/494c64a86b.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/flowbite@1.5.1/dist/flowbite.min.js"></script>
@@ -42,6 +44,7 @@
   <script src="{{ asset('js/user_app/main.js') }}"></script>
   <script src="{{ asset('js/user_app/vendor/jquery-1.12.4.min.js') }}"></script>
   <script src="/js/user_app/summernote-0.9.0-dist/summernote-lite.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script>
     $('#summernote').summernote({
       tabsize: 2,
