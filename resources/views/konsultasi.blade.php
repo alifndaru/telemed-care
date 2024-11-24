@@ -132,9 +132,7 @@
                                 </div>
                               
                                 @endforeach
-                                <div class="pagination">
-                                    {{ $data->links() }} <!-- This will generate the pagination links -->
-                                </div>
+                             
                              
                             </div>
                             <div class="mt-4 p-4 text-center text-white font-bold bg-red-600">
