@@ -98,7 +98,6 @@
 
                 $.ajax({
                     url: `/tenaga/${category}`,
-
                     type: 'GET',
                     success: function(data){
                         let htmlContent = "";
