@@ -30,22 +30,23 @@
                             <ol class="flex items-center w-full">
                                 
                                 <li class="relative step0 flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b  after:border-4 after:inline-block  ">
-                                    <p class="absolute flex gap-1 left-[-30px] bottom-7 w-6 "><strong>Pilih</strong> <strong>Provider</strong> </p>
+                                    <p class="absolute flex gap-1 left-[-30px] bottom-7 w-6 text-sm lg:text-md"><strong>Pilih</strong> <strong>Provider</strong> </p>
                                     <span class="step0 flex items-center justify-center border border-black rounded-full h-5 w-5  shrink-0"></span>
                                 </li>
                                 <li class="step1 relative flex w-full items-center after:content-[''] after:w-full after:h-1 after:border-b  after:border-4 after:inline-block ">
-                                    <p class="absolute flex gap-1 left-[-30px] bottom-7 w-6"><strong>Pembayaran</strong> </p>
+                                    <p class="absolute flex gap-1 left-[-30px] bottom-7 w-6 text-sm  lg:text-md"><strong>Pembayaran</strong> </p>
                                     <span class="circle flex items-center justify-center  border border-black rounded-full h-5 w-5  shrink-0"></span>
                                 </li>
                                 <li class="step2 relative flex items-center w-full  after:w-full after:h-1 after:border-b  after:border-4 after:inline-block ">
-                                    <p class="absolute flex gap-1 left-[-20px] bottom-7 w-6"><strong>Validasi</strong></p>
+                                    <p class="absolute flex gap-1 left-[-20px] bottom-7 w-6 text-sm  lg:text-md"><strong>Validasi</strong></p>
                                     <span class="circle flex items-center justify-center  border border-black rounded-full h-5 w-5  shrink-0"></span>
                                 </li>
                                 <li class="step3 relative flex items-center w-full ">
-                                    <p class="absolute flex gap-1 left-[-38px] bottom-7 w-6"><strong>Mulai</strong> <strong>konsultasi</strong> </p>
+                                    <p class="absolute flex gap-1 left-[-38px] bottom-7 w-6 text-sm  lg:text-md"><strong>Mulai</strong> <strong>konsultasi</strong> </p>
                                     <span class="circle flex items-center justify-center  border border-black rounded-full h-5 w-5  shrink-0"></span>
                                 </li>
                             </ol>
+                            
                             
                         
                         </div>
@@ -88,8 +89,8 @@
                        
                            
                             </div>
-                            <div class="mt-4 p-4 text-center text-white font-bold bg-red-600">
-                                <h3>TARIF LAYANAN KONSULTASI : RP.60.000</h3>
+                            <div class="mt-4 p-4 text-center text-white font-bold bg-red-600" id="containerTarif">
+                              
                             </div>
 
                         </div>
@@ -412,7 +413,7 @@ $(document).ready(function() {
                     results: data.map(function (klinik) {
                         return {
                             id: klinik.id,
-                            text: klinik.name
+                            text: klinik.namaKlinik
                         };
                     })
                 };
@@ -450,11 +451,11 @@ $(document).ready(function() {
                                 <div class="flex items-center">
                                     <input id="radio-1" type="radio"
                                         name="default-radio" 
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500">
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" >
                                     <label for="radio-1"
-                                        class="ms-2 text-sm font-medium text-sky-600">24:00-00:00</label>
+                                        class="ms-2 text-sm font-medium text-sky-600">${item.klinik.jadwal.start || 'TIDAK DIKETAHUI'} - ${item.klinik.jadwal.end || 'TIDAK DIKETAHUI'}</label>
                                     <p class="ml-10 text-red-700 font-bold">
-                                        <span class="text-sky-600 font-bold mr-2">|</span>Kuota : 10
+                                        <span class="text-sky-600 font-bold mr-2">|</span>${item.klinik.jadwal.kuota || 'TIDAK DIKETAHUI'} Kuota
                                     </p>
                                 </div>
                             </div>
@@ -465,6 +466,27 @@ $(document).ready(function() {
             });
 
             $('#container').html(htmlContent);
+        },
+        error: function (error) {
+            console.error('Error fetching data', error);
+        }
+    });
+    $.ajax({
+        type: 'GET',
+        url: '/getTarif',
+        data: { klinik_id: klinik_id },
+        success: function (data) {
+            console.log(data);
+        
+        if (!data || !data.biaya) {
+            $('#containerTarif').html('<h3>Jadwal tidak ditemukan</h3>');
+            return;
+        }
+
+        let htmlContent = `
+            <h3>TARIF LAYANAN KONSULTASI : RP.${data.biaya}</h3>
+        `;
+            $('#containerTarif').html(htmlContent);
         },
         error: function (error) {
             console.error('Error fetching data', error);

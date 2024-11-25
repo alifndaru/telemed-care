@@ -15,7 +15,7 @@ class TenagaLayananController extends Controller
             return User::whereNotNull('spesialis_id')->whereNotNull('klinik_id')
             ->with([
                 'spesialis:id,name',
-                'klinik:id,name,province_id',
+                'klinik:id,namaKlinik,province_id',
                 'klinik.provinsi:id,name'
             ])
             ->orderBy('name')
@@ -30,10 +30,10 @@ class TenagaLayananController extends Controller
         $data = User::where('spesialis_id', $category)
             ->with([
                 'spesialis:id,name',
-                'klinik:id,name,province_id',
+                'klinik:id,namaKlinik,province_id',
                 'klinik.provinsi:id,name'
             ])
-            ->orderBy('name')
+
             ->get();
         return response()->json($data);
     }
