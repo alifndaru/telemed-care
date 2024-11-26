@@ -61,7 +61,7 @@
                             <div class="dokter-name font-bold text-sky-600 text-lg">{{$item->name}}</div>
                             <div class="dokter-title font-bold text-slate-300 text-sm">{{$item->spesialis->name}}</div>
                         <div class="dokter-desc mt-4">
-                         <p class="flex gap-[13px] text-sky-600 items-center text-sm"><i class="fas fa-clinic-medical   "></i>{{$item->klinik->name}}</p>
+                         <p class="flex gap-[13px] text-sky-600 items-center text-sm"><i class="fas fa-clinic-medical   "></i>{{$item->klinik->namaKlinik}}</p>
                          <p class="flex gap-4 text-sky-600 items-center text-sm"><i class="fas fa-map-marker-alt ml-[3px]  "></i>{{$item->klinik->provinsi->name}}</p>
                         </div>
                         </div>
@@ -124,7 +124,7 @@
                             <div class="dokter-name font-bold text-sky-600 text-lg">${item.name}</div>
                             <div class="dokter-title font-bold text-slate-300 text-sm">${item.spesialis.name}</div>
                         <div class="dokter-desc mt-4">
-                         <p class="flex gap-[13px] text-sky-600 items-center text-sm"><i class="fas fa-clinic-medical   "></i>${item.klinik.name}</p>
+                         <p class="flex gap-[13px] text-sky-600 items-center text-sm"><i class="fas fa-clinic-medical   "></i>${item.klinik.namaKlinik}</p>
                          <p class="flex gap-4 text-sky-600 items-center text-sm"><i class="fas fa-map-marker-alt ml-[3px]  "></i>${item.klinik.provinsi.name}</p>
                         </div>
                         </div>
