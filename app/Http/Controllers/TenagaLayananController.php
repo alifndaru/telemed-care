@@ -37,4 +37,6 @@ class TenagaLayananController extends Controller
             ->get();
         return response()->json($data);
     }
+
+    
 }

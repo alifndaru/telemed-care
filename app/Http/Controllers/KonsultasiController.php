@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Jadwal;
 use App\Models\Klinik;
 use App\Models\Province;
+use App\Models\Transaksi;
 use App\Models\User;
 use Filament\Forms\Get;
 use Illuminate\Http\Request;
@@ -58,8 +59,8 @@ class KonsultasiController extends Controller
     {
         $klinik_id = $request->input('klinik_id');
 
-        $data = User::where('klinik_id', $klinik_id)
-            ->with(['klinik:id,namaKlinik,jadwal_id', 'spesialis:id,name', 'klinik.jadwal:id,start,end,kuota,biaya'])
+        $data = Jadwal::where('klinik_id', $klinik_id)
+            ->with('klinik','user:id,name,spesialis_id','user.spesialis:id,name')
             ->get();
 
         return response()->json($data);
@@ -76,4 +77,18 @@ class KonsultasiController extends Controller
 
         return response()->json($data);
     }
+
+    public function sendData (Request $request){
+        $validated = $request->validate([
+            'provinsi_id' => 'required|integer',
+            'klinik_id' => 'required|integer',
+            'users_id' => 'required|integer',
+            
+        ]);
+        Transaksi::insert($validated);
+
+        return response()->json(['message' => 'Data berhasil dikirim'], 200);
+    }
+
+    
 }

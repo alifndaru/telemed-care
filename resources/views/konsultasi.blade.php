@@ -98,70 +98,7 @@
                             <h3 class="font-bold text-sky-600">PEMBAYARAN</h3>
                             <hr class="font-bold text-sky-600 text-bold ">
 
-                            <div class="grid lg:grid-cols-2 mt-4 mb-5 gap-6 items-start">
-                                <div class="w-full order-2 lg:order-1">
-
-                                    <p class="flex justify-between text-sky-600 font-bold">
-                                        Tarif Layanan
-                                        <span class="text-sky-600 font-light">Rp. 60.000</span>
-                                    </p>
-
-                                    <p class="flex justify-between text-sky-600 font-bold">
-                                        Potongan <span class="text-yellow-600 font-light">-Rp. 15.000</span>
-                                    </p>
-
-                                    <p class="flex justify-between text-sky-600 font-bold">
-                                        Kode Unik <span class="text-sky-600 font-light">123</span>
-                                    </p>
-
-                                    <hr class="ml-auto w-20 my-2">
-
-                                    <p class="flex justify-between text-red-600 font-bold">
-                                        Total Bayar <span class="text-red-600 font-bold">Rp. 45.123</span>
-                                    </p>
-
-                                    <div class="mt-4 ">
-
-                                        <p class="text-black font-semibold w-10/12">
-                                            Transfer Via Rekening
-                                            BANK MANDIRI
-                                        </p>
-                                        <p class="text-black font-semibold w-10/12">
-                                            No rek 123 456 789 0123
-                                            a.n PKBI NTT
-                                        </p>
-                                    </div>
-
-                                    <div class="w-full flex flex-row mt-4 gap-2 ">
-                                        <div class="form-input w-full">
-                                            <label for="default-input" class="block mb-2 text-sky-600 font-bold">Bukti
-                                                Bayar</label>
-                                            <input type="file" id="default-input"
-                                                class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
-                                        </div>
-                                        {{-- <button type="button"
-                                    class="w-50 h-9 mt-9 text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-sky-600 font-medium rounded-lg text-sm px-4">
-                                    Konfirmasi
-                                </button> --}}
-                                    </div>
-
-
-
-                                </div>
-
-
-                                <div class="w-full flex flex-row mt-4 gap-2 order-1 lg:order-2 ">
-                                    <div class="form-input w-full">
-                                        <label for="default-input" class="block mb-2 text-sky-600 font-bold">Masukkan
-                                            Voucher</label>
-                                        <input type="text" id="default-input"
-                                            class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
-                                    </div>
-                                    <button type="button"
-                                        class="w-50 h-9 mt-8 text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-sky-600 font-medium rounded-lg text-sm px-4">
-                                        Konfirmasi
-                                    </button>
-                                </div>
+                            <div class="grid lg:grid-cols-2 mt-4 mb-5 gap-6 items-start" id="containerPembayaran">
 
 
                             </div>
@@ -272,10 +209,9 @@
                             <button type="button"
                             class="previous text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Sebelumnya</button>
                             <button type="button"
-                                class="next text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
-                                onclick="showConfirmationPopup()">Selanjutnya</button>
+                                class="next text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Selanjutnya</button>
                     <button type="submit"
-                        class="text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">Kirim</button>
+                        class="text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2" id="btnSubmit">Kirim</button>
                 </div>
 
                 <!-- Popup -->
@@ -316,6 +252,7 @@
     const previousButton = $('.btn-navigation .previous');
     const nextButton = $('.btn-navigation .next');
     const submitButton = $('.btn-navigation [type="submit"]');
+
 
     function navigateTo(index) {
         sections.each(function (i) {
@@ -445,18 +382,18 @@ $(document).ready(function() {
                         </div>
                         <div class="provider-desc">
                             <div class="nama-provider">
-                                <p class="font-bold text-sky-600 text-sm">${item.name || 'Tidak diketahui'}</p>
-                                <p class="text-sky-600 text-sm">${item.spesialis?.name || 'TIDAK DIKETAHUI'}</p>
+                                <p class="font-bold text-sky-600 text-sm">${item.user.name || 'Tidak diketahui'}</p>
+                                <p class="text-sky-600 text-sm">${item.user.spesialis?.name || 'TIDAK DIKETAHUI'}</p>
                             </div>
                             <div class="provider-jadwal lg:mt-4">
                                 <div class="flex items-center">
                                     <input id="radio-1" type="radio"
                                         name="default-radio" 
-                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" >
+                                        class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500" value="${item.user.id}">
                                     <label for="radio-1"
-                                        class="ms-2 text-sm font-medium text-sky-600">${item.klinik.jadwal.start || 'TIDAK DIKETAHUI'} - ${item.klinik.jadwal.end || 'TIDAK DIKETAHUI'}</label>
+                                        class="ms-2 text-sm font-medium text-sky-600">${item.start || 'TIDAK DIKETAHUI'} - ${item.end || 'TIDAK DIKETAHUI'}</label>
                                     <p class="ml-10 text-red-700 font-bold">
-                                        <span class="text-sky-600 font-bold mr-2">|</span>${item.klinik.jadwal.kuota || 'TIDAK DIKETAHUI'} Kuota
+                                        <span class="text-sky-600 font-bold mr-2">|</span>${item.kuota || 'TIDAK DIKETAHUI'} Kuota
                                     </p>
                                 </div>
                             </div>
@@ -478,9 +415,6 @@ $(document).ready(function() {
         data: { klinik_id: klinik_id },
         success: function (data) {
             console.log(data);
-        
-        
-
         let htmlContent = `
             <h3>TARIF LAYANAN KONSULTASI : RP.${data.biaya}</h3>
         `;
@@ -490,7 +424,86 @@ $(document).ready(function() {
             console.error('Error fetching data', error);
         }
     });
+    $.ajax({
+        type: 'GET',
+        url: '/getTarif',
+        data: { klinik_id: klinik_id },
+        success: function (data) {
+            console.log(data);
+        let htmlContent = `
+              <div class="w-full order-2 lg:order-1">
+
+                                    <p class="flex justify-between text-sky-600 font-bold">
+                                        Tarif Layanan
+                                        <span class="text-sky-600 font-light">Rp.${data.biaya}</span>
+                                    </p>
+
+                                    <p class="flex justify-between text-sky-600 font-bold">
+                                        Potongan <span class="text-yellow-600 font-light">-Rp. 15.000</span>
+                                    </p>
+
+                                    <p class="flex justify-between text-sky-600 font-bold">
+                                        Kode Unik <span class="text-sky-600 font-light">123</span>
+                                    </p>
+
+                                    <hr class="ml-auto w-20 my-2">
+
+                                    <p class="flex justify-between text-red-600 font-bold">
+                                        Total Bayar <span class="text-red-600 font-bold">Rp.${data.biaya}</span>
+                                    </p>
+
+                                    <div class="mt-4 ">
+
+                                        <p class="text-black font-semibold w-10/12">
+                                            Transfer Via Rekening
+                                            BANK MANDIRI
+                                        </p>
+                                        <p class="text-black font-semibold w-10/12">
+                                            No rek 123 456 789 0123
+                                            a.n PKBI NTT
+                                        </p>
+                                    </div>
+
+                                    <div class="w-full flex flex-row mt-4 gap-2 ">
+                                        <div class="form-input w-full">
+                                            <label for="default-input" class="block mb-2 text-sky-600 font-bold">Bukti
+                                                Bayar</label>
+                                            <input type="file" id="default-input"
+                                                class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                                   <div class="w-full flex flex-row mt-4 gap-2 order-1 lg:order-2 ">
+                                    <div class="form-input w-full">
+                                        <label for="default-input" class="block mb-2 text-sky-600 font-bold">Masukkan
+                                            Voucher</label>
+                                        <input type="text" id="default-input"
+                                            class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
+                                    </div>
+                                    <button type="button"
+                                        class="w-50 h-9 mt-8 text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-sky-600 font-medium rounded-lg text-sm px-4">
+                                        Konfirmasi
+                                    </button>
+                                </div>
+
+        `;
+            $('#containerPembayaran').html(htmlContent);
+        },
+        error: function (error) {
+            console.error('Error fetching data', error);
+        }
+    });
 });
+
+$('#btnSubmit').on('click', function(){
+    let provinsi_id = $('.provinsi').val();
+    let klinik_id = $('.klinik').val();
+    let provider_id = $('.')
+})
+
+
+
 
 });
 
