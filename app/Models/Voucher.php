@@ -13,4 +13,9 @@ class Voucher extends Model
         'status',
         'expired_at'
     ];
+
+    public function transaction()
+    {
+        return $this->hasMany(Transaction::class, 'voucher_id', 'id');
+    }
 }

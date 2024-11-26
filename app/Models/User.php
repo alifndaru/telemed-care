@@ -59,4 +59,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Province::class, 'province_id', 'id');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'user_id', 'id');
+    }
 }

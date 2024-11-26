@@ -62,4 +62,9 @@ class Klinik extends Model
     {
         return $this->hasMany(User::class, 'klinik_id', 'id');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'klinik_id', 'id');
+    }
 }
