@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
   <meta charset="UTF-8">
@@ -18,25 +18,30 @@
   <script src="https://cdn.jsdelivr.net/npm/flowbite@1.5.1/dist/flowbite.min.js"></script>
 
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-  @vite('resources/css/app.css')
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-
 <body>
+  <div class="min-h-screen">
+    @include('layouts.navigation')
 
-  <!-- Include Header -->
-  <header class="header-area">
-    @include('partials.navbar')
-  </header>
+    <!-- Page Heading -->
+    @isset($header)
+      <header class="bg-white shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+          {{ $header }}
+        </div>
+      </header>
+    @endisset
 
+    <!-- Page Content -->
+    <main>
+      @yield('content')
+    </main>
 
-  {{-- Include Main Content --}}
-  <div>
-    @yield('content')
+    <!-- Include Footer -->
+    @include('layouts.footer')
   </div>
-
-  <!-- Include Footer -->
-  @include('partials.footer')
-
+  
   <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   <script src="{{ asset('js/user_app/carousel.js') }}"></script>
   <script src="{{ asset('js/user_app/slick.min.js') }}"></script>
@@ -62,7 +67,6 @@
     });
   </script>
   @yield('script')
-
 </body>
 
 </html>
