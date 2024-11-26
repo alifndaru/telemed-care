@@ -138,5 +138,18 @@ setTimeout(() => {
 }, 5000); // 5000 ms = 5 seconds
 // =============Function for alert=============== //
 
+setTimeout(function () {
+    var statusMessage = document.getElementById("status-message");
+    if (statusMessage) {
+        statusMessage.style.display = "none";
+    }
+}, 5000);
 
+// Menambahkan fungsi close manual
+document.getElementById("close-btn")?.addEventListener("click", function () {
+    var statusMessage = document.getElementById("status-message");
+    if (statusMessage) {
+        statusMessage.style.display = "none";
+    }
+});
 

@@ -6,7 +6,7 @@
 
   <section class="bg-gray-100">
     <div class="hero-section">
-      <div class="hero-wrap relative z-[1] pt-[100px] bg-top bg-cover min-h-screen flex items-center bg-none md:bg-none"
+      <div class="hero-wrap relative z-[1] pt-[100px] bg-top img-bg min-h-screen flex items-center bg-cover md:bg-none"
         style="background-image:url('{{ asset('images/slider-1.jpg') }}');">
         <div class="container">
           <div class="row">

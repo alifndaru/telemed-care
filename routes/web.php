@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\KonsultasiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LokasiController;
@@ -9,15 +10,27 @@ use App\Livewire\KonsultasiStep1;
 
 Route::get('/', function () {
     return view('homepage');
+})->name('home');
+
+Route::get('/feedback', function () {
+    return view('homepage');
+})->name('feedback');
+
+Route::get('/consultation', function () {
+    return view('homepage');
+})->name('consultation');
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/login', function () {
-    return view('pages.auth.login');
-})->name('login');
-
-Route::get('/register', function () {
-    return view('pages.auth.register');
-})->name('register');
+require __DIR__ . '/auth.php';
 
 Route::get('/chat', function () {
     return view('pages.chat.index');
