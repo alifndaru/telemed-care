@@ -70,8 +70,9 @@ class KonsultasiController extends Controller
         $klinik_id = $request->input('klinik_id');
 
         $data = Jadwal::where('klinik_id', $klinik_id)
-            ->with('klinik')
+        ->with('klinik:id,namaKlinik')
             ->first();
+      
 
         return response()->json($data);
     }

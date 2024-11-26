@@ -427,6 +427,7 @@ $(document).ready(function() {
     $('.klinik').on('change', function () {
     var klinik_id = $(this).val();
 
+
     $.ajax({
         type: 'GET',
         url: '/getProvider',
@@ -478,10 +479,7 @@ $(document).ready(function() {
         success: function (data) {
             console.log(data);
         
-        if (!data || !data.biaya) {
-            $('#containerTarif').html('<h3>Jadwal tidak ditemukan</h3>');
-            return;
-        }
+        
 
         let htmlContent = `
             <h3>TARIF LAYANAN KONSULTASI : RP.${data.biaya}</h3>
