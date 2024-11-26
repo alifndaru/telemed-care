@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\TenagaLayananController;
 use App\Http\Controllers\TenagaProviderController;
+use App\Livewire\KonsultasiStep1;
 
 Route::get('/', function () {
     return view('homepage');
@@ -56,3 +57,7 @@ Route::get('/history-konsultasi', function () {
     return view('history-konsultasi');
 });
 
+
+Route::get('konsultasi-step1', function () {
+    return view('konsultasiStep1');
+});
