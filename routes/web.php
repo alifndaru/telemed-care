@@ -35,6 +35,7 @@ Route::get('/getProvinsi', [KonsultasiController::class, 'getProvinsi']);
 Route::get('/getKlinik', [KonsultasiController::class, 'getKlinik']);
 Route::get('/getProvider', [KonsultasiController::class, 'getProvider']);
 Route::get('/getTarif', [KonsultasiController::class, 'getTarif']);
+Route::post('/sendData', [KonsultasiController::class, 'sendData']);
 
 Route::get('/lokasi', [LokasiController::class, 'index'])->name('lokasi.index');
 
