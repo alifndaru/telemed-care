@@ -16,6 +16,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\ToggleColumn;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TimePicker;
 
 class JadwalDokterResource extends Resource
 {
@@ -26,24 +28,23 @@ class JadwalDokterResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Select::make('users_id')
+            ->schema([Select::make('users_id')
                     ->label('Doctor')
                 ->options(User::where('role_id', 3)->pluck('name', 'id')->toArray()) // Select only doctors with role_id = 3
                     ->required()
                 ->searchable(), // Make searchable for large lists of doctors
 
-                Forms\Components\Select::make('klinik_id')
+            Select::make('klinik_id')
                     ->label('Clinic')
             ->options(Klinik::pluck('namaKlinik', 'id')->toArray()) // Get clinic names
                     ->required()
                 ->searchable(), // Make searchable for large lists of clinics
 
-                Forms\Components\TimePicker::make('start')
+            TimePicker::make('start')
                     ->label('Start Time')
                     ->required(),
 
-                Forms\Components\TimePicker::make('end')
+            TimePicker::make('end')
                     ->label('End Time')
                     ->required(),
 
