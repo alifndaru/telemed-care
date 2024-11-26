@@ -4,6 +4,11 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserManagementResource\Pages;
 use App\Models\User;
+use App\Models\Spesialis;
+use App\Models\Klinik;
+use App\Models\Pelayanan;
+use App\Models\SpesialisasiDokter;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -34,11 +39,37 @@ class UserManagementResource extends Resource
                     ->password()
                     ->required()
                     ->minLength(8)
-                    ->maxLength(255),
-                Select::make('role_id')
-                    ->relationship('role', 'name')
-                    ->required()
-                    ->label('Role'),
+            ->maxLength(255),
+            Select::make('role_id')
+            ->relationship('roles', 'name')
+                ->reactive()
+                ->afterStateUpdated(function ($state, callable $set) {
+                    $roleName = \App\Models\Role::find($state)?->name;
+                    $set('roleName', $roleName);
+                })
+                ->required(),
+
+            Select::make('spesialis_id')
+                ->label('Spesialis')
+                ->relationship('spesialis', 'name')
+                ->options(SpesialisasiDokter::all()->pluck('name', 'id'))
+                ->visible(fn($get) => $get('roleName') == 'dokter')
+                ->required(),
+
+            Select::make('klinik_id')
+                ->label('Klinik')
+                ->relationship('klinik', 'namaKlinik')
+                ->options(Klinik::all()->pluck('namaKlinik', 'id'))
+                ->visible(fn($get) => $get('roleName') == 'dokter')
+                ->required(),
+
+            Select::make('pelayanan_id')
+                ->label('Pelayanan')
+                ->relationship('pelayanan', 'name')
+                ->options(Pelayanan::all()->pluck('name', 'id'))
+                ->visible(fn($get) => $get('roleName') == 'dokter')
+                ->required(),
+
             ]);
     }
 
@@ -52,7 +83,7 @@ class UserManagementResource extends Resource
                 TextColumn::make('email')
                     ->label('Email')
                     ->sortable(),
-                TextColumn::make('role.name')
+            TextColumn::make('roles.name')
                     ->label('Role')
                     ->sortable(),
             ])
@@ -61,6 +92,7 @@ class UserManagementResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+            Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
