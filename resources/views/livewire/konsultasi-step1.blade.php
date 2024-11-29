@@ -43,6 +43,7 @@
                 @endforeach
             </select>
         </div>
+<<<<<<< HEAD
         
 
        
@@ -77,10 +78,43 @@
                 Lanjut
             </button>
         </div>
+=======
+        @endif
+        @if($selectedClinic)
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700">Dokter</label>
+                <select wire:model.live="selectedDoctor" class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
+                    <option value="">Pilih Dokter</option>
+                    @foreach($doctors as $doctor)
+                        <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
+        @if($selectedDoctor)
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700">Jadwal</label>
+                <select wire:model="selectedJadwal" class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
+                    <option value="">Pilih Jadwal</option>
+                    @foreach($jadwals as $schedule)
+                        <option value="{{ $schedule->id }}">{{ $schedule->start }}-{{$schedule->end}}</option>
+                    @endforeach
+                </select>
+            </div>
+        @endif
+
+        <button
+            wire:click="goToNextStep"
+            @disabled(!$selectedDoctor)
+            class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
+            Lanjut
+        </button>
+>>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
     </div>
     @endif
 
     {{-- Step 2: Pembayaran --}}
+     {{-- Step 2: Pembayaran --}}
     @if($currentStep === 2)
     <div>
         <h2 class="text-2xl font-semibold mb-6">Pembayaran</h2>
@@ -164,10 +198,10 @@
                 Kembali
             </button>
             <button
-                wire:click="goToNextStep"
+                wire:click="submitTransaction"
                 @disabled(!$paymentMethod || !$paymentProof)
                 class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
-                Lanjut
+                Submit Transaksi
             </button>
         </div>
     </div>
@@ -192,7 +226,6 @@
         </div>
     </div>
     @endif
-
     {{-- Step 4: Isi Keluhan --}}
     @if($currentStep === 4)
     <div>

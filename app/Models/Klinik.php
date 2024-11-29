@@ -39,7 +39,7 @@ class Klinik extends Model
     {
         return $this->belongsTo(Province::class, 'province_id', 'id');
     }
-   
+
     public function kabupaten()
     {
         return $this->belongsTo(Regency::class, 'regency_id', 'id');
