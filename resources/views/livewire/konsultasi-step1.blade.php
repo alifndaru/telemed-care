@@ -33,7 +33,7 @@
             </select>
         </div>
 
-      
+
         <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700">Klinik</label>
             <select wire:model.live="selectedClinic" class="p-2 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
@@ -43,10 +43,9 @@
                 @endforeach
             </select>
         </div>
-<<<<<<< HEAD
-        
 
-       
+
+
         <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700">Dokter</label>
             <select wire:model.live="selectedDoctor" class="p-2 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
@@ -56,7 +55,7 @@
                 @endforeach
             </select>
         </div>
-    
+
         <div class="mb-6">
             <label class="block text-sm font-medium text-gray-700">Jadwal</label>
             <select wire:model.live="selectedJadwal" class="p-2 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
@@ -66,9 +65,9 @@
                 @endforeach
             </select>
         </div>
-       
-        
-    
+
+
+
 
         <div class="flex justify-end">
             <button
@@ -78,38 +77,6 @@
                 Lanjut
             </button>
         </div>
-=======
-        @endif
-        @if($selectedClinic)
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700">Dokter</label>
-                <select wire:model.live="selectedDoctor" class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
-                    <option value="">Pilih Dokter</option>
-                    @foreach($doctors as $doctor)
-                        <option value="{{ $doctor->id }}">{{ $doctor->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-        @endif
-        @if($selectedDoctor)
-            <div class="mb-6">
-                <label class="block text-sm font-medium text-gray-700">Jadwal</label>
-                <select wire:model="selectedJadwal" class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
-                    <option value="">Pilih Jadwal</option>
-                    @foreach($jadwals as $schedule)
-                        <option value="{{ $schedule->id }}">{{ $schedule->start }}-{{$schedule->end}}</option>
-                    @endforeach
-                </select>
-            </div>
-        @endif
-
-        <button
-            wire:click="goToNextStep"
-            @disabled(!$selectedDoctor)
-            class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
-            Lanjut
-        </button>
->>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
     </div>
     @endif
 
@@ -133,10 +100,10 @@
         <div class=" w-full">
             <label for="default-input" class="block  text-sm font-medium text-gray-700">Masukkan
                 Voucher</label>
-            <input 
-            type="text" 
+            <input
+            type="text"
             id="voucher_code"
-            wire:model="voucher_code" 
+            wire:model="voucher_code"
             class="w-full mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
         </div>
         <div class="absolute top-full">
@@ -154,8 +121,8 @@
         <div>
             <button
             type="button"
-    
-            wire:click="applyVoucher" 
+
+            wire:click="applyVoucher"
                 class="w-50 h-9 mt-8 text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-sky-600 font-medium rounded-lg text-sm px-4">
                 Konfirmasi
             </button>
@@ -171,8 +138,8 @@
                 <span class="text-sky-600 font-light" wire:model="biaya"> Rp. {{ number_format($biaya, 0, ',', '.') }}</span>
             </p>
 
-        
-        
+
+
 
             <p class="flex justify-between text-sky-600 font-bold">
                 Kode Unik <span class="text-sky-600 font-light" wire:model="kodeUnik">{{$kodeUnik ?? 0}}</span>
@@ -196,22 +163,22 @@
                 </p>
             </div>
 
-           
+
                 <div class="mb-6">
                     <label for="default-input" class="block mb-2 text-sky-600 font-bold">Bukti
                         Bayar</label>
-                    <input 
+                    <input
                     type="file"
                     wire:model="paymentProof"
                     accept=".pdf,.jpg,.jpeg,.png"
                     class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
                         @error('paymentProof') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
-               
-            
-          
 
-       
+
+
+
+
 
         <div class="flex justify-between">
             <button

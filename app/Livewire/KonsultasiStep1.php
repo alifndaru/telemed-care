@@ -6,13 +6,10 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use App\Models\Province;
 use App\Models\Klinik;
-<<<<<<< HEAD
 use App\Models\Jadwal;
 use App\Models\User; // For doctors and users
-=======
-use App\Models\User;
->>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
 use App\Models\Transaction;
+use App\Models\Voucher;
 use App\Models\Consultation;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -26,14 +23,10 @@ class KonsultasiStep1 extends Component
     public $clinics = [];
     public $doctors = [];
     public $jadwals = [];
-<<<<<<< HEAD
     public $biaya;
-=======
->>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
 
     public $selectedProvince = null;
     public $selectedClinic = null;
-    public $selectedJadwal = null;
     public $selectedDoctor = null;
     public $selectedJadwal = null;
 
@@ -42,16 +35,15 @@ class KonsultasiStep1 extends Component
     public $paymentMethod = null;
     public $paymentProof = null;
     public $clinicPaymentDetails = null;
+    public $voucher_code = '';
+    public $kodeUnik = null;
+
 
     // Form Navigation
-<<<<<<< HEAD
-    public $currentStep = 2; 
+    public $currentStep = 2;
     public $transactionId = null;
-=======
-    public $currentStep = 1;
->>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
 
-  
+
 
     public function mount()
     {
@@ -66,25 +58,6 @@ class KonsultasiStep1 extends Component
         $this->paymentMethod = $savedData['paymentMethod'] ?? null;
 
         $this->provinces = Province::all();
-<<<<<<< HEAD
- 
-    }
-
-    // Step 1 Methods
-    public function updatedSelectedProvince($provinceId)
-    {
-        $this->reset(['selectedClinic', 'selectedDoctor','selectedJadwal', 'clinics', 'doctors', 'jadwals']);
-        $this->clinics = Klinik::where('province_id', $provinceId)->get();
-    }
-
-    public function updatedSelectedClinic($clinicId)
-    {
-        $this->reset(['selectedDoctor', 'doctors']);
-
-        // Get doctors from User model where role_id is 3
-        $this->doctors = User::where('klinik_id', $clinicId)
-            ->where('role_id', 3) // Role ID 3 indicates doctor
-=======
 
         // Reload dependent data jika ada
         if ($this->selectedProvince) {
@@ -92,8 +65,7 @@ class KonsultasiStep1 extends Component
         }
         if ($this->selectedClinic) {
             $this->doctors = User::where('klinik_id', $this->selectedClinic)
-            ->where('role_id', 3)
->>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
+                ->where('role_id', 3)
             ->get();
         }
         if ($this->selectedDoctor) {
@@ -101,10 +73,6 @@ class KonsultasiStep1 extends Component
         }
     }
 
-<<<<<<< HEAD
-        // // Ambil detail pembayaran klinik
-        // $this->clinicPaymentDetails = Klinik::find($clinicId)->payment_details;
-=======
     // Metode untuk menyimpan data ke session
     private function saveDataToSession()
     {
@@ -139,14 +107,13 @@ class KonsultasiStep1 extends Component
     }
 
     // Event listener untuk perubahan dokter
-    public function updatedSelectedDoctor($value)
-    {
-        $this->jadwals = User::find($value)->jadwals ?? collect();
-        $this->selectedJadwal = null;
->>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
-    }
+    // public function updatedSelectedDoctor($value)
+    // {
+    //     $this->jadwals = User::find($value)->jadwals ?? collect();
+    //     $this->selectedJadwal = null;
+    // }
     public function updatedSelectedDoctor($doctorId)
-{  
+    {
     $this->reset(['selectedJadwal', 'jadwals']);
     $this->jadwals = Jadwal::where('users_id', $doctorId)->get();
 
@@ -158,7 +125,7 @@ public function updatedSelectedJadwal($jadwalId)
     $jadwal = Jadwal::find($jadwalId);
     $kodeUnik = mt_rand(100, 999);
     if ($jadwal) {
-        $this->biaya = $jadwal->biaya;  
+            $this->biaya = $jadwal->biaya;
         $this->kodeUnik = $kodeUnik;
     }
 }
@@ -167,7 +134,7 @@ public function updatedSelectedJadwal($jadwalId)
     {
         // Ambil nomor faktur terakhir
         $lastInvoice = Transaction::orderBy('id', 'desc')->value('invoice_number');
-    
+
         if ($lastInvoice) {
             // Ekstrak angka dari nomor faktur terakhir
             $lastNumber = (int)Str::afterLast($lastInvoice, '-');
@@ -175,7 +142,7 @@ public function updatedSelectedJadwal($jadwalId)
         } else {
             $newNumber = 1; // Jika belum ada faktur, mulai dari 1
         }
-    
+
         // Buat nomor faktur baru
         return 'INV-' . str_pad($newNumber, 6, '0', STR_PAD_LEFT);
     }
@@ -187,22 +154,30 @@ public function updatedSelectedJadwal($jadwalId)
         ]);
 
         // Fetch the voucher from the database
-        $voucher = Voucher::where('kode_voucher', $this->voucher_code)->first();
-       
+        $voucher = Voucher::where('kode_voucher', $this->voucher_code)
+            ->where('status', true) // Assuming you want only active vouchers
+            ->where('expired_at', '>', now()) // Check if voucher is not expired
+            ->first();
 
         if ($voucher) {
-           
+            // Calculate discounted price
+            $discountedPrice = $this->biaya - $voucher->nilai;
+
             session()->flash('message', 'Voucher berhasil diterapkan!');
+            session()->put('applied_voucher', [
+                'code' => $voucher->kode_voucher,
+                'discount' => $voucher->nilai
+            ]);
         } else {
-            session()->flash('error', 'Voucher tidak valid!');
+            session()->flash('error', 'Voucher tidak valid atau sudah tidak berlaku!');
         }
 
-        // Optionally clear the voucher code input
+        // Clear the voucher code input
         $this->voucher_code = '';
     }
 
-   
-    
+
+
 
     // Step Navigation
     public function goToNextStep()
@@ -222,50 +197,11 @@ public function updatedSelectedJadwal($jadwalId)
             default => []
         };
 
-<<<<<<< HEAD
-        // Simpan data di step 1 dan 2 ke tabel transaksi
-        $invoiceNumber = $this->generateInvoiceNumber();
-        if ($this->currentStep === 1) {
-            $transaction = Transaction::create([
-                'user_id' => Auth::id(),
-                'klinik_id' => $this->selectedClinic,
-                'dokter_id' => $this->selectedDoctor,
-                'status' => 'pending',
-                'invoice_number' => $invoiceNumber,
-                'jadwal_id' => $this->selectedJadwal,
-            ]);
-
-       
- 
-            $this->transactionId = $transaction->id;
-        }
-
-     
-
-
-        // Simpan bukti pembayaran di step 2
-        if ($this->currentStep === 2) {
-            $transaction = Transaction::find($this->transactionId);
-
-            // Upload bukti pembayaran
-            if ($this->paymentProof) {
-                $filename = Str::uuid() . '.' . $this->paymentProof->getClientOriginalExtension();
-                $path = $this->paymentProof->storeAs('payment_proofs', $filename, 'public');
-
-                $transaction->update([
-                    'payment_method' => $this->paymentMethod,
-                    'buktiPembayaran' => $path,
-                    'status' => 'waiting_validation'
-                ]);
-            }
-        }
-=======
         // Validasi
         $this->validate($validationRules);
 
         // Simpan data ke session
         $this->saveDataToSession();
->>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
 
         // Pindah ke step berikutnya
         $this->currentStep++;
@@ -279,30 +215,8 @@ public function updatedSelectedJadwal($jadwalId)
     // Metode untuk menyimpan transaksi setelah step 2 selesai
     public function submitTransaction()
     {
-<<<<<<< HEAD
-        return match ($this->currentStep) {
-            1 => [
-                'selectedProvince' => 'required',
-                'selectedClinic' => 'required',
-                'selectedDoctor' => 'required',
-                'selectedJadwal' => 'required'
-            ],
-            2 => [
-                'paymentMethod' => 'required',
-                'paymentProof' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048'
-            ],
-            3 => [], // Validasi admin di backend
-            4 => [
-                'consultationTitle' => 'required|max:255',
-                'consultationDescription' => 'required'
-            ],
-            default => []
-        };
-    }
-=======
         // Ambil data dari session
         $sessionData = Session::get('consultation_data');
->>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
 
         // Buat transaksi
         $transaction = Transaction::create([
@@ -333,23 +247,15 @@ public function updatedSelectedJadwal($jadwalId)
         $this->currentStep++;
     }
 
-<<<<<<< HEAD
-   
 
-=======
-    // Render view
->>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
+
     public function render()
     {
         return view('livewire.konsultasi-step1', [
             'provinces' => $this->provinces,
             'clinics' => $this->clinics,
             'doctors' => $this->doctors,
-<<<<<<< HEAD
-            'jadwals' => $this->jadwals,
-=======
             'jadwals' => $this->jadwals
->>>>>>> ec97aae (chore: Update npm dependency to latest stable version)
         ]);
     }
 }
