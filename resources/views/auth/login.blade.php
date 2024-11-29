@@ -11,7 +11,7 @@
       <!-- Session Status -->
       @if (session('status'))
         <div id="status-message"
-          class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+          class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative my-4">
           {{ session('status') }}
           <button id="close-btn" class="absolute top-0 right-0 mt-2 mr-2 text-green-700">&times;</button>
         </div>

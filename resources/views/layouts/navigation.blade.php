@@ -23,7 +23,7 @@
 
           <!-- KONSULTASI -->
           <li class="nav-item">
-            <a class="page-scroll" href="">Konsultasi</a>
+            <a class="page-scroll" href="{{ route('konsultasi.index') }}">Konsultasi</a>
           </li>
       </div>
 
