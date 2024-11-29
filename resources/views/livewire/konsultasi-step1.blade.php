@@ -94,18 +94,41 @@
             </select>
         </div> --}}
 
-        <div class="mb-6 flex flex-row items-center mt-4 gap-2 ">
-            <div class=" w-full">
-                <label for="default-input" class="block  text-sm font-medium text-gray-700">Masukkan
-                    Voucher</label>
-                <input type="text" id="default-input"
-                    class="w-full mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
+
+    <div class="relative mb-10 flex flex-row items-center mt-4 gap-2 ">
+        <div class=" w-full">
+            <label for="default-input" class="block  text-sm font-medium text-gray-700">Masukkan
+                Voucher</label>
+            <input 
+            type="text" 
+            id="voucher_code"
+            wire:model="voucher_code" 
+            class="w-full mt-2 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
+        </div>
+        <div class="absolute top-full">
+            @if (session()->has('message'))
+            <div class="alert alert-success">
+                {{ session('message') }}
             </div>
-            <button type="button"
+        @elseif (session()->has('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        </div>
+        <div>
+            <button
+            type="button"
+    
+            wire:click="applyVoucher" 
                 class="w-50 h-9 mt-8 text-white bg-sky-600 hover:bg-sky-700 focus:ring-4 focus:ring-sky-600 font-medium rounded-lg text-sm px-4">
                 Konfirmasi
             </button>
+
         </div>
+    </div>
+
 
         <div class="w-full order-2 lg:order-1">
 
@@ -114,18 +137,17 @@
                 <span class="text-sky-600 font-light" wire:model="biaya"> Rp. {{ number_format($biaya, 0, ',', '.') }}</span>
             </p>
 
-            <p class="flex justify-between text-sky-600 font-bold">
-                Potongan <span class="text-yellow-600 font-light">-Rp. 15.000</span>
-            </p>
+        
+        
 
             <p class="flex justify-between text-sky-600 font-bold">
-                Kode Unik <span class="text-sky-600 font-light">123</span>
+                Kode Unik <span class="text-sky-600 font-light" wire:model="kodeUnik">{{$kodeUnik ?? 0}}</span>
             </p>
 
             <hr class="ml-auto w-20 my-2">
 
             <p class="flex justify-between text-red-600 font-bold">
-                Total Bayar <span class="text-red-600 font-bold">Rp.${data.biaya}</span>
+                Total Bayar <span class="text-red-600 font-bold">-</span>
             </p>
 
             <div class="mt-4 ">

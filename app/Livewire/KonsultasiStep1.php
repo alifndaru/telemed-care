@@ -10,6 +10,7 @@ use App\Models\Jadwal;
 use App\Models\User; // For doctors and users
 use App\Models\Transaction;
 use App\Models\Consultation;
+use App\Models\Voucher;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,8 @@ class KonsultasiStep1 extends Component
     public $doctors = [];
     public $jadwals = [];
     public $biaya;
+    public $kodeUnik;
+    public $voucher_code;
 
     public $selectedProvince = null;
     public $selectedClinic = null;
@@ -45,6 +48,8 @@ class KonsultasiStep1 extends Component
     // Form Navigation
     public $currentStep = 2; 
     public $transactionId = null;
+
+  
 
     public function mount()
     {
@@ -69,7 +74,7 @@ class KonsultasiStep1 extends Component
             ->get();
 
         // // Ambil detail pembayaran klinik
-        // $this->clinicPaymentDetails = Klinik::find($clinicId)->payment_details;
+        $this->clinicPaymentDetails = Klinik::find($clinicId)->payment_details;
     }
     public function updatedSelectedDoctor($doctorId)
 {  
@@ -82,9 +87,10 @@ public function updatedSelectedJadwal($jadwalId)
 {
     // Cari jadwal berdasarkan ID dan ambil biayanya
     $jadwal = Jadwal::find($jadwalId);
-    
+    $kodeUnik = mt_rand(100, 999);
     if ($jadwal) {
-        $this->biaya = $jadwal->biaya;  // Set biaya sesuai dengan jadwal yang dipilih
+        $this->biaya = $jadwal->biaya;  
+        $this->kodeUnik = $kodeUnik;
     }
 }
 
@@ -104,6 +110,29 @@ public function updatedSelectedJadwal($jadwalId)
         // Buat nomor faktur baru
         return 'INV-' . str_pad($newNumber, 6, '0', STR_PAD_LEFT);
     }
+
+    public function applyVoucher()
+    {
+        $this->validate([
+            'voucher_code' => 'required|string|exists:voucher,kode_voucher',
+        ]);
+
+        // Fetch the voucher from the database
+        $voucher = Voucher::where('kode_voucher', $this->voucher_code)->first();
+       
+
+        if ($voucher) {
+           
+            session()->flash('message', 'Voucher berhasil diterapkan!');
+        } else {
+            session()->flash('error', 'Voucher tidak valid!');
+        }
+
+        // Optionally clear the voucher code input
+        $this->voucher_code = '';
+    }
+
+   
     
 
     // Step Navigation
