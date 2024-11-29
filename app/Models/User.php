@@ -47,7 +47,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Klinik::class, 'klinik_id', 'id');
     }
-  
+
     public function pelayanan()
     {
         return $this->belongsTo(Pelayanan::class, 'pelayanan_id', 'id');
@@ -60,5 +60,10 @@ class User extends Authenticatable
     public function transactions()
     {
         return $this->hasMany(Transaction::class, 'user_id', 'id');
+    }
+
+    public function jadwals()
+    {
+        return $this->hasMany(Jadwal::class, 'users_id', 'id');
     }
 }
