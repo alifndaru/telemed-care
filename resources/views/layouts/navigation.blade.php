@@ -13,7 +13,7 @@
 
           <!-- BERANDA -->
           <li class="nav-item active">
-            <a class="page-scroll" href="">Beranda</a>
+            <a class="page-scroll" href="{{ route('home') }}">Beranda</a>
           </li>
 
           <!-- SARAN & KRITIK -->
@@ -32,15 +32,15 @@
         @auth
           <x-dropdown align="right" width="48">
             <x-slot name="trigger">
-              <button
-                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-100">
+              <x-primary-button>
                 <span>{{ Auth::user()->name }}</span>
-                <svg class="ml-2 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd"
+                <svg class="ml-2 h-4 w-4" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill="white" fill-rule="evenodd"
                     d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 011.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                     clip-rule="evenodd" />
                 </svg>
-              </button>
+
+              </x-primary-button>
             </x-slot>
             <x-slot name="content">
               <x-dropdown-link :href="route('profile.edit')">
@@ -57,12 +57,12 @@
             </x-slot>
           </x-dropdown>
         @else
-          <a href="{{ route('login') }}" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
-            {{ __('Login') }}
-          </a>
-          <a href="{{ route('register') }}" class="px-4 py-2 text-white bg-green-500 rounded-md hover:bg-green-600">
-            {{ __('Register') }}
-          </a>
+          <x-primary-button href="{{ route('login') }}">
+            <a href="{{ route('login') }}">Login</a>
+          </x-primary-button>
+          <x-secondary-button href="{{ route('register') }}">
+            <a href="{{ route('register') }}">Daftar</a>
+          </x-secondary-button>
         @endauth
       </div>
 
@@ -81,7 +81,7 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden">
       <div class="pt-2 pb-3 space-y-1">
-        <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+        <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
           {{ __('Beranda') }}
         </x-responsive-nav-link>
         <x-responsive-nav-link :href="route('feedback')" :active="request()->routeIs('feedback')">

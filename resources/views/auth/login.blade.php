@@ -5,8 +5,8 @@
 @section('content')
   <section class="flex items-center justify-center h-screen bg-gray-100">
     <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-      <h2 class="text-2xl font-semibold text-center text-blue-600">Welcome Back</h2>
-      <p class="mt-2 text-sm text-center text-gray-600">Please login to your account</p>
+      <h2 class="text-2xl font-semibold text-center text-blue-600">Selamat Datang</h2>
+      <p class="mt-2 text-sm text-center text-gray-600">Masuk ke akun PKBI-mu</p>
 
       <!-- Session Status -->
       @if (session('status'))
@@ -25,7 +25,7 @@
           <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
           <input type="email" id="email" name="email"
             class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
-            placeholder="you@example.com" value="{{ old('email') }}" required autofocus>
+            placeholder="@gmail.com" value="{{ old('email') }}" required autofocus>
           <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -43,10 +43,10 @@
           <label for="remember_me" class="flex items-center">
             <input id="remember_me" type="checkbox" class="text-blue-600 focus:ring-blue-500 h-4 w-4 rounded"
               name="remember">
-            <span class="ml-2 text-sm text-gray-600">Remember me</span>
+            <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
           </label>
           @if (Route::has('password.request'))
-            <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+            <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:underline">Lupa password?</a>
           @endif
         </div>
 
@@ -59,8 +59,8 @@
 
       <!-- Divider -->
       <div class="mt-6 flex items-center justify-center">
-        <span class="text-sm text-gray-600">Don't have an account?</span>
-        <a href="{{ route('register') }}" class="ml-2 text-sm text-blue-600 font-medium hover:underline">Sign up</a>
+        <span class="text-sm text-gray-600">Belum Punya Akun?</span>
+        <a href="{{ route('register') }}" class="ml-2 text-sm text-blue-600 font-medium hover:underline">Daftar disini</a>
       </div>
     </div>
   </section>
