@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
-class KonsultasiStep1 extends Component
+class Konsultasi extends Component
 {
     use WithFileUploads;
 
@@ -24,7 +24,7 @@ class KonsultasiStep1 extends Component
     public $clinics = [];
     public $doctors = [];
     public $jadwals = [];
-  
+
 
     public $selectedProvince = null;
     public $selectedClinic = null;
@@ -39,12 +39,10 @@ class KonsultasiStep1 extends Component
     public $voucher_code = '';
     public $voucherPresentage = null;
     public $voucher_id = null;
-   
-    public $biaya = 0; 
+
+    public $biaya = 0;
     public $nilai = 0; // Nilai diskon voucher
-   
     public $totalBiaya = 0;
-    
 
     // Form Navigation
     public $currentStep = 1;
@@ -57,18 +55,14 @@ class KonsultasiStep1 extends Component
         // Cek apakah ada data di session
         $savedData = Session::get('consultation_data', []);
 
-      
-
         // Isi properti dari session jika ada
         $this->selectedProvince = $savedData['selectedProvince'] ?? null;
         $this->selectedClinic = $savedData['selectedClinic'] ?? null;
         $this->selectedDoctor = $savedData['selectedDoctor'] ?? null;
         $this->selectedJadwal = $savedData['selectedJadwal'] ?? null;
         $this->selectedProvince = null; //agar input provinsi kosong
-   
-        $this->provinces = Province::all();
 
-       
+        $this->provinces = Province::all();
     }
 
     // Metode untuk menyimpan data ke session
@@ -80,7 +74,7 @@ class KonsultasiStep1 extends Component
             'selectedDoctor' => $this->selectedDoctor,
             'selectedJadwal' => $this->selectedJadwal,
             // 'totalBiaya' => $this->totalBiaya,
-          
+
         ];
 
         Session::put('consultation_data', $data);
@@ -89,7 +83,7 @@ class KonsultasiStep1 extends Component
     // Event listener untuk perubahan provinsi
     public function updatedSelectedProvince($value)
     {
-        if (!is_numeric($value) ) {
+        if (!is_numeric($value)) {
             // Reset data jika nilai tidak valid
             $this->clinics = [];
             $this->selectedClinic = null;
@@ -98,11 +92,10 @@ class KonsultasiStep1 extends Component
             return;
         }
 
-        
-    $this->clinics = Klinik::where('province_id', $value)->get();
-    $this->selectedClinic = null;
-    $this->doctors = [];
-    $this->jadwals = [];
+        $this->clinics = Klinik::where('province_id', $value)->get();
+        $this->selectedClinic = null;
+        $this->doctors = [];
+        $this->jadwals = [];
     }
 
     // Event listener untuk perubahan klinik
@@ -117,21 +110,18 @@ class KonsultasiStep1 extends Component
 
     public function updatedSelectedDoctor($doctorId)
     {
-    $this->reset(['selectedJadwal', 'jadwals']);
-    $this->jadwals = Jadwal::where('users_id', $doctorId)->get();
+        $this->reset(['selectedJadwal', 'jadwals']);
+        $this->jadwals = Jadwal::where('users_id', $doctorId)->get();
+    }
 
-}
-
-public function updatedSelectedJadwal($jadwalId)
-{
-    $jadwal = Jadwal::find($jadwalId);
-    if ($jadwal) {
+    public function updatedSelectedJadwal($jadwalId)
+    {
+        $jadwal = Jadwal::find($jadwalId);
+        if ($jadwal) {
             $this->biaya = $jadwal->biaya;
             $this->hitungTotalBiaya();
+        }
     }
-}
-
-
 
     public function generateInvoiceNumber()
     {
@@ -157,14 +147,12 @@ public function updatedSelectedJadwal($jadwalId)
             if ($this->voucherPresentage) {
                 $discountAmount = ($this->nilai / 100) * $this->biaya;
                 // dd($discountAmount);
-                $this->totalBiaya = max(0,$this->biaya - $discountAmount);
+                $this->totalBiaya = max(0, $this->biaya - $discountAmount);
             }
-    }else{
-        $this->totalBiaya = $this->biaya;
+        } else {
+            $this->totalBiaya = $this->biaya;
+        }
     }
-}
-    
-    
 
     public function applyVoucher()
     {
@@ -182,7 +170,7 @@ public function updatedSelectedJadwal($jadwalId)
             $this->voucher_id = $voucher->id;
             // Calculate discounted price
             $this->nilai = $voucher->nilai;
-            $this->voucherPresentage = $voucher->nilai; 
+            $this->voucherPresentage = $voucher->nilai;
             session()->flash('message', 'Voucher berhasil diterapkan!');
             session()->put('applied_voucher', [
                 'code' => $voucher->kode_voucher,
@@ -191,21 +179,20 @@ public function updatedSelectedJadwal($jadwalId)
         } else {
             session()->flash('error', 'Voucher tidak valid atau sudah tidak berlaku!');
         }
-        
+
         $this->hitungTotalBiaya();
         // Clear the voucher code input
         $this->voucher_code = '';
         // Pastikan nilai totalBiaya sudah terupdate sebelum dikirim
         $this->submitTransaction();
-        
     }
 
     public function updatedTotal($voucher)
-{
-    if (in_array($voucher, ['biaya','nilai'])) {
-        $this->hitungTotalBiaya();
+    {
+        if (in_array($voucher, ['biaya', 'nilai'])) {
+            $this->hitungTotalBiaya();
+        }
     }
-}
 
     // Step Navigation
     public function goToNextStep()
@@ -221,6 +208,7 @@ public function updatedSelectedJadwal($jadwalId)
             2 => [
                 'paymentProof' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048'
             ],
+            3 => [],
             default => []
         };
 
@@ -234,6 +222,11 @@ public function updatedSelectedJadwal($jadwalId)
         $this->currentStep++;
     }
 
+    public function goToConsultationStep()
+    {
+        $this->currentStep++;
+    }
+
     public function goToPreviousStep()
     {
         $this->currentStep--;
@@ -241,42 +234,39 @@ public function updatedSelectedJadwal($jadwalId)
 
     // Metode untuk menyimpan transaksi setelah step 2 selesai
     public function submitTransaction()
-{
-    $sessionData = Session::get('consultation_data');
-    $invoiceNumber = $this->generateInvoiceNumber();
+    {
+        $sessionData = Session::get('consultation_data');
+        $invoiceNumber = $this->generateInvoiceNumber();
 
+        if ($this->paymentProof) {
+            $filename = Str::uuid() . '.' . $this->paymentProof->getClientOriginalExtension();
+            $path = $this->paymentProof->storeAs('paymentProof', $filename, 'public');
 
-    if ($this->paymentProof) {
-        $filename = Str::uuid() . '.' . $this->paymentProof->getClientOriginalExtension();
-        $path = $this->paymentProof->storeAs('paymentProof', $filename, 'public');
+            $data = [
+                'user_id' => Auth::id(),
+                'invoice_number' => $invoiceNumber,
+                'jadwal_id' => $sessionData['selectedJadwal'],
+                'klinik_id' => $sessionData['selectedClinic'],
+                'dokter_id' => $sessionData['selectedDoctor'],
+                'totalBiaya' => $this->totalBiaya,
+                'buktiPembayaran' => $path,
+                'voucher_id' => $this->voucher_id,
+                'status' => false,
+            ];
 
-        $data = [
-            'user_id' => Auth::id(),
-            'invoice_number' => $invoiceNumber,
-            'jadwal_id' => $sessionData['selectedJadwal'],
-            'klinik_id' => $sessionData['selectedClinic'],
-            'dokter_id' => $sessionData['selectedDoctor'],
-            'totalBiaya' => $this->totalBiaya,
-            'buktiPembayaran' => $path,
-            'voucher_id' => $this->voucher_id,
-            'status' => false,
-        ];
+            Transaction::create($data);
 
-        Transaction::create($data);
+            $this->reset('paymentProof');
 
-        $this->reset('paymentProof');
+            Session::forget('consultation_data');
 
-        Session::forget('consultation_data');
-
-        $this->currentStep++;
+            $this->currentStep++;
+        }
     }
-}
-
-
 
     public function render()
     {
-        return view('livewire.konsultasi-step1', [
+        return view('livewire.konsultasi', [
             'provinces' => $this->provinces,
             'clinics' => $this->clinics,
             'doctors' => $this->doctors,

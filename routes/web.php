@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\TenagaLayananController;
 use App\Http\Controllers\TenagaProviderController;
-use App\Livewire\KonsultasiStep1;
+// use App\Livewire\Konsultasi;
 
 Route::get('/', function () {
     return view('homepage');
@@ -16,9 +16,9 @@ Route::get('/feedback', function () {
     return view('homepage');
 })->name('feedback');
 
-Route::get('/consultation', function () {
-    return view('homepage');
-})->name('consultation');
+Route::get('/konsultasi', function () {
+    return view('pages.konsultasi.index');
+})->name('konsultasi');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -44,20 +44,14 @@ Route::get('/tenaga-layanan', [TenagaLayananController::class, 'index'])->name('
 Route::get('/tenaga-layanan/{category}', [TenagaLayananController::class, 'getLayanan'])->name('tenaga-layanan.getLayanan');
 
 
-Route::get('/konsultasi', [KonsultasiController::class, 'index'])->name('konsultasi.index');
 Route::get('/getProvinsi', [KonsultasiController::class, 'getProvinsi']);
 Route::get('/getKlinik', [KonsultasiController::class, 'getKlinik']);
 Route::get('/getProvider', [KonsultasiController::class, 'getProvider']);
 Route::get('/getTarif', [KonsultasiController::class, 'getTarif']);
 Route::post('/sendData', [KonsultasiController::class, 'sendData']);
 
-Route::get('/lokasi', [LokasiController::class, 'index'])->name('lokasi.index');
+Route::get('/lokasi', [LokasiController::class, 'index'])->name('lokasi');
 
 Route::get('/history-konsultasi', function () {
     return view('history-konsultasi');
-});
-
-
-Route::get('konsultasi-step1', function () {
-    return view('konsultasiStep1');
 });
