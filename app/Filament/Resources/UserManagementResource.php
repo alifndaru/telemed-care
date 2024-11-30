@@ -16,6 +16,9 @@ use Filament\Tables\Table;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Auth;
+
 
 class UserManagementResource extends Resource
 {
@@ -27,7 +30,14 @@ class UserManagementResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
+            ->schema([Select::make('role_id')
+                ->relationship('roles', 'name')
+                ->reactive()
+                ->afterStateUpdated(function ($state, callable $set) {
+                    $roleName = \App\Models\Role::find($state)?->name;
+                    $set('roleName', $roleName);
+                })
+                ->required(),
                 TextInput::make('name')
                     ->required()
                     ->maxLength(255),
@@ -40,14 +50,7 @@ class UserManagementResource extends Resource
                     ->required()
                     ->minLength(8)
             ->maxLength(255),
-            Select::make('role_id')
-            ->relationship('roles', 'name')
-                ->reactive()
-                ->afterStateUpdated(function ($state, callable $set) {
-                    $roleName = \App\Models\Role::find($state)?->name;
-                    $set('roleName', $roleName);
-                })
-                ->required(),
+
 
             Select::make('spesialis_id')
                 ->label('Spesialis')
@@ -60,7 +63,7 @@ class UserManagementResource extends Resource
                 ->label('Klinik')
                 ->relationship('klinik', 'namaKlinik')
                 ->options(Klinik::all()->pluck('namaKlinik', 'id'))
-                ->visible(fn($get) => $get('roleName') == 'dokter')
+            ->visible(fn($get) => $get('roleName') == 'dokter' || $get('roleName') == 'klinik')
                 ->required(),
 
             Select::make('pelayanan_id')
@@ -114,4 +117,22 @@ class UserManagementResource extends Resource
             'edit' => Pages\EditUserManagement::route('/{record}/edit'),
         ];
     }
+    public static function getEloquentQuery(): Builder
+    {
+        // Mendapatkan user yang sedang login
+        $user = auth()->user();
+
+        // Dapatkan query dasar
+        $query = parent::getEloquentQuery();
+
+        // Jika user role adalah klinik atau dokter, filter berdasarkan klinik_id pengguna
+        if ($user && ($user->role->name == 'klinik' || $user->role->name == 'dokter')) {
+            // Filter berdasarkan klinik_id yang ada pada user
+            $query->where('klinik_id', $user->klinik_id);
+        }
+
+        // Query lainnya tetap seperti semula, menampilkan data terbaru
+        return $query->latest();
+    }
+
 }
