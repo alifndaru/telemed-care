@@ -72,7 +72,7 @@
         <div class="flex justify-end">
             <button
                 wire:click="goToNextStep"
-                {{-- @disabled(!$selectedDoctor) --}}
+                @disabled(!$selectedDoctor)
                 class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
                 Lanjut
             </button>
@@ -131,37 +131,34 @@
     </div>
 
 
-        <div class="w-full order-2 lg:order-1">
+        <div class="w-full">
 
             <p class="flex justify-between text-sky-600 font-bold">
                 Tarif Layanan
-                <span class="text-sky-600 font-light" wire:model="biaya"> Rp. {{ number_format($biaya, 0, ',', '.') }}</span>
+                <span class="text-sky-600 font-light">Rp. {{ number_format($biaya, 0, ',', '.') }}</span>
             </p>
-
-
-
-
             <p class="flex justify-between text-sky-600 font-bold">
-                Kode Unik <span class="text-sky-600 font-light" wire:model="kodeUnik">{{$kodeUnik ?? 0}}</span>
+                Potongan 
+                <span class="text-yellow-600 font-light">  Rp. {{ number_format($nilai, 0, ',', '.') }}</span>
             </p>
-
+            <p class="flex justify-between text-sky-600 font-bold">
+                Kode Unik 
+                <span class="text-sky-600 font-light">Rp. {{ number_format($kodeUnik ?? 0, 0, ',', '.') }}</span>
+            </p>
+            
             <hr class="ml-auto w-20 my-2">
-
+            
             <p class="flex justify-between text-red-600 font-bold">
-                Total Bayar <span class="text-red-600 font-bold">-</span>
+                Total Bayar 
+                <span class="text-red-600 font-bold">Rp. {{ number_format($totalBiaya, 0, ',', '.') }}</span>
             </p>
-
-            <div class="mt-4 ">
-
-                <p class="text-black font-semibold w-10/12">
-                    Transfer Via Rekening
-                    BANK MANDIRI
-                </p>
-                <p class="text-black font-semibold w-10/12">
-                    No rek 123 456 789 0123
-                    a.n PKBI NTT
-                </p>
+            
+            
+            <div class="mt-4">
+                <p class="text-black font-semibold w-10/12">Transfer Via Rekening BANK MANDIRI</p>
+                <p class="text-black font-semibold w-10/12">No rek 123 456 789 0123 a.n PKBI NTT</p>
             </div>
+            
 
 
                 <div class="mb-6">
@@ -170,7 +167,9 @@
                     <input
                     type="file"
                     wire:model="paymentProof"
+                    name="paymentProof"
                     accept=".pdf,.jpg,.jpeg,.png"
+                     autocomplete="off"
                     class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
                         @error('paymentProof') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
@@ -188,7 +187,7 @@
             </button>
             <button
                 wire:click="submitTransaction"
-                @disabled(!$paymentMethod || !$paymentProof)
+                @disabled(!$paymentProof)
                 class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
                 Submit Transaksi
             </button>
