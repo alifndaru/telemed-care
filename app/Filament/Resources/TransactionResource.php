@@ -44,7 +44,8 @@ class TransactionResource extends Resource
                     ->sortable()
                     ->getStateUsing(function ($record) {
                         $dokter = User::find($record->dokter_id);
-                        return $dokter && $dokter->role_id == 3 ? $dokter->name : null;
+                return $dokter && $dokter->role->name == 'dokter' ? $dokter->name : null;
+
                     }),
                 TextColumn::make('klinik.namaKlinik')
                     ->label('Klinik Name')
