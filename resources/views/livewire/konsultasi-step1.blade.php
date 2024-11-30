@@ -139,12 +139,12 @@
             </p>
             <p class="flex justify-between text-sky-600 font-bold">
                 Potongan 
-                <span class="text-yellow-600 font-light">  Rp. {{ number_format($nilai, 0, ',', '.') }}</span>
+                <span class="text-yellow-600 font-light"> {{$nilai}}%</span>
             </p>
-            <p class="flex justify-between text-sky-600 font-bold">
+            {{-- <p class="flex justify-between text-sky-600 font-bold">
                 Kode Unik 
                 <span class="text-sky-600 font-light">Rp. {{ number_format($kodeUnik ?? 0, 0, ',', '.') }}</span>
-            </p>
+            </p> --}}
             
             <hr class="ml-auto w-20 my-2">
             
@@ -173,11 +173,6 @@
                     class="w-full border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
                         @error('paymentProof') <span class="text-red-500">{{ $message }}</span> @enderror
                 </div>
-
-
-
-
-
 
         <div class="flex justify-between">
             <button
