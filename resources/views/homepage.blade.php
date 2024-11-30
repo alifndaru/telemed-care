@@ -7,7 +7,7 @@
   <section class="bg-gray-100">
     <div class="hero-section">
       <div class="hero-wrap relative z-[1] pt-[100px] bg-top img-bg min-h-screen flex items-center bg-cover md:bg-none"
-        style="background-image:url('{{ asset('images/slider-1.jpg') }}');">
+        style="background-image:url('{{ asset('images/hero-bg.jpg') }}');">
         <div class="container">
           <div class="row">
             <div class="col-xl-7 col-lg-8 col-md-10">
