@@ -11,6 +11,7 @@ use App\Models\User; // For doctors and users
 use App\Models\Transaction;
 use App\Models\Voucher;
 use App\Models\Consultation;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -23,7 +24,7 @@ class KonsultasiStep1 extends Component
     public $clinics = [];
     public $doctors = [];
     public $jadwals = [];
-    public $biaya;
+  
 
     public $selectedProvince = null;
     public $selectedClinic = null;
@@ -33,14 +34,19 @@ class KonsultasiStep1 extends Component
 
     // Step 2 Properties
     public $paymentMethod = null;
-    public $paymentProof = null;
+    public $paymentProof;
     public $clinicPaymentDetails = null;
     public $voucher_code = '';
-    public $kodeUnik = null;
-
+    public $voucher_id = null;
+   
+    public $biaya = 0; 
+    public $nilai = 0; // Nilai diskon voucher
+    public $kodeUnik = 0;
+    public $totalBiaya = 0;
+    
 
     // Form Navigation
-    public $currentStep = 2;
+    public $currentStep = 1;
     public $transactionId = null;
 
 
@@ -50,27 +56,35 @@ class KonsultasiStep1 extends Component
         // Cek apakah ada data di session
         $savedData = Session::get('consultation_data', []);
 
+      
+
         // Isi properti dari session jika ada
         $this->selectedProvince = $savedData['selectedProvince'] ?? null;
         $this->selectedClinic = $savedData['selectedClinic'] ?? null;
         $this->selectedDoctor = $savedData['selectedDoctor'] ?? null;
         $this->selectedJadwal = $savedData['selectedJadwal'] ?? null;
-        $this->paymentMethod = $savedData['paymentMethod'] ?? null;
+        // $this->voucher = $savedData['voucher'] ?? null;
+        $this->totalBiaya = $savedData['totalBiaya'] ?? 0;
+      
+        $this->selectedProvince = null;
+   
 
         $this->provinces = Province::all();
 
-        // Reload dependent data jika ada
-        if ($this->selectedProvince) {
-            $this->clinics = Klinik::where('province_id', $this->selectedProvince)->get();
-        }
-        if ($this->selectedClinic) {
-            $this->doctors = User::where('klinik_id', $this->selectedClinic)
-                ->where('role_id', 3)
-            ->get();
-        }
-        if ($this->selectedDoctor) {
-            $this->jadwals = User::find($this->selectedDoctor)->jadwals ?? collect();
-        }
+       
+
+        // // Reload dependent data jika ada
+        // if ($this->selectedProvince) {
+        //     $this->clinics = Klinik::where('province_id', $this->selectedProvince)->get();
+        // }
+        // if ($this->selectedClinic) {
+        //     $this->doctors = User::where('klinik_id', $this->selectedClinic)
+        //         ->where('role_id', 3)
+        //     ->get();
+        // }
+        // if ($this->selectedDoctor) {
+        //     $this->jadwals = User::find($this->selectedDoctor)->jadwals ?? collect();
+        // }
     }
 
     // Metode untuk menyimpan data ke session
@@ -81,7 +95,8 @@ class KonsultasiStep1 extends Component
             'selectedClinic' => $this->selectedClinic,
             'selectedDoctor' => $this->selectedDoctor,
             'selectedJadwal' => $this->selectedJadwal,
-            'paymentMethod' => $this->paymentMethod
+            'totalBiaya' => $this->totalBiaya,
+          
         ];
 
         Session::put('consultation_data', $data);
@@ -90,10 +105,20 @@ class KonsultasiStep1 extends Component
     // Event listener untuk perubahan provinsi
     public function updatedSelectedProvince($value)
     {
-        $this->clinics = Klinik::where('province_id', $value)->get();
-        $this->selectedClinic = null;
-        $this->doctors = [];
-        $this->jadwals = [];
+        if (!is_numeric($value) ) {
+            // Reset data jika nilai tidak valid
+            $this->clinics = [];
+            $this->selectedClinic = null;
+            $this->doctors = [];
+            $this->jadwals = [];
+            return;
+        }
+
+        
+    $this->clinics = Klinik::where('province_id', $value)->get();
+    $this->selectedClinic = null;
+    $this->doctors = [];
+    $this->jadwals = [];
     }
 
     // Event listener untuk perubahan klinik
@@ -126,9 +151,12 @@ public function updatedSelectedJadwal($jadwalId)
     $kodeUnik = mt_rand(100, 999);
     if ($jadwal) {
             $this->biaya = $jadwal->biaya;
-        $this->kodeUnik = $kodeUnik;
+            $this->kodeUnik = $kodeUnik;
+            $this->hitungTotalBiaya();
     }
 }
+
+
 
     public function generateInvoiceNumber()
     {
@@ -147,6 +175,17 @@ public function updatedSelectedJadwal($jadwalId)
         return 'INV-' . str_pad($newNumber, 6, '0', STR_PAD_LEFT);
     }
 
+    public function hitungTotalBiaya()
+    {
+        // Hitung total awal (biaya + kode unik)
+        $totalAwal = $this->biaya + $this->kodeUnik;
+    
+        // Periksa apakah ada nilai voucher, kurangi jika ada
+        $this->totalBiaya = $this->nilai ? max(0, $totalAwal - $this->nilai) : $totalAwal;
+    }
+    
+    
+
     public function applyVoucher()
     {
         $this->validate([
@@ -160,9 +199,9 @@ public function updatedSelectedJadwal($jadwalId)
             ->first();
 
         if ($voucher) {
+            $this->voucher_id = $voucher->id;
             // Calculate discounted price
-            $discountedPrice = $this->biaya - $voucher->nilai;
-
+            $this->nilai = $voucher->nilai;
             session()->flash('message', 'Voucher berhasil diterapkan!');
             session()->put('applied_voucher', [
                 'code' => $voucher->kode_voucher,
@@ -171,13 +210,18 @@ public function updatedSelectedJadwal($jadwalId)
         } else {
             session()->flash('error', 'Voucher tidak valid atau sudah tidak berlaku!');
         }
-
+        
+        $this->hitungTotalBiaya();
         // Clear the voucher code input
         $this->voucher_code = '';
     }
 
-
-
+    public function updatedTotal($voucher)
+{
+    if (in_array($voucher, ['biaya', 'kodeUnik' ,'nilai'])) {
+        $this->hitungTotalBiaya();
+    }
+}
 
     // Step Navigation
     public function goToNextStep()
@@ -191,7 +235,6 @@ public function updatedSelectedJadwal($jadwalId)
                 'selectedJadwal' => 'required'
             ],
             2 => [
-                'paymentMethod' => 'required',
                 'paymentProof' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048'
             ],
             default => []
@@ -214,38 +257,46 @@ public function updatedSelectedJadwal($jadwalId)
 
     // Metode untuk menyimpan transaksi setelah step 2 selesai
     public function submitTransaction()
-    {
-        // Ambil data dari session
-        $sessionData = Session::get('consultation_data');
+{
+    // dd($this->paymentProof);
+  
 
-        // Buat transaksi
-        $transaction = Transaction::create([
-            'user_id' => 10, // Sesuaikan dengan autentikasi Anda
-            'invoice_number' => Str::uuid(),
+
+    $sessionData = Session::get('consultation_data');
+    
+
+    $invoiceNumber = $this->generateInvoiceNumber();
+
+
+    if ($this->paymentProof) {
+        $filename = Str::uuid() . '.' . $this->paymentProof->getClientOriginalExtension();
+        $path = $this->paymentProof->storeAs('paymentProof', $filename, 'public');
+
+
+        $data = [
+            'user_id' => Auth::id(),
+            'invoice_number' => $invoiceNumber,
             'jadwal_id' => $sessionData['selectedJadwal'],
             'klinik_id' => $sessionData['selectedClinic'],
             'dokter_id' => $sessionData['selectedDoctor'],
-            'payment_method' => $sessionData['paymentMethod'],
-            'status' => false
-        ]);
+            'totalBiaya' => $sessionData['totalBiaya'],
+            'buktiPembayaran' => $path,
+            'voucher_id' => $this->voucher_id,
+            'status' => false,
+        ];
 
-        // Upload bukti pembayaran
-        if ($this->paymentProof) {
-            $filename = Str::uuid() . '.' . $this->paymentProof->getClientOriginalExtension();
-            $path = $this->paymentProof->storeAs('payment_proofs', $filename, 'public');
 
-            $transaction->update([
-                'buktiPembayaran' => $path,
-                'status' => false
-            ]);
-        }
+        Transaction::create($data);
 
-        // Hapus data dari session
+        $this->reset('paymentProof');
+
+     
         Session::forget('consultation_data');
 
-        // Lanjut ke step selanjutnya
+       
         $this->currentStep++;
     }
+}
 
 
 
