@@ -37,11 +37,12 @@ class KonsultasiStep1 extends Component
     public $paymentProof;
     public $clinicPaymentDetails = null;
     public $voucher_code = '';
+    public $voucherPresentage = null;
     public $voucher_id = null;
    
     public $biaya = 0; 
     public $nilai = 0; // Nilai diskon voucher
-    public $kodeUnik = 0;
+   
     public $totalBiaya = 0;
     
 
@@ -63,28 +64,11 @@ class KonsultasiStep1 extends Component
         $this->selectedClinic = $savedData['selectedClinic'] ?? null;
         $this->selectedDoctor = $savedData['selectedDoctor'] ?? null;
         $this->selectedJadwal = $savedData['selectedJadwal'] ?? null;
-        // $this->voucher = $savedData['voucher'] ?? null;
-        $this->totalBiaya = $savedData['totalBiaya'] ?? 0;
-      
-        $this->selectedProvince = null;
+        $this->selectedProvince = null; //agar input provinsi kosong
    
-
         $this->provinces = Province::all();
 
        
-
-        // // Reload dependent data jika ada
-        // if ($this->selectedProvince) {
-        //     $this->clinics = Klinik::where('province_id', $this->selectedProvince)->get();
-        // }
-        // if ($this->selectedClinic) {
-        //     $this->doctors = User::where('klinik_id', $this->selectedClinic)
-        //         ->where('role_id', 3)
-        //     ->get();
-        // }
-        // if ($this->selectedDoctor) {
-        //     $this->jadwals = User::find($this->selectedDoctor)->jadwals ?? collect();
-        // }
     }
 
     // Metode untuk menyimpan data ke session
@@ -95,7 +79,7 @@ class KonsultasiStep1 extends Component
             'selectedClinic' => $this->selectedClinic,
             'selectedDoctor' => $this->selectedDoctor,
             'selectedJadwal' => $this->selectedJadwal,
-            'totalBiaya' => $this->totalBiaya,
+            // 'totalBiaya' => $this->totalBiaya,
           
         ];
 
@@ -131,12 +115,6 @@ class KonsultasiStep1 extends Component
         $this->jadwals = [];
     }
 
-    // Event listener untuk perubahan dokter
-    // public function updatedSelectedDoctor($value)
-    // {
-    //     $this->jadwals = User::find($value)->jadwals ?? collect();
-    //     $this->selectedJadwal = null;
-    // }
     public function updatedSelectedDoctor($doctorId)
     {
     $this->reset(['selectedJadwal', 'jadwals']);
@@ -146,12 +124,9 @@ class KonsultasiStep1 extends Component
 
 public function updatedSelectedJadwal($jadwalId)
 {
-    // Cari jadwal berdasarkan ID dan ambil biayanya
     $jadwal = Jadwal::find($jadwalId);
-    $kodeUnik = mt_rand(100, 999);
     if ($jadwal) {
             $this->biaya = $jadwal->biaya;
-            $this->kodeUnik = $kodeUnik;
             $this->hitungTotalBiaya();
     }
 }
@@ -177,12 +152,17 @@ public function updatedSelectedJadwal($jadwalId)
 
     public function hitungTotalBiaya()
     {
-        // Hitung total awal (biaya + kode unik)
-        $totalAwal = $this->biaya + $this->kodeUnik;
-    
-        // Periksa apakah ada nilai voucher, kurangi jika ada
-        $this->totalBiaya = $this->nilai ? max(0, $totalAwal - $this->nilai) : $totalAwal;
+
+        if ($this->nilai) {
+            if ($this->voucherPresentage) {
+                $discountAmount = ($this->nilai / 100) * $this->biaya;
+                // dd($discountAmount);
+                $this->totalBiaya = max(0,$this->biaya - $discountAmount);
+            }
+    }else{
+        $this->totalBiaya = $this->biaya;
     }
+}
     
     
 
@@ -202,6 +182,7 @@ public function updatedSelectedJadwal($jadwalId)
             $this->voucher_id = $voucher->id;
             // Calculate discounted price
             $this->nilai = $voucher->nilai;
+            $this->voucherPresentage = $voucher->nilai; 
             session()->flash('message', 'Voucher berhasil diterapkan!');
             session()->put('applied_voucher', [
                 'code' => $voucher->kode_voucher,
@@ -214,11 +195,14 @@ public function updatedSelectedJadwal($jadwalId)
         $this->hitungTotalBiaya();
         // Clear the voucher code input
         $this->voucher_code = '';
+        // Pastikan nilai totalBiaya sudah terupdate sebelum dikirim
+        $this->submitTransaction();
+        
     }
 
     public function updatedTotal($voucher)
 {
-    if (in_array($voucher, ['biaya', 'kodeUnik' ,'nilai'])) {
+    if (in_array($voucher, ['biaya','nilai'])) {
         $this->hitungTotalBiaya();
     }
 }
@@ -258,13 +242,7 @@ public function updatedSelectedJadwal($jadwalId)
     // Metode untuk menyimpan transaksi setelah step 2 selesai
     public function submitTransaction()
 {
-    // dd($this->paymentProof);
-  
-
-
     $sessionData = Session::get('consultation_data');
-    
-
     $invoiceNumber = $this->generateInvoiceNumber();
 
 
@@ -272,28 +250,24 @@ public function updatedSelectedJadwal($jadwalId)
         $filename = Str::uuid() . '.' . $this->paymentProof->getClientOriginalExtension();
         $path = $this->paymentProof->storeAs('paymentProof', $filename, 'public');
 
-
         $data = [
             'user_id' => Auth::id(),
             'invoice_number' => $invoiceNumber,
             'jadwal_id' => $sessionData['selectedJadwal'],
             'klinik_id' => $sessionData['selectedClinic'],
             'dokter_id' => $sessionData['selectedDoctor'],
-            'totalBiaya' => $sessionData['totalBiaya'],
+            'totalBiaya' => $this->totalBiaya,
             'buktiPembayaran' => $path,
             'voucher_id' => $this->voucher_id,
             'status' => false,
         ];
 
-
         Transaction::create($data);
 
         $this->reset('paymentProof');
 
-     
         Session::forget('consultation_data');
 
-       
         $this->currentStep++;
     }
 }
