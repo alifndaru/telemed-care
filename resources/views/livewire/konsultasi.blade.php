@@ -189,8 +189,6 @@
             Lanjut ke Konsultasi
         </button>
     </div>
-       
-       
     @else
 <div class="text-center">
     <h2 class="text-2xl font-semibold mb-6 text-gray-800">🔒 Validasi Pembayaran</h2>
@@ -205,12 +203,7 @@
     </div>
 </div>
 @endif
-    
-        
 
-       
-      </div>
-    @endif
     {{-- Step 4: Isi Keluhan --}}
     @if ($currentStep === 4)
     

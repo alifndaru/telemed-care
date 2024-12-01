@@ -239,23 +239,6 @@ class ModulKlinikResource extends Resource
 
     public static function getEloquentQuery(): Builder
     {
-        // Mendapatkan user yang sedang login
-        $user = auth()->user();
-
-        // Dapatkan query dasar
-        $query = parent::getEloquentQuery();
-
-        // Jika user role adalah klinik atau dokter, filter klinik berdasarkan user klinik_id
-        if ($user && ($user->role->name == 'klinik' || $user->role->name == 'dokter')) {
-            // Menggunakan whereHas untuk memfilter berdasarkan relasi user
-            $query->whereHas('users', function (Builder $query) use ($user) {
-                $query->where('id', $user->id);
-            });
-        }
-
-        // Query lainnya tetap seperti semula, menampilkan data terbaru
-        return $query->latest();
+        return parent::getEloquentQuery()->latest();
     }
-
-
 }
