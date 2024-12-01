@@ -14,8 +14,9 @@ class SpesialisasiDokter extends Model
 
     public function users()
     {
-        return $this->hasMany(User::class, 'spesialis_id', 'id');
+        return $this->hasMany(User::class, 'spesialis_id');
     }
+
     public function jadwal()
     {
         return $this->belongsTo(Jadwal::class, 'jadwal_id', 'id');

@@ -4,7 +4,6 @@
 
 @section('content')
   <div class="pt-[100px] bg-gray-100">
-    <livewire:konsultasi />
+    <livewire:konsultasi.lists />
   </div>
-
 @endsection
