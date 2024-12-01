@@ -41,6 +41,8 @@ class Konsultasi extends Component
     public $voucher_code = '';
     public $voucherPresentage = null;
     public $voucher_id = null;
+    public $isPaymentApproved  = false;
+
 
     public $biaya = 0;
     public $nilai = 0; // Nilai diskon voucher
@@ -53,6 +55,12 @@ class Konsultasi extends Component
 
     public function mount()
     {
+        // $this->transactionId = Session::get('consultation_data'); // Atau bisa diambil dari parameter request
+
+        // if ($this->transactionId) {
+        //     $this->checkPaymentStatus(); // Panggil fungsi untuk mengecek status pembayaran
+        // }
+
         // Cek apakah ada data di session
         $savedData = Session::get('consultation_data', []);
 
@@ -65,6 +73,21 @@ class Konsultasi extends Component
 
         $this->provinces = Province::all();
     }
+
+    public function checkPaymentStatus()
+    {
+        if ($this->transactionId) {
+            $konsultasi = Transaction::find($this->transactionId);
+            // dd($konsultasi); // Check if we retrieved the transaction
+
+            $this->isPaymentApproved = $konsultasi && $konsultasi->status === true;
+            // dd($this->isPaymentApproved);
+        } else {
+            dd('gagal');
+        }
+    }
+
+
 
     // Metode untuk menyimpan data ke session
     private function saveDataToSession()
@@ -230,56 +253,47 @@ class Konsultasi extends Component
     // Metode untuk menyimpan transaksi setelah step 2 selesai
     public function submitTransaction()
     {
+
         $sessionData = Session::get('consultation_data');
-        $invoiceNumber = $this->generateInvoiceNumber();
+        try {
 
-        if ($this->paymentProof) {
-            $filename = Str::uuid() . '.' . $this->paymentProof->getClientOriginalExtension();
-            $path = $this->paymentProof->storeAs('paymentProof', $filename, 'public');
+            $invoiceNumber = $this->generateInvoiceNumber();
+            if ($this->paymentProof) {
+                $filename = Str::uuid() . '.' . $this->paymentProof->getClientOriginalExtension();
+                $path = $this->paymentProof->storeAs('paymentProof', $filename, 'public');
 
-            $data = [
-                'user_id' => Auth::id(),
-                'invoice_number' => $invoiceNumber,
-                'jadwal_id' => $sessionData['selectedJadwal'],
-                'klinik_id' => $sessionData['selectedClinic'],
-                'dokter_id' => $sessionData['selectedDoctor'],
-                'totalBiaya' => $this->totalBiaya,
-                'buktiPembayaran' => $path,
-                'voucher_id' => $this->voucher_id,
-                'status' => false,
-            ];
+                $data = [
+                    'user_id' => Auth::id(),
+                    'invoice_number' => $invoiceNumber,
+                    'jadwal_id' => $sessionData['selectedJadwal'],
+                    'klinik_id' => $sessionData['selectedClinic'],
+                    'dokter_id' => $sessionData['selectedDoctor'],
+                    'totalBiaya' => $this->totalBiaya,
+                    'buktiPembayaran' => $path,
+                    'voucher_id' => $this->voucher_id,
+                    'status' => false,
+                ];
 
-            Transaction::create($data);
+                $transaction =   Transaction::create($data);
 
-            $this->reset('paymentProof');
+                $this->reset('paymentProof');
 
-            Session::forget('consultation_data');
+                Session::forget('consultation_data');
 
-            $this->currentStep++;
+                $this->transactionId = $transaction->id;  // Set the transactionId to the newly created transaction ID
+                $this->checkPaymentStatus();  // Check the payment status
+
+
+                $this->currentStep++;
+            }
+        } catch (\Exception $e) {
+            session()->flash('error', 'Terjadi kesalahan saat menyimpan transaksi!');
         }
-    }
-
-    public function goToConsultationStep()
-    {
-        $this->currentStep++;
-    }
-
-    public function submitConsultation()
-    {
-        $data = [
-            'users_id' => Auth::id(),
-            'judulKonsultasi' => $this->consultationTitle,
-            'penjelasan' => $this->consultationDescription,
-            'status' => false
-        ];
-
-        Consultation::create($data);
-
-        return redirect('/histori-konsultasi');
     }
 
     public function render()
     {
+
         return view('livewire.konsultasi', [
             'provinces' => $this->provinces,
             'clinics' => $this->clinics,
