@@ -170,38 +170,47 @@
     @endif
 
     {{-- Step 3: Menunggu Validasi Admin --}}
+   
     @if ($currentStep === 3)
-      <div class="text-center">
-        <h2 class="text-2xl font-semibold mb-6">Validasi Pembayaran</h2>
+      <div class="text-center" wire:poll.5s="checkPaymentStatus" >
 
-        <div class="bg-yellow-100 border-l-4 border-yellow-400 text-yellow-700 p-4 rounded-lg">
-          <p>Pembayaran Anda sedang diproses dan menunggu validasi admin.</p>
-          <p class="mt-2">Silakan tunggu konfirmasi selanjutnya.</p>
-        </div>
-
+        @if($isPaymentApproved)
+        <p>Status: Disetujui! Anda dapat melanjutkan ke langkah berikutnya.</p>
         <div class="mt-6">
           <button wire:click="goToConsultationStep"
             class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition ease-in-out">
             Lanjut ke Konsultasi
           </button>
         </div>
+       
+       
+    @else
+    <h2 class="text-2xl font-semibold mb-6">Validasi Pembayaran</h2>
+    <div class="bg-yellow-100 border-l-4 border-yellow-400 text-yellow-700 p-4 rounded-lg">
+      <p>Pembayaran Anda sedang diproses dan menunggu validasi admin.</p>
+      <p class="mt-2">Silakan tunggu konfirmasi selanjutnya.</p>
+    </div>
+    @endif
+    
+        
+
+       
       </div>
     @endif
-
     {{-- Step 4: Isi Keluhan --}}
     @if ($currentStep === 4)
-      <div>
-        <h2 class="text-2xl font-semibold mb-6">Isi Keluhan</h2>
-
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700">Judul Konsultasi</label>
-          <input type="text" wire:model="consultationTitle"
-            class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
-            placeholder="Masukkan judul konsultasi" />
-        </div>
-
-        <div class="mb-6">
-          <label class="block text-sm font-medium text-gray-700">Deskripsi Keluhan</label>
+    
+      <h2 class="text-2xl font-semibold mb-6">Isi Keluhan</h2>
+      
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700">Judul Konsultasi</label>
+        <input type="text" wire:model="consultationTitle"
+        class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
+        placeholder="Masukkan judul konsultasi" />
+      </div>
+      
+      <div class="mb-6">
+        <label class="block text-sm font-medium text-gray-700">Deskripsi Keluhan</label>
           <textarea wire:model="consultationDescription"
             class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
             rows="4" placeholder="Jelaskan keluhan Anda secara singkat"></textarea>
@@ -219,5 +228,7 @@
         </div>
       </div>
     @endif
+    </div>
+      
   </div>
 </div>
