@@ -13,9 +13,6 @@
           <span class="text-sm font-medium {{ $currentStep >= $index + 1 ? 'text-green-600' : 'text-gray-400' }}">
             {{ $step }}
           </span>
-          {{-- @if (!$loop->last)
-                            <div class="absolute top-5 left-10 right-0 h-0.5 {{ $currentStep > ($index + 1) ? 'bg-green-500' : 'bg-gray-200' }}"></div>
-                        @endif --}}
         </div>
       @endforeach
     </div>
@@ -82,15 +79,6 @@
     @if ($currentStep === 2)
       <div>
         <h2 class="text-2xl font-semibold mb-6">Pembayaran</h2>
-
-        {{-- <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700">Metode Pembayaran</label>
-                    <select wire:model="paymentMethod" class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
-                        <option value="">Pilih Metode Pembayaran</option>
-                        <option value="transfer_bank">Transfer Bank</option>
-                        <option value="e_wallet">E-Wallet</option>
-                    </select>
-                </div> --}}
 
         <div class="relative mb-10 flex flex-row items-center mt-4 gap-2 ">
           <div class=" w-full">
@@ -219,5 +207,7 @@
         </div>
       </div>
     @endif
+
+
   </div>
 </div>

@@ -30,6 +30,8 @@ class Konsultasi extends Component
     public $selectedClinic = null;
     public $selectedDoctor = null;
     public $selectedJadwal = null;
+    public $consultationTitle = null;
+    public $consultationDescription = null;
 
 
     // Step 2 Properties
@@ -47,8 +49,7 @@ class Konsultasi extends Component
     // Form Navigation
     public $currentStep = 1;
     public $transactionId = null;
-
-
+    public $success = false;
 
     public function mount()
     {
@@ -208,7 +209,6 @@ class Konsultasi extends Component
             2 => [
                 'paymentProof' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048'
             ],
-            3 => [],
             default => []
         };
 
@@ -219,11 +219,6 @@ class Konsultasi extends Component
         $this->saveDataToSession();
 
         // Pindah ke step berikutnya
-        $this->currentStep++;
-    }
-
-    public function goToConsultationStep()
-    {
         $this->currentStep++;
     }
 
@@ -262,6 +257,25 @@ class Konsultasi extends Component
 
             $this->currentStep++;
         }
+    }
+
+    public function goToConsultationStep()
+    {
+        $this->currentStep++;
+    }
+
+    public function submitConsultation()
+    {
+        $data = [
+            'users_id' => Auth::id(),
+            'judulKonsultasi' => $this->consultationTitle,
+            'penjelasan' => $this->consultationDescription,
+            'status' => false
+        ];
+
+        Consultation::create($data);
+
+        return redirect('/histori-konsultasi');
     }
 
     public function render()
