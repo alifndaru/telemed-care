@@ -16,9 +16,17 @@ Route::get('/feedback', function () {
     return view('homepage');
 })->name('feedback');
 
-Route::get('/konsultasi', function () {
-    return view('pages.konsultasi.index');
-})->name('konsultasi');
+Route::get('/konsultasi-list', function () {
+    return view('pages.konsultasi.list');
+})->name('konsultasi.list');
+
+Route::get('/konsultasi-histori', function () {
+    return view('pages.konsultasi.histori');
+})->name('histori.konsultasi');
+
+Route::get('/konsultasi-create', function () {
+    return view('pages.konsultasi.create');
+})->name('konsultasi.create');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -51,7 +59,3 @@ Route::get('/getTarif', [KonsultasiController::class, 'getTarif']);
 Route::post('/sendData', [KonsultasiController::class, 'sendData']);
 
 Route::get('/lokasi', [LokasiController::class, 'index'])->name('lokasi');
-
-Route::get('/histori-konsultasi', function () {
-    return view('pages.konsultasi.histori');
-});
