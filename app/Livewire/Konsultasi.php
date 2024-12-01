@@ -47,6 +47,9 @@ class Konsultasi extends Component
     public $biaya = 0;
     public $nilai = 0; // Nilai diskon voucher
     public $totalBiaya = 0;
+    public $rekening;
+    public $bank;
+    public $atasNama;
 
     // Form Navigation
     public $currentStep = 1;
@@ -55,12 +58,6 @@ class Konsultasi extends Component
 
     public function mount()
     {
-        // $this->transactionId = Session::get('consultation_data'); // Atau bisa diambil dari parameter request
-
-        // if ($this->transactionId) {
-        //     $this->checkPaymentStatus(); // Panggil fungsi untuk mengecek status pembayaran
-        // }
-
         // Cek apakah ada data di session
         $savedData = Session::get('consultation_data', []);
 
@@ -69,6 +66,14 @@ class Konsultasi extends Component
         $this->selectedClinic = $savedData['selectedClinic'] ?? null;
         $this->selectedDoctor = $savedData['selectedDoctor'] ?? null;
         $this->selectedJadwal = $savedData['selectedJadwal'] ?? null;
+
+        $this->currentStep = Session::get('currentStep') ?? 1;
+
+        if ($this->currentStep > 1 && empty($savedData['selectedProvince'])) {
+            $this->currentStep = 1;
+        }
+
+
         $this->selectedProvince = null; //agar input provinsi kosong
 
         $this->provinces = Province::all();
@@ -78,10 +83,9 @@ class Konsultasi extends Component
     {
         if ($this->transactionId) {
             $konsultasi = Transaction::find($this->transactionId);
-            // dd($konsultasi); // Check if we retrieved the transaction
+
 
             $this->isPaymentApproved = $konsultasi && $konsultasi->status === true;
-            // dd($this->isPaymentApproved);
         } else {
             dd('gagal');
         }
@@ -97,7 +101,6 @@ class Konsultasi extends Component
             'selectedClinic' => $this->selectedClinic,
             'selectedDoctor' => $this->selectedDoctor,
             'selectedJadwal' => $this->selectedJadwal,
-            // 'totalBiaya' => $this->totalBiaya,
 
         ];
 
@@ -125,6 +128,7 @@ class Konsultasi extends Component
     // Event listener untuk perubahan klinik
     public function updatedSelectedClinic($value)
     {
+        $this->getRekening($value); 
         $this->doctors = User::where('klinik_id', $value)
             ->where('role_id', 3)
             ->get();
@@ -146,6 +150,21 @@ class Konsultasi extends Component
             $this->hitungTotalBiaya();
         }
     }
+
+    public function getRekening($klinikId){
+        $klinik = Klinik::find($klinikId);
+
+    if ($klinik) {
+        $this->rekening = $klinik->noRekening; 
+        $this->bank = $klinik->bank; 
+        $this->atasNama = $klinik->atasNama; 
+    } else {
+        $this->rekening = null;
+        $this->bank= null;
+        $this->atasNama = null;
+    }
+    }
+
 
     public function generateInvoiceNumber()
     {
@@ -243,11 +262,13 @@ class Konsultasi extends Component
 
         // Pindah ke step berikutnya
         $this->currentStep++;
+        Session::put('currentStep', $this->currentStep);
     }
 
     public function goToPreviousStep()
     {
         $this->currentStep--;
+        Session::put('currentStep', $this->currentStep);
     }
 
     // Metode untuk menyimpan transaksi setelah step 2 selesai
@@ -278,7 +299,7 @@ class Konsultasi extends Component
 
                 $this->reset('paymentProof');
 
-                Session::forget('consultation_data');
+                Session::forget(['consultation_data', 'currentStep']);
 
                 $this->transactionId = $transaction->id;  // Set the transactionId to the newly created transaction ID
                 $this->checkPaymentStatus();  // Check the payment status
