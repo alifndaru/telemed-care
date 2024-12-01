@@ -7,6 +7,7 @@ use App\Models\Jadwal;
 use App\Models\Klinik;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,6 +19,7 @@ use Filament\Tables\Actions\EditAction;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TimePicker;
+use Illuminate\Support\Facades\Auth;
 
 class JadwalDokterResource extends Resource
 {
@@ -31,15 +33,28 @@ class JadwalDokterResource extends Resource
             ->schema([
                 Select::make('users_id')
                     ->label('Doctor')
-                    ->options(User::where('role_id', 3)->pluck('name', 'id')->toArray()) // Select only doctors with role_id = 3
+                    ->options(
+                        User::whereHas('role', function ($query) {
+                            $query->where('name', 'dokter'); // Filter by role name 'dokter'
+                        })
+                        ->where('klinik_id', Auth::user()->klinik_id) // Filter by the same klinik_id as the logged-in user
+                        ->pluck('name', 'id')
+                        ->toArray()
+                    )
                     ->required()
-                    ->searchable(), // Make searchable for large lists of doctors
+                    ->searchable(),
 
                 Select::make('klinik_id')
                     ->label('Clinic')
                     ->options(Klinik::pluck('namaKlinik', 'id')->toArray())
                     ->required()
-                    ->searchable(),
+                    ->searchable()
+                    ->default(fn() => Auth::user()->klinik_id)
+                    ->disabled(fn() => Auth::user()->role->name == 'klinik'),
+
+                Hidden::make('klinik_id')
+                    ->default(fn() => Auth::user()->klinik_id)
+                    ->required(),
 
                 TimePicker::make('start')
                     ->label('Start Time')
@@ -64,6 +79,7 @@ class JadwalDokterResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(fn() => Jadwal::where('klinik_id', Auth::user()->klinik_id)) // Filter by klinik_id of the logged-in user
             ->columns([
                 TextColumn::make('user.name')
                     ->label('Doctor')
