@@ -13,9 +13,6 @@
           <span class="text-sm font-medium {{ $currentStep >= $index + 1 ? 'text-green-600' : 'text-gray-400' }}">
             {{ $step }}
           </span>
-          {{-- @if (!$loop->last)
-                            <div class="absolute top-5 left-10 right-0 h-0.5 {{ $currentStep > ($index + 1) ? 'bg-green-500' : 'bg-gray-200' }}"></div>
-                        @endif --}}
         </div>
       @endforeach
     </div>
@@ -82,15 +79,6 @@
     @if ($currentStep === 2)
       <div>
         <h2 class="text-2xl font-semibold mb-6">Pembayaran</h2>
-
-        {{-- <div class="mb-6">
-                    <label class="block text-sm font-medium text-gray-700">Metode Pembayaran</label>
-                    <select wire:model="paymentMethod" class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
-                        <option value="">Pilih Metode Pembayaran</option>
-                        <option value="transfer_bank">Transfer Bank</option>
-                        <option value="e_wallet">E-Wallet</option>
-                    </select>
-                </div> --}}
 
         <div class="relative mb-10 flex flex-row items-center mt-4 gap-2 ">
           <div class=" w-full">
@@ -170,9 +158,9 @@
     @endif
 
     {{-- Step 3: Menunggu Validasi Admin --}}
-   
+
     @if ($currentStep === 3)
-      <div class="text-center" wire:poll.5s="checkPaymentStatus" >
+      <div class="text-center" wire:poll.5s="checkPaymentStatus">
 
       @if($isPaymentApproved)
     <div class="flex flex-col items-center space-y-4">
@@ -182,60 +170,63 @@
         <!-- Status Teks -->
         <p class="text-lg text-green-700 font-semibold">Status: Disetujui! Anda dapat melanjutkan ke langkah berikutnya.</p>
     </div>
-
     <div class="mt-6">
         <button wire:click="goToConsultationStep"
             class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition ease-in-out">
             Lanjut ke Konsultasi
         </button>
     </div>
+       
     @else
-<div class="text-center">
+<div class="flex flex-col items-center text-center">
     <h2 class="text-2xl font-semibold mb-6 text-gray-800">🔒 Validasi Pembayaran</h2>
-    <div class="relative bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-6 rounded-lg shadow-md">
-    <div class="flex flex-col items-center space-y-4">
-        <!-- Ceklis Gambar -->
-        <img src="{{ asset('images/kunci.png') }}" alt="Ceklis" class="w-16 h-16">
+    <div class="relative bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-6 rounded-lg shadow-md flex flex-col items-center">
+        <!-- Gambar di tengah -->
+        <img src="{{ asset('images/kunci.png') }}" alt="validasi" class="w-16 h-16 mb-4 mx-auto">
         
-        </div>
-        <p class="text-lg font-medium">Pembayaran Anda sedang diproses dan menunggu validasi admin.</p>
-        <p class="mt-2 text-gray-700">Silakan tunggu konfirmasi selanjutnya. Terima kasih atas kesabarannya! 😊</p>
+        <!-- Teks informasi -->
+        <p class="text-lg font-medium text-center">Pembayaran Anda sedang diproses dan menunggu validasi admin.</p>
+        <p class="mt-2 text-gray-700 text-center">Silakan tunggu konfirmasi selanjutnya. Terima kasih atas kesabarannya! 😊</p>
     </div>
 </div>
 @endif
 
+        
+
+       
+      </div>
+    @endif
     {{-- Step 4: Isi Keluhan --}}
     @if ($currentStep === 4)
-    
       <h2 class="text-2xl font-semibold mb-6">Isi Keluhan</h2>
-      
+
       <div class="mb-6">
         <label class="block text-sm font-medium text-gray-700">Judul Konsultasi</label>
         <input type="text" wire:model="consultationTitle"
-        class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
-        placeholder="Masukkan judul konsultasi" />
+          class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
+          placeholder="Masukkan judul konsultasi" />
       </div>
-      
+
       <div class="mb-6">
         <label class="block text-sm font-medium text-gray-700">Deskripsi Keluhan</label>
-          <textarea wire:model="consultationDescription"
-            class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
-            rows="4" placeholder="Jelaskan keluhan Anda secara singkat"></textarea>
-        </div>
-
-        <div class="flex justify-between">
-          <button wire:click="goToPreviousStep"
-            class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition ease-in-out">
-            Kembali
-          </button>
-          <button wire:click="submitConsultation"
-            class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
-            Mulai Konsultasi
-          </button>
-        </div>
+        <textarea wire:model="consultationDescription"
+          class="mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200"
+          rows="4" placeholder="Jelaskan keluhan Anda secara singkat"></textarea>
       </div>
-    @endif
-    </div>
-      
+
+      <div class="flex justify-between">
+        <button wire:click="goToPreviousStep"
+          class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition ease-in-out">
+          Kembali
+        </button>
+        <button wire:click="submitConsultation"
+          class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
+          Mulai Konsultasi
+        </button>
+      </div>
   </div>
+  @endif
+</div>
+
+</div>
 </div>

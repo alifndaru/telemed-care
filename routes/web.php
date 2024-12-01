@@ -52,6 +52,6 @@ Route::post('/sendData', [KonsultasiController::class, 'sendData']);
 
 Route::get('/lokasi', [LokasiController::class, 'index'])->name('lokasi');
 
-Route::get('/history-konsultasi', function () {
-    return view('history-konsultasi');
+Route::get('/histori-konsultasi', function () {
+    return view('pages.konsultasi.histori');
 });

@@ -33,43 +33,45 @@ class JadwalDokterResource extends Resource
             ->schema([
                 Select::make('users_id')
                     ->label('Doctor')
-            ->options(
-                User::whereHas('role', function ($query) {
-                    $query->where('name', 'dokter'); // Filter by role name 'dokter'
-                })
-                    ->where('klinik_id', Auth::user()->klinik_id) // Filter by the same klinik_id as the logged-in user
-                    ->pluck('name', 'id')
-                    ->toArray()
-            )
+                    ->options(
+                        User::whereHas('role', function ($query) {
+                            $query->where('name', 'dokter'); // Filter by role name 'dokter'
+                        })
+                        ->where('klinik_id', Auth::user()->klinik_id) // Filter by the same klinik_id as the logged-in user
+                        ->pluck('name', 'id')
+                        ->toArray()
+                    )
                     ->required()
-            ->searchable(),
+                    ->searchable(),
 
-            Select::make('klinik_id')
+                Select::make('klinik_id')
                     ->label('Clinic')
-                ->options(Klinik::pluck('namaKlinik', 'id')->toArray())
+                    ->options(Klinik::pluck('namaKlinik', 'id')->toArray())
                     ->required()
-            ->searchable()
-            ->default(fn() => Auth::user()->klinik_id)
-            ->disabled(fn() => Auth::user()->role->name == 'klinik'),
-            Hidden::make('klinik_id')
-            ->default(fn() => Auth::user()->klinik_id)
-            ->required(),
-            TimePicker::make('start')
+                    ->searchable()
+                    ->default(fn() => Auth::user()->klinik_id)
+                    ->disabled(fn() => Auth::user()->role->name == 'klinik'),
+
+                Hidden::make('klinik_id')
+                    ->default(fn() => Auth::user()->klinik_id)
+                    ->required(),
+
+                TimePicker::make('start')
                     ->label('Start Time')
                     ->required(),
 
-            TimePicker::make('end')
+                TimePicker::make('end')
                     ->label('End Time')
                     ->required(),
 
                 TextInput::make('biaya')
                     ->label('Cost')
-                ->numeric() // Ensure cost is a numeric value
+                    ->numeric() // Ensure cost is a numeric value
                     ->required(),
 
-            TextInput::make('kuota')
+                TextInput::make('kuota')
                     ->label('Quota')
-                ->numeric() // Ensure quota is numeric
+                    ->numeric() // Ensure quota is numeric
                     ->required(),
             ]);
     }
@@ -101,20 +103,21 @@ class JadwalDokterResource extends Resource
                     ->label('Quota')
                     ->sortable(),
 
-            TextColumn::make('biaya')
-                ->label('Cost')
-                ->sortable(), // Make cost sortable for easy comparison
+                TextColumn::make('biaya')
+                    ->label('Cost')
+                    ->sortable(), // Make cost sortable for easy comparison
 
                 ToggleColumn::make('status')
                     ->label('Status')
-                ->onColor('success') // Green when active
-                ->offColor('danger'), // Red when inactive
+                    ->onColor('success') // Green when active
+                    ->offColor('danger'), // Red when inactive
             ])
             ->filters([
                 // You can add filters here if needed, e.g., to filter by status or doctor
             ])
-            ->actions([EditAction::make(),
-            DeleteAction::make(), // Enable delete action for each row
+            ->actions([
+                EditAction::make(),
+                DeleteAction::make(), // Enable delete action for each row
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(), // Enable bulk delete

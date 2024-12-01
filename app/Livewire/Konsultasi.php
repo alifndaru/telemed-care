@@ -30,6 +30,8 @@ class Konsultasi extends Component
     public $selectedClinic = null;
     public $selectedDoctor = null;
     public $selectedJadwal = null;
+    public $consultationTitle = null;
+    public $consultationDescription = null;
 
 
     // Step 2 Properties
@@ -40,7 +42,7 @@ class Konsultasi extends Component
     public $voucherPresentage = null;
     public $voucher_id = null;
     public $isPaymentApproved  = false;
-  
+
 
     public $biaya = 0;
     public $nilai = 0; // Nilai diskon voucher
@@ -49,8 +51,7 @@ class Konsultasi extends Component
     // Form Navigation
     public $currentStep = 1;
     public $transactionId = null;
-
-
+    public $success = false;
 
     public function mount()
     {
@@ -59,7 +60,7 @@ class Konsultasi extends Component
         // if ($this->transactionId) {
         //     $this->checkPaymentStatus(); // Panggil fungsi untuk mengecek status pembayaran
         // }
-      
+
         // Cek apakah ada data di session
         $savedData = Session::get('consultation_data', []);
 
@@ -71,8 +72,6 @@ class Konsultasi extends Component
         $this->selectedProvince = null; //agar input provinsi kosong
 
         $this->provinces = Province::all();
-
-        
     }
 
     public function checkPaymentStatus()
@@ -80,15 +79,15 @@ class Konsultasi extends Component
         if ($this->transactionId) {
             $konsultasi = Transaction::find($this->transactionId);
             // dd($konsultasi); // Check if we retrieved the transaction
-    
+
             $this->isPaymentApproved = $konsultasi && $konsultasi->status === true;
             // dd($this->isPaymentApproved);
         } else {
             dd('gagal');
         }
     }
-    
-    
+
+
 
     // Metode untuk menyimpan data ke session
     private function saveDataToSession()
@@ -233,7 +232,6 @@ class Konsultasi extends Component
             2 => [
                 'paymentProof' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048'
             ],
-            3 => [],
             default => []
         };
 
@@ -247,11 +245,6 @@ class Konsultasi extends Component
         $this->currentStep++;
     }
 
-    public function goToConsultationStep()
-    {
-        $this->currentStep++;
-    }
-
     public function goToPreviousStep()
     {
         $this->currentStep--;
@@ -260,15 +253,15 @@ class Konsultasi extends Component
     // Metode untuk menyimpan transaksi setelah step 2 selesai
     public function submitTransaction()
     {
-     
+
         $sessionData = Session::get('consultation_data');
-        try{
+        try {
 
             $invoiceNumber = $this->generateInvoiceNumber();
             if ($this->paymentProof) {
                 $filename = Str::uuid() . '.' . $this->paymentProof->getClientOriginalExtension();
                 $path = $this->paymentProof->storeAs('paymentProof', $filename, 'public');
-    
+
                 $data = [
                     'user_id' => Auth::id(),
                     'invoice_number' => $invoiceNumber,
@@ -280,31 +273,27 @@ class Konsultasi extends Component
                     'voucher_id' => $this->voucher_id,
                     'status' => false,
                 ];
-    
-             $transaction =   Transaction::create($data);
-    
+
+                $transaction =   Transaction::create($data);
+
                 $this->reset('paymentProof');
-    
+
                 Session::forget('consultation_data');
 
-            $this->transactionId = $transaction->id;  // Set the transactionId to the newly created transaction ID
-            $this->checkPaymentStatus();  // Check the payment status
-                
-    
+                $this->transactionId = $transaction->id;  // Set the transactionId to the newly created transaction ID
+                $this->checkPaymentStatus();  // Check the payment status
+
+
                 $this->currentStep++;
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Terjadi kesalahan saat menyimpan transaksi!');
         }
-
     }
-
-
-
 
     public function render()
     {
-      
+
         return view('livewire.konsultasi', [
             'provinces' => $this->provinces,
             'clinics' => $this->clinics,
