@@ -161,7 +161,6 @@
 
     @if ($currentStep === 3)
       <div class="text-center" wire:poll.5s="checkPaymentStatus">
-
         @if ($isPaymentApproved)
           <div class="flex flex-col items-center space-y-4">
             <!-- Ceklis Gambar -->
@@ -193,10 +192,6 @@
             </div>
           </div>
         @endif
-
-
-
-
       </div>
     @endif
     {{-- Step 4: Isi Keluhan --}}
