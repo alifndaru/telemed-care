@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('consultations', function (Blueprint $table) {
             $table->id();
-            $table->id('users_id');
-            $table->id('transactions_id');
+            $table->bigInteger('users_id');
+            $table->bigInteger('transactions_id');
             $table->string('judulKonsultasi');
             $table->text('penjelasan');
             $table->boolean('status')->default(true);
