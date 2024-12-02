@@ -23,7 +23,7 @@ class TenagaLayananController extends Controller
             ->get();
         });
         return view('tenaga-layanan', compact('data'));
-    }
+    } 
 
     public function getLayanan($category)
     {
