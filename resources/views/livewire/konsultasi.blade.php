@@ -129,8 +129,12 @@
           </p>
 
           <div class="mt-4">
-            <p class="text-black font-semibold w-10/12">Transfer Via Rekening BANK MANDIRI</p>
-            <p class="text-black font-semibold w-10/12">No rek 123 456 789 0123 a.n PKBI NTT</p>
+            @if ($bank)
+            <p class="text-black font-semibold w-10/12">Transfer Via Rekening {{$bank}}</p>          
+            @endif
+            @if($rekening && $atasNama)
+            <p class="text-black font-semibold w-10/12">{{$rekening}} A.N. {{$atasNama}}</p>
+            @endif
           </div>
 
           <div class="mb-6 mt-8">

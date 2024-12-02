@@ -47,6 +47,9 @@ class Create extends Component
     public $biaya = 0;
     public $nilai = 0; // Nilai diskon voucher
     public $totalBiaya = 0;
+    public $rekening;
+    public $bank;
+    public $atasNama;
 
     // Form Navigation
     public $currentStep = 1;
@@ -63,6 +66,14 @@ class Create extends Component
         $this->selectedClinic = $savedData['selectedClinic'] ?? null;
         $this->selectedDoctor = $savedData['selectedDoctor'] ?? null;
         $this->selectedJadwal = $savedData['selectedJadwal'] ?? null;
+
+        $this->currentStep = Session::get('currentStep') ?? 1;
+
+        if ($this->currentStep > 1 && empty($savedData['selectedProvince'])) {
+            $this->currentStep = 1;
+        }
+
+
         $this->selectedProvince = null; //agar input provinsi kosong
 
         $this->provinces = Province::all();
@@ -72,6 +83,8 @@ class Create extends Component
     {
         if ($this->transactionId) {
             $konsultasi = Transaction::find($this->transactionId);
+
+
             $this->isPaymentApproved = $konsultasi && $konsultasi->status === true;
         } else {
             dd('gagal');
@@ -86,7 +99,6 @@ class Create extends Component
             'selectedClinic' => $this->selectedClinic,
             'selectedDoctor' => $this->selectedDoctor,
             'selectedJadwal' => $this->selectedJadwal,
-            // 'totalBiaya' => $this->totalBiaya,
 
         ];
         Session::put('consultation_data', $data);
@@ -113,6 +125,7 @@ class Create extends Component
     // Event listener untuk perubahan klinik
     public function updatedSelectedClinic($value)
     {
+        $this->getRekening($value); 
         $this->doctors = User::where('klinik_id', $value)
             ->where('role_id', 3)
             ->get();
@@ -134,6 +147,21 @@ class Create extends Component
             $this->hitungTotalBiaya();
         }
     }
+
+    public function getRekening($klinikId){
+        $klinik = Klinik::find($klinikId);
+
+    if ($klinik) {
+        $this->rekening = $klinik->noRekening; 
+        $this->bank = $klinik->bank; 
+        $this->atasNama = $klinik->atasNama; 
+    } else {
+        $this->rekening = null;
+        $this->bank= null;
+        $this->atasNama = null;
+    }
+    }
+
 
     public function generateInvoiceNumber()
     {
@@ -231,11 +259,13 @@ class Create extends Component
 
         // Pindah ke step berikutnya
         $this->currentStep++;
+        Session::put('currentStep', $this->currentStep);
     }
 
     public function goToPreviousStep()
     {
         $this->currentStep--;
+        Session::put('currentStep', $this->currentStep);
     }
 
     public function submitTransaction()
@@ -262,7 +292,8 @@ class Create extends Component
                 $transaction =   Transaction::create($data);
 
                 $this->reset('paymentProof');
-                Session::forget('consultation_data');
+
+                Session::forget(['consultation_data', 'currentStep']);
 
                 $this->transactionId = $transaction->id;
                 $this->checkPaymentStatus();
