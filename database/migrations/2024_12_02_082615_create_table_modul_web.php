@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('table_modul_web', function (Blueprint $table) {
+        Schema::create('modul_web', function (Blueprint $table) {
             $table->id();
             $table->string('namaWebsite');
             $table->string('Email');
