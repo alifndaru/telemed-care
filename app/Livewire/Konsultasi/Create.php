@@ -83,11 +83,6 @@ class Create extends Component
     {
         if ($this->transactionId) {
             $konsultasi = Transaction::find($this->transactionId);
-<<<<<<< HEAD:app/Livewire/Konsultasi.php
-
-
-=======
->>>>>>> 02598d068c54d963d99eefa62aab94184a071fb8:app/Livewire/Konsultasi/Create.php
             $this->isPaymentApproved = $konsultasi && $konsultasi->status === true;
         } else {
             dd('gagal');
@@ -128,7 +123,7 @@ class Create extends Component
     // Event listener untuk perubahan klinik
     public function updatedSelectedClinic($value)
     {
-        $this->getRekening($value); 
+        $this->getRekening($value);
         $this->doctors = User::where('klinik_id', $value)
             ->where('role_id', 3)
             ->get();
@@ -155,9 +150,9 @@ class Create extends Component
         $klinik = Klinik::find($klinikId);
 
     if ($klinik) {
-        $this->rekening = $klinik->noRekening; 
-        $this->bank = $klinik->bank; 
-        $this->atasNama = $klinik->atasNama; 
+            $this->rekening = $klinik->noRekening;
+            $this->bank = $klinik->bank;
+            $this->atasNama = $klinik->atasNama;
     } else {
         $this->rekening = null;
         $this->bank= null;
@@ -295,13 +290,7 @@ class Create extends Component
                 $transaction =   Transaction::create($data);
 
                 $this->reset('paymentProof');
-<<<<<<< HEAD:app/Livewire/Konsultasi.php
-
                 Session::forget(['consultation_data', 'currentStep']);
-=======
-                Session::forget('consultation_data');
->>>>>>> 02598d068c54d963d99eefa62aab94184a071fb8:app/Livewire/Konsultasi/Create.php
-
                 $this->transactionId = $transaction->id;
                 $this->checkPaymentStatus();
                 $this->currentStep++;
