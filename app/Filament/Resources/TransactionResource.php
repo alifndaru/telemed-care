@@ -8,6 +8,7 @@ use App\Models\User;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -17,7 +18,6 @@ class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
-
 
     public static function form(Form $form): Form
     {
@@ -44,8 +44,7 @@ class TransactionResource extends Resource
                     ->sortable()
                     ->getStateUsing(function ($record) {
                         $dokter = User::find($record->dokter_id);
-                return $dokter && $dokter->role->name == 'dokter' ? $dokter->name : null;
-
+                        return $dokter?->name;
                     }),
                 TextColumn::make('klinik.namaKlinik')
                     ->label('Klinik Name')
@@ -75,6 +74,18 @@ class TransactionResource extends Resource
                     ->label('Status')
                     ->onColor('success') // Green when active
                     ->offColor('danger'), // Red when inactive
+            ])
+            ->actions([
+                Action::make('detail')
+                    ->label('Detail')
+                    ->icon('heroicon-o-eye')
+                    ->color('primary')
+                    ->modalContent(fn(Transaction $record) => view(
+                        'filament.modals.transaction-details',
+                        ['transaction' => $record] // Gunakan 'transaction' sebagai nama variabel
+                    ))
+                    ->modalSubmitAction(false)
+                    ->modalCancelAction(false),
             ])
             ->filters([
                 SelectFilter::make('status')
