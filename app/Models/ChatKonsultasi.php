@@ -10,16 +10,16 @@ class ChatKonsultasi extends Model
 {
     protected $table = 'chat_messages';
     protected $fillable = [
-        'conversation_id',
+        'consultation_id',
         'from_user_id',
         'message',
         'is_read',
         'type'
     ];
 
-    public function conversation()
+    public function consultation()
     {
-        return $this->belongsTo(Conversation::class);
+        return $this->belongsTo(Consultation::class);
     }
 
     public function sender()

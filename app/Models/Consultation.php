@@ -18,4 +18,14 @@ class Consultation extends Model
     {
         return $this->belongsTo(Transaction::class, 'transactions_id', 'id');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'users_id');
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(ChatKonsultasi::class);
+    }
 }
