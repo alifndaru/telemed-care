@@ -157,22 +157,41 @@
       @elseif ($currentStep === 3)
         {{-- Step 3: Menunggu Validasi Admin --}}
         <div class="text-center" wire:poll.5s="checkPaymentStatus">
-          @if ($isPaymentApproved)
-            <h2 class="text-2xl font-semibold mb-6 text-blue-600">Status: Disetujui!
-            </h2>
-            <p class="text-lg">Anda dapat melanjutkan ke langkah berikutnya.</p>
-            <div class="mt-6">
-              <button wire:click="goToConsultationStep"
-                class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition ease-in-out">
-                Lanjut isi Keluhan
-              </button>
+        @if ($currentStep === 3)
+      <div class="text-center" wire:poll.5s="checkPaymentStatus">
+        @if ($isPaymentApproved)
+          <div class="flex flex-col items-center space-y-4">
+            <!-- Ceklis Gambar -->
+            <img src="{{ asset('images/check-icon.png') }}" alt="Ceklis" class="w-16 h-16">
+
+            <!-- Status Teks -->
+            <p class="text-lg text-green-700 font-semibold">Status: Disetujui! Anda dapat melanjutkan ke langkah
+              berikutnya.</p>
+          </div>
+          <div class="mt-6">
+            <button wire:click="goToConsultationStep"
+              class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition ease-in-out">
+              Lanjut ke Konsultasi
+            </button>
+          </div>
+        @else
+          <div class="flex flex-col items-center text-center">
+            <h2 class="text-2xl font-semibold mb-6 text-gray-800">🔒 Validasi Pembayaran</h2>
+            <div
+              class="relative bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-6 rounded-lg shadow-md flex flex-col items-center">
+              <!-- Gambar di tengah -->
+              <img src="{{ asset('images/kunci.png') }}" alt="validasi" class="w-16 h-16 mb-4 mx-auto">
+
+              <!-- Teks informasi -->
+              <p class="text-lg font-medium text-center">Pembayaran Anda sedang diproses dan menunggu validasi admin.
+              </p>
+              <p class="mt-2 text-gray-700 text-center">Silakan tunggu konfirmasi selanjutnya. Terima kasih atas
+                kesabarannya! 😊</p>
             </div>
-          @else
-            <h2 class="text-2xl font-semibold mb-6 text-blue-600">Validasi Pembayaran</h2>
-            <div class="mb-6">
-              <p class="text-lg">Menunggu validasi pembayaran oleh admin...</p>
-            </div>
-          @endif
+          </div>
+        @endif
+      </div>
+    @endif
         </div>
       @elseif ($currentStep === 4)
         <h2 class="text-2xl font-semibold mb-6 text-blue-600">Isi Keluhan</h2>
