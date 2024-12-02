@@ -126,8 +126,8 @@
               <span class="text-red-600 font-bold">Rp. {{ number_format($totalBiaya, 0, ',', '.') }}</span>
             </p>
             <div class="mt-4">
-              <p class="text-black font-semibold w-10/12">Transfer Via Rekening BANK MANDIRI</p>
-              <p class="text-black font-semibold w-10/12">No rek 123 456 789 0123 a.n PKBI NTT</p>
+              <p class="text-black font-semibold w-10/12">Transfer Via Rekening {{$bank}}</p>
+              <p class="text-black font-semibold w-10/12">No rek {{$rekening}} a.n {{$atasNama}}</p>
             </div>
             <div class="mb-6 mt-8">
               <label for="default-input" class="block mb-2 text-sky-600 font-bold">Bukti Bayar</label>
