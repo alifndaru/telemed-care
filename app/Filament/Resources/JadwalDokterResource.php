@@ -56,11 +56,13 @@ class JadwalDokterResource extends Resource
             ->required(),
             TimePicker::make('start')
                     ->label('Start Time')
-                    ->required(),
+                ->required()
+                ->format('H:i'),
 
             TimePicker::make('end')
                     ->label('End Time')
-                    ->required(),
+                ->required()
+                ->format('H:i'),
 
                 TextInput::make('biaya')
                     ->label('Cost')
