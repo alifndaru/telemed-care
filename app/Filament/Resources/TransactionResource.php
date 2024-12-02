@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Models\Transaction;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -29,7 +30,11 @@ class TransactionResource extends Resource
 
     public static function table(Table $table): Table
     {
+
+        // \Log::info('User Klinik ID: ' . Auth::user()->klinik_id);
+
         return $table
+            ->query(fn() => Transaction::where('klinik_id', Auth::user()->klinik_id))
             ->columns([
                 TextColumn::make('invoice_number')
                     ->searchable()
