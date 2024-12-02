@@ -1,11 +1,16 @@
-@php
+{{-- @php
     use Carbon\Carbon;
-@endphp
+@endphp --}}
 
 <x-filament-panels::page>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 h-[calc(100vh-120px)] bg-gray-50 dark:bg-gray-900">
+    <livewire:live-chat />
+</x-filament-panels::page>
+
+{{--
+    <x-filament-panels::page>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 h-[calc(100vh-120px)] bg-gray-50 dark:bg-gray-900 wire:poll">
         <!-- Left Sidebar: Conversation List -->
-        <div class="md:col-span-1 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+        <div class="md:col-span-1 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 rounded-lg shadow-sm" wire:poll.2s>
             <div class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-4 border-b dark:border-gray-600 flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <x-filament::icon
@@ -51,7 +56,7 @@
                                         {{ $conversation['other_person_name'] }}
                                     </h3>
                                     <span class="text-xs text-gray-500 dark:text-gray-400">
-                                        {{ Carbon::parse($conversation['last_message_time'])->shortRelativeDiffForHumans() }}
+                                        {{ $conversation['last_message_time'] ? Carbon::parse($conversation['last_message_time'])->shortRelativeDiffForHumans() : '' }}
                                     </span>
                                 </div>
                                 <div class="flex items-center justify-between">
@@ -87,7 +92,7 @@
         </div>
 
         <!-- Right Side: Chat Room -->
-       <div class="md:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
+        <div class="md:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow-sm" wire:poll.2s>
             @if ($this->activeConversation)
                 <div class="flex flex-col h-full">
                     <!-- Chat Header -->
@@ -103,7 +108,7 @@
                                     {{ $this->activeConversation['other_person_name'] }}
                                 </h2>
                                 <p class="text-xs text-gray-500 dark:text-gray-400">
-                                    {{ Carbon::parse($this->activeConversation['last_message_time'])->longAbsoluteDiffForHumans() }}
+                                    {{ $this->activeConversation['last_message_time'] ? Carbon::parse($this->activeConversation['last_message_time'])->longAbsoluteDiffForHumans() : '' }}
                                 </p>
                             </div>
                         </div>
@@ -111,24 +116,37 @@
 
                     <!-- Chat Messages -->
                     <div class="flex-1 overflow-y-auto p-6 space-y-4 bg-gray-50 dark:bg-gray-900 custom-scrollbar">
-                        <div class="flex justify-start mb-4">
-                            <div class="max-w-[70%] bg-white dark:bg-gray-800 p-3 rounded-lg shadow-sm">
-                                <p class="text-sm text-gray-800 dark:text-gray-200">
-                                    {{ $this->activeConversation['latest_message'] }}
-                                </p>
-                                <span class="text-xs text-gray-500 dark:text-gray-400 mt-1 block text-right">
-                                    {{ Carbon::parse($this->activeConversation['last_message_time'])->format('H:i') }}
-                                </span>
+                        @forelse ($this->messages as $message)
+                            <div class="flex {{ $message['from_user_id'] === auth()->id() ? 'justify-end' : 'justify-start' }} mb-4">
+                                <div class="
+                                    max-w-[70%] p-3 rounded-lg shadow-sm
+                                    {{ $message['from_user_id'] === auth()->id()
+                                        ? 'bg-blue-500 text-black dark:text-white'
+                                        : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200'
+                                    }}
+                                ">
+                                    <p class="text-sm">
+                                        {{ $message['message'] }}
+                                    </p>
+                                    <span class="text-xs {{ $message['from_user_id'] === auth()->id() ? 'text-blue-100' : 'text-gray-500 dark:text-gray-400' }} mt-1 block text-right">
+                                        {{ Carbon::parse($message['created_at'])->format('H:i') }}
+                                    </span>
+                                </div>
                             </div>
-                        </div>
+                        @empty
+                            <div class="flex justify-center items-center h-full text-gray-500 dark:text-gray-400">
+                                No messages yet
+                            </div>
+                        @endforelse
                     </div>
 
                     <!-- Message Input -->
                     <div class="sticky bottom-0 p-4 bg-gray-100 dark:bg-gray-800 border-t dark:border-gray-700">
-                        <div class="flex items-center space-x-2">
+                        <form wire:submit.prevent="sendMessage" class="flex items-center space-x-2">
                             <div class="flex-1">
                                 <input
                                     type="text"
+                                    wire:model="newMessage"
                                     placeholder="{{ __('Type a message...') }}"
                                     class="
                                         w-full p-3 rounded-lg border
@@ -140,10 +158,10 @@
                                     "
                                 />
                             </div>
-                            <x-filament::button color="primary" size="md">
+                            <x-filament::button type="submit" color="primary" size="md">
                                 {{ __('Send') }}
                             </x-filament::button>
-                        </div>
+                        </form>
                     </div>
                 </div>
             @else
@@ -178,12 +196,8 @@
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: rgba(0,0,0,0.2);
         }
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-            background: rgba(255,255,255,0.1);
-        }
-        .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-            background: rgba(255,255,255,0.2);
-        }
     </style>
     @endpush
-</x-filament-panels::page>
+    </x-filament-panels::page>
+
+--}}
