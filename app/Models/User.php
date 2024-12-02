@@ -56,12 +56,14 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Province::class, 'province_id', 'id');
     }
-
+    public function spesialisasi()
+    {
+        return $this->belongsTo(SpesialisasiDokter::class, 'spesialis_id');
+    }
     public function transactions()
     {
         return $this->hasMany(Transaction::class, 'user_id', 'id');
     }
-
     public function jadwals()
     {
         return $this->hasMany(Jadwal::class, 'users_id', 'id');

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Konsultasi;
 
 use Livewire\Component;
 use Livewire\WithFileUploads;
@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
-class Konsultasi extends Component
+class Create extends Component
 {
     use WithFileUploads;
 
@@ -83,15 +83,16 @@ class Konsultasi extends Component
     {
         if ($this->transactionId) {
             $konsultasi = Transaction::find($this->transactionId);
+<<<<<<< HEAD:app/Livewire/Konsultasi.php
 
 
+=======
+>>>>>>> 02598d068c54d963d99eefa62aab94184a071fb8:app/Livewire/Konsultasi/Create.php
             $this->isPaymentApproved = $konsultasi && $konsultasi->status === true;
         } else {
             dd('gagal');
         }
     }
-
-
 
     // Metode untuk menyimpan data ke session
     private function saveDataToSession()
@@ -103,7 +104,6 @@ class Konsultasi extends Component
             'selectedJadwal' => $this->selectedJadwal,
 
         ];
-
         Session::put('consultation_data', $data);
     }
 
@@ -271,13 +271,10 @@ class Konsultasi extends Component
         Session::put('currentStep', $this->currentStep);
     }
 
-    // Metode untuk menyimpan transaksi setelah step 2 selesai
     public function submitTransaction()
     {
-
         $sessionData = Session::get('consultation_data');
         try {
-
             $invoiceNumber = $this->generateInvoiceNumber();
             if ($this->paymentProof) {
                 $filename = Str::uuid() . '.' . $this->paymentProof->getClientOriginalExtension();
@@ -298,13 +295,15 @@ class Konsultasi extends Component
                 $transaction =   Transaction::create($data);
 
                 $this->reset('paymentProof');
+<<<<<<< HEAD:app/Livewire/Konsultasi.php
 
                 Session::forget(['consultation_data', 'currentStep']);
+=======
+                Session::forget('consultation_data');
+>>>>>>> 02598d068c54d963d99eefa62aab94184a071fb8:app/Livewire/Konsultasi/Create.php
 
-                $this->transactionId = $transaction->id;  // Set the transactionId to the newly created transaction ID
-                $this->checkPaymentStatus();  // Check the payment status
-
-
+                $this->transactionId = $transaction->id;
+                $this->checkPaymentStatus();
                 $this->currentStep++;
             }
         } catch (\Exception $e) {
@@ -312,10 +311,29 @@ class Konsultasi extends Component
         }
     }
 
+    public function goToConsultationStep()
+    {
+        $this->currentStep++;
+    }
+
+    public function submitConsultation()
+    {
+        $data = [
+            'users_id' => Auth::id(),
+            'transactions_id' => $this->transactionId,
+            'judulKonsultasi' => $this->consultationTitle,
+            'penjelasan' => $this->consultationDescription,
+            'status' => false
+        ];
+
+        Consultation::create($data);
+
+        $this->success = true;
+    }
+
     public function render()
     {
-
-        return view('livewire.konsultasi', [
+        return view('livewire.konsultasi.create', [
             'provinces' => $this->provinces,
             'clinics' => $this->clinics,
             'doctors' => $this->doctors,

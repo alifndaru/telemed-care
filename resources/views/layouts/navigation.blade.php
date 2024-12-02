@@ -19,7 +19,7 @@
 
             <!-- KONSULTASI -->
             <li class="nav-item">
-              <a class="page-scroll" href="{{ route('konsultasi') }}">Konsultasi</a>
+              <a class="page-scroll" href="{{ route('konsultasi.list') }}">Konsultasi</a>
             </li>
 
             <!-- TENAGA -->
