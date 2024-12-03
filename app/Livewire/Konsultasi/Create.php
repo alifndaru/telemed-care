@@ -41,6 +41,7 @@ class Create extends Component
     public $voucher_code = '';
     public $voucherPresentage = null;
     public $voucher_id = null;
+    public $isVoucherApplied = false;
     public $isPaymentApproved  = false;
 
 
@@ -56,8 +57,12 @@ class Create extends Component
     public $transactionId = null;
     public $success = false;
 
+
+
     public function mount()
     {
+        // dd(session::all());
+        // dd($this->isVoucherApplied);
         // Cek apakah ada data di session
         $savedData = Session::get('consultation_data', []);
 
@@ -66,28 +71,62 @@ class Create extends Component
         $this->selectedClinic = $savedData['selectedClinic'] ?? null;
         $this->selectedDoctor = $savedData['selectedDoctor'] ?? null;
         $this->selectedJadwal = $savedData['selectedJadwal'] ?? null;
+        $this->transactionId = $savedData['transactionId'] ?? null; // Ambil hanya ini untuk step 3
 
         $this->currentStep = Session::get('currentStep') ?? 1;
 
-        if ($this->currentStep > 1 && empty($savedData['selectedProvince'])) {
-            $this->currentStep = 1;
-        }
+        
 
-
-        $this->selectedProvince = null; //agar input provinsi kosong
 
         $this->provinces = Province::all();
+        $this->clinics = $this->selectedProvince
+            ? Klinik::where('province_id', $this->selectedProvince)->get()
+            : collect(); // Kosongkan jika tidak ada provinsi terpilih
+
+        // Filter dokter berdasarkan klinik yang dipilih
+        $this->doctors = $this->selectedClinic
+            ? User::where('role_id', 3)->where('klinik_id', $this->selectedClinic)->get()
+            : collect(); // Kosongkan jika tidak ada klinik terpilih
+
+        // Filter jadwal berdasarkan dokter yang dipilih
+        $this->jadwals = $this->selectedDoctor
+            ? Jadwal::where('users_id', $this->selectedDoctor)->get()
+            : collect();
+
+        //filter biaya sesuai dengan jadwal    
+        $this->biaya = $this->selectedJadwal
+            ? Jadwal::find($this->selectedJadwal)->biaya
+            : null;
+
+        $this->totalBiaya = $this->selectedJadwal
+            ? Jadwal::find($this->selectedJadwal)->biaya
+            : null;
+
+        //filter data rekening
+        $this->bank = $this->selectedClinic
+            ? Klinik::find($this->selectedClinic)->bank
+            : null;
+
+        $this->rekening = $this->selectedClinic
+            ? Klinik::find($this->selectedClinic)->noRekening
+            : null;
+
+        $this->atasNama = $this->selectedClinic
+            ? Klinik::find($this->selectedClinic)->atasNama
+            : null;
     }
 
     public function checkPaymentStatus()
     {
+        // dd($this->transactionId);
         if ($this->transactionId) {
             $konsultasi = Transaction::find($this->transactionId);
             $this->isPaymentApproved = $konsultasi && $konsultasi->status === true;
+         
         } else {
-            dd('gagal');
+            dd($this->transactionId);
         }
-    }
+    }   
 
     // Metode untuk menyimpan data ke session
     private function saveDataToSession()
@@ -97,28 +136,51 @@ class Create extends Component
             'selectedClinic' => $this->selectedClinic,
             'selectedDoctor' => $this->selectedDoctor,
             'selectedJadwal' => $this->selectedJadwal,
-
+            'transactionId' => $this->transactionId,
         ];
         Session::put('consultation_data', $data);
+        // dd(Session::all()); // Debug session
     }
 
     // Event listener untuk perubahan provinsi
+    // public function updatedSelectedProvince($value)
+    // {
+    //     if (!is_numeric($value)) {
+    //         // Reset data jika nilai tidak valid
+    //         $this->clinics = [];
+    //         $this->selectedClinic = null;
+    //         $this->doctors = [];
+    //         $this->jadwals = [];
+    //         return;
+    //     }
+
+    //     $this->clinics = Klinik::where('province_id', $value)->get();
+    //     $this->selectedClinic = null;
+    //     $this->doctors = [];
+    //     $this->jadwals = [];
+    // }
+
     public function updatedSelectedProvince($value)
     {
-        if (!is_numeric($value)) {
-            // Reset data jika nilai tidak valid
-            $this->clinics = [];
-            $this->selectedClinic = null;
-            $this->doctors = [];
-            $this->jadwals = [];
-            return;
-        }
+        $this->selectedProvince = $value;
+        $this->selectedClinic = null; // Reset klinik saat provinsi berubah
+        $this->selectedDoctor = null; // Reset dokter saat klinik berubah
+        $this->selectedJadwal = null; // Reset jadwal saat dokter berubah
 
+        // Perbarui klinik berdasarkan provinsi yang dipilih
         $this->clinics = Klinik::where('province_id', $value)->get();
-        $this->selectedClinic = null;
-        $this->doctors = [];
-        $this->jadwals = [];
+        $this->doctors = collect(); // Kosongkan dokter
+        $this->jadwals = collect(); // Kosongkan jadwal
+
+        // Simpan ke sesi
+        Session::put('consultation_data', [
+            'selectedProvince' => $this->selectedProvince,
+            'selectedClinic' => $this->selectedClinic,
+            'selectedDoctor' => $this->selectedDoctor,
+            'selectedJadwal' => $this->selectedJadwal,
+        ]);
     }
+
 
     // Event listener untuk perubahan klinik
     public function updatedSelectedClinic($value)
@@ -146,18 +208,19 @@ class Create extends Component
         }
     }
 
-    public function getRekening($klinikId){
+    public function getRekening($klinikId)
+    {
         $klinik = Klinik::find($klinikId);
 
-    if ($klinik) {
+        if ($klinik) {
             $this->rekening = $klinik->noRekening;
             $this->bank = $klinik->bank;
             $this->atasNama = $klinik->atasNama;
-    } else {
-        $this->rekening = null;
-        $this->bank= null;
-        $this->atasNama = null;
-    }
+        } else {
+            $this->rekening = null;
+            $this->bank = null;
+            $this->atasNama = null;
+        }
     }
 
 
@@ -192,8 +255,13 @@ class Create extends Component
         }
     }
 
+
+
+
     public function applyVoucher()
     {
+
+
         $this->validate([
             'voucher_code' => 'required|string|exists:voucher,kode_voucher',
         ]);
@@ -255,14 +323,18 @@ class Create extends Component
         // Simpan data ke session
         $this->saveDataToSession();
 
+        // dd(Session::all());
+
         // Pindah ke step berikutnya
         $this->currentStep++;
+       
         Session::put('currentStep', $this->currentStep);
     }
 
     public function goToPreviousStep()
     {
         $this->currentStep--;
+
         Session::put('currentStep', $this->currentStep);
     }
 
@@ -290,10 +362,12 @@ class Create extends Component
                 $transaction =   Transaction::create($data);
 
                 $this->reset('paymentProof');
-                Session::forget(['consultation_data', 'currentStep']);
+                // Session::forget(['consultation_data', 'currentStep']);
                 $this->transactionId = $transaction->id;
+              
                 $this->checkPaymentStatus();
                 $this->currentStep++;
+                Session::put('currentStep', $this->currentStep);
             }
         } catch (\Exception $e) {
             session()->flash('error', 'Terjadi kesalahan saat menyimpan transaksi!');
@@ -302,6 +376,7 @@ class Create extends Component
 
     public function goToConsultationStep()
     {
+        Session::put('currentStep', $this->currentStep);
         $this->currentStep++;
     }
 
@@ -316,7 +391,7 @@ class Create extends Component
         ];
 
         Consultation::create($data);
-
+        Session::forget(['consultation_data', 'currentStep']);
         $this->success = true;
     }
 
