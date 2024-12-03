@@ -127,11 +127,7 @@
             </p>
             <div class="mt-4">
               @if ($bank)
-<<<<<<< HEAD
-              <p class="text-black font-semibold w-10/12">Transfer Via Rekening {{$bank}}</p>
-=======
               <p class="text-black font-semibold w-10/12">Transfer Via Rekening {{$bank}}</p>       
->>>>>>> c7ac880e2105e4f85afda20592d54ceeacc8b0be
               @endif
               @if ($rekening && $atasNama)
               <p class="text-black font-semibold w-10/12">No rek {{$rekening}} a.n {{$atasNama}}</p>

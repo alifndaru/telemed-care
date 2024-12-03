@@ -118,6 +118,7 @@ class Create extends Component
 
     public function checkPaymentStatus()
     {
+        $this->saveDataToSession();
         // dd($this->transactionId);
         if ($this->transactionId) {
             $konsultasi = Transaction::find($this->transactionId);
@@ -141,24 +142,6 @@ class Create extends Component
         Session::put('consultation_data', $data);
         // dd(Session::all()); // Debug session
     }
-
-    // Event listener untuk perubahan provinsi
-    // public function updatedSelectedProvince($value)
-    // {
-    //     if (!is_numeric($value)) {
-    //         // Reset data jika nilai tidak valid
-    //         $this->clinics = [];
-    //         $this->selectedClinic = null;
-    //         $this->doctors = [];
-    //         $this->jadwals = [];
-    //         return;
-    //     }
-
-    //     $this->clinics = Klinik::where('province_id', $value)->get();
-    //     $this->selectedClinic = null;
-    //     $this->doctors = [];
-    //     $this->jadwals = [];
-    // }
 
     public function updatedSelectedProvince($value)
     {
