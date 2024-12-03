@@ -29,7 +29,7 @@
                 <!-- Dokter Name -->
                 <div class="grid grid-cols-3 gap-4 items-center">
                     <dt class="font-medium text-gray-600">Dokter Name:</dt>
-                    <dd class="col-span-2 text-gray-800">{{ $transaction->dokter->name ?? 'N/A' }}</dd>
+                    <dd class="col-span-2 text-gray-800">{{ $transaction->doctor->name ?? 'N/A' }}</dd>
                 </div>
 
                 <!-- Klinik Name -->
