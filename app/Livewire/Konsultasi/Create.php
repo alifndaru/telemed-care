@@ -119,8 +119,7 @@ class Create extends Component
     public function checkPaymentStatus()
     {
         $this->saveDataToSession();
-
-       
+        // dd($this->transactionId);
         if ($this->transactionId) {
             $konsultasi = Transaction::find($this->transactionId);
             $this->isPaymentApproved = $konsultasi && $konsultasi->status === true;
