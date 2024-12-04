@@ -10,7 +10,7 @@ use App\Models\ChatKonsultasi;
 use App\Models\Role;
 use App\Models\User;
 
-class LiveChat extends Component
+class ChatDokter extends Component
 {
     public $consultations = [];
     public $activeConsultation = null;
@@ -20,7 +20,7 @@ class LiveChat extends Component
 
     public function render()
     {
-        return view('livewire.live-chat');
+        return view('livewire.live-chat.chat_dokter');
     }
 
     public function mount()
@@ -55,7 +55,6 @@ class LiveChat extends Component
                 $otherUser = $user->role_id == 3
                     ? $consultation->user
                     : User::where('role_id', 3)->find($consultation->transaction->dokter_id);
-                // dd($otherUser);
 
                 // Ambil pesan terakhir
                 $latestMessage = $consultation->messages()->latest()->first();
@@ -79,7 +78,15 @@ class LiveChat extends Component
                     'is_sender' => $latestMessage ? $latestMessage->from_user_id == $user->id : false,
                 ];
             })->toArray();
+
+        // Ambil semua pesan dari konsultasi yang dimuat
+        $consultationIds = array_column($this->consultations, 'id');
+        $this->messages = ChatKonsultasi::whereIn('consultation_id', $consultationIds)
+            ->orderBy('created_at', 'asc')
+            ->get()
+            ->toArray();
     }
+
 
 
     public function selectConsultation($consultationsId)

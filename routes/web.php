@@ -28,6 +28,10 @@ Route::get('/konsultasi-create', function () {
     return view('pages.konsultasi.create');
 })->name('konsultasi.create');
 
+Route::get('/konsultasi-chat', function () {
+    return view('pages.chat-dokter');
+})->name('konsultasi.chat');
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
