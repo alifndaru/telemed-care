@@ -67,26 +67,30 @@
               </x-primary-button>
             </x-slot>
             <x-slot name="content">
+              <x-dropdown-link :href="route('konsultasi.chat')">
+                <i class="fa-solid fa-comments mr-2"></i>{{ __('Chat') }}
+              </x-dropdown-link>
               <x-dropdown-link :href="route('profile.edit')">
-                {{ __('Profile') }}
+                <i class="fa-solid fa-user mr-3"></i>{{ __('Profile') }}
               </x-dropdown-link>
               <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <x-dropdown-link :href="route('logout')"
                   onclick="event.preventDefault();
                                 this.closest('form').submit();">
-                  {{ __('Log Out') }}
+                  <i class="fa-solid fa-right-from-bracket mr-2"></i>{{ __('Log Out') }}
                 </x-dropdown-link>
               </form>
             </x-slot>
           </x-dropdown>
         @else
           <!-- Jika Belum Login -->
-          <x-primary-button href="{{ route('login') }}">
-            <a href="{{ route('login') }}">Login</a>
+          <x-primary-button onclick="window.location.href='{{ route('login') }}'">
+            Login
           </x-primary-button>
-          <x-secondary-button href="{{ route('register') }}">
-            <a href="{{ route('register') }}">Daftar</a>
+
+          <x-secondary-button onclick="window.location.href='{{ route('register') }}'">
+            Daftar
           </x-secondary-button>
         @endauth
       </div>

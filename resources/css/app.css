@@ -1980,3 +1980,12 @@ p {
     -webkit-box-shadow: 0 0 25px rgba(0, 173, 181, 0.15);
     box-shadow: 0 0 25px rgba(0, 173, 181, 0.15);
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(30, 144, 255, 0.3);
+    border-radius: 4px;
+}

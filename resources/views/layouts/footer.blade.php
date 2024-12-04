@@ -1,4 +1,4 @@
-<footer id="footer" class="footer-area bg-white">
+<footer id="footer" class="footer-area bg-white border-t  ">
   <div class="mb-16 footer-widget">
     <div class="container">
 
