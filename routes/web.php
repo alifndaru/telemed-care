@@ -6,11 +6,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\TenagaLayananController;
 use App\Http\Controllers\TenagaProviderController;
+use App\Http\Controllers\HomeController;
 // use App\Livewire\Konsultasi;
 
-Route::get('/', function () {
-    return view('homepage');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
 
 Route::get('/feedback', function () {
     return view('homepage');
