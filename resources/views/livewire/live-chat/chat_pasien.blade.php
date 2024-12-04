@@ -2,16 +2,16 @@
   use Carbon\Carbon;
 @endphp
 
-<div wire:poll class="h-[calc(100vh-100px)] grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 dark:bg-gray-900">
+<div wire:poll class="h-screen grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 dark:bg-gray-900">
   <!-- Left Sidebar: Conversation List -->
-  <div class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+  <div class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 rounded-lg shadow-sm h-full">
     <div
       class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-4 border-b dark:border-gray-600 flex items-center justify-between">
       <x-filament::icon icon="heroicon-m-chat-bubble-left-right" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
       <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200">{{ __('Chat Konsultasi') }}</h2>
       <x-filament::badge>{{ count($this->consultations) }}</x-filament::badge>
     </div>
-    <div class="h-[calc(100vh-220px)] overflow-y-auto custom-scrollbar p-2">
+    <div class="overflow-y-auto custom-scrollbar p-2">
       @forelse ($this->consultations as $consultation)
         <div wire:key="{{ $consultation['id'] }}" wire:click="selectConsultation({{ $consultation['id'] }})"
           class="p-4 mb-2 rounded-lg cursor-pointer transition-all duration-200
@@ -44,7 +44,7 @@
           </div>
         </div>
       @empty
-        <div class="flex flex-col items-center justify-center h-full text-center p-6">
+        <div class="flex flex-col items-center justify-center text-center p-6">
           <x-filament::icon icon="heroicon-m-chat-bubble-left" class="w-8 h-8 text-gray-500 dark:text-gray-400" />
           <p class="text-gray-600 dark:text-gray-400">{{ __('No conversations yet') }}</p>
         </div>
@@ -53,7 +53,7 @@
   </div>
 
   <!-- Right Sidebar: Chat Room -->
-  <div class="md:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow-sm">
+  <div class="md:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow-sm h-screen">
     @if ($this->activeConsultation)
       <div class="flex flex-col h-full">
         <!-- Chat Header -->
@@ -75,11 +75,11 @@
         </div>
 
         <!-- Chat Messages -->
-        <div class=" h-[calc(100vh-300px)] flex-1 overflow-y-auto p-6 bg-gray-50 dark:bg-gray-900 custom-scrollbar">
+        <div class="h-screen flex-1 overflow-y-auto p-6 bg-white dark:bg-gray-900 custom-scrollbar">
           @forelse ($this->messages as $message)
-            <div class="flex {{ $message['from_user_id'] === auth()->id() ? 'justify-end' : 'justify-start' }} mb-4">
+            <div class="flex {{ $message['from_user_id'] === auth()->id() ? 'justify-end' : 'justify-start' }} mb-4 ">
               <div
-                class="max-w-[70%] p-3 rounded-lg shadow-sm {{ $message['from_user_id'] === auth()->id() ? 'bg-blue-500 text-black dark:text-white' : 'bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200' }}">
+                class="max-w-[70%] p-3 rounded-lg shadow-lg {{ $message['from_user_id'] === auth()->id() ? 'bg-blue-500 text-black dark:text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200' }}">
                 <p class="text-sm break-words">
                   {{ $message['message'] }}
                 </p>
@@ -102,7 +102,7 @@
             <form wire:submit.prevent="sendMessage">
               <div class="flex items-center space-x-3">
                 <input type="text" wire:model="newMessage" placeholder="Type your message..."
-                  class="flex-1 p-2 rounded-lg border border-gray-300 dark:border-gray-600" />
+                  class="flex-1 p-2 rounded-lg border text-black border-gray-300 dark:text-black" />
                 <button type="submit"
                   class="px-4 py-2 bg-gray-500 dark:bg-white text-black dark:text-white rounded-lg">
                   Send
