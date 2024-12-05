@@ -14,22 +14,24 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, ): Response
+    public function handle(Request $request, Closure $next): Response
     {
-      
         if (!Auth::guard('web')->check()) {
             return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
         }
 
-        // Periksa apakah pengguna memiliki role 'super_admin' pada guard 'admin'
         $user = Auth::guard('web')->user();
-    //    dd($user);
 
-        // Periksa apakah pengguna memiliki role admin
-        if ($user->role->name !== 'super_admin') {
+        // Cek apakah pengguna memiliki role 'panel_user' dan mencegah login di admin Filament
+        if ($user->role->name === 'pasien' && $request->is('admin') && !$request->is('admin/*') || $user->role->name === 'panel_user' && $request->is('admin') && !$request->is('admin/*')) {
             return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
-       
+
+        // Cek apakah pengguna memiliki role 'dokter', 'klinik', atau 'super_admin' dan mencegah login di user
+        // if (in_array($user->role->name, ['dokter', 'klinik', 'super_admin']) && !$request->is('admin/*')) {
+        //     return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        // }
+
         return $next($request);
     }
 }

@@ -17,15 +17,15 @@ Route::get('/feedback', function () {
 })->name('feedback');
 
 
-Route::middleware(['auth', 'role:panel_user'])->group(function () {
+Route::middleware(['auth', 'role:check.role'])->group(function () {
     Route::get('/konsultasi-list', function () {
         return view('pages.konsultasi.list');
     })->name('konsultasi.list');
-    
+
     Route::get('/konsultasi-create', function () {
         return view('pages.konsultasi.create');
     })->name('konsultasi.create');
-    
+
     Route::get('/konsultasi-histori', function () {
         return view('pages.konsultasi.histori');
     })->name('histori.konsultasi');

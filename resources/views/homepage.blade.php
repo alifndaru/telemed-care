@@ -6,12 +6,24 @@
 
   <section class="bg-gray-100">
     <div class="hero-section">
-      <div class="hero-wrap relative z-[1] pt-[100px] bg-top img-bg min-h-screen flex items-center bg-cover md:bg-none"
+     <div class="hero-wrap relative z-[1] pt-[100px] bg-top img-bg min-h-screen flex items-center bg-cover md:bg-none"
         style="background-image:url('{{ asset('images/hero-bg.jpg') }}');">
         <div class="container">
           <div class="row">
             <div class="col-xl-7 col-lg-8 col-md-10">
               <div class="mr-auto place-self-center text-center md:text-start lg:col-span-7">
+                @if(session('error'))
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                        <strong class="font-bold">Error!</strong>
+                        <span class="block sm:inline">{{ session('error') }}</span>
+                        <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                            <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" onclick="this.parentElement.parentElement.style.display='none';">
+                                <title>Close</title>
+                                <path d="M14.348 5.652a1 1 0 00-1.414 0L10 8.586 7.066 5.652a1 1 0 10-1.414 1.414L8.586 10l-2.934 2.934a1 1 0 101.414 1.414L10 11.414l2.934 2.934a1 1 0 001.414-1.414L11.414 10l2.934-2.934a1 1 0 000-1.414z"/>
+                            </svg>
+                        </span>
+                    </div>
+                @endif
                 <p class="mb-4 text-white m-0 text-2xl">PKBI</p>
                 <h1
                   class="max-w-2xl mb-4 text-2xl md:text-3xl lg:text-5xl text-white font-extrabold leading-tight tracking-tight">
