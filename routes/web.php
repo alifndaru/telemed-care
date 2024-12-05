@@ -16,17 +16,21 @@ Route::get('/feedback', function () {
     return view('homepage');
 })->name('feedback');
 
-Route::get('/konsultasi-list', function () {
-    return view('pages.konsultasi.list');
-})->name('konsultasi.list');
 
-Route::get('/konsultasi-histori', function () {
-    return view('pages.konsultasi.histori');
-})->name('histori.konsultasi');
+Route::middleware(['auth', 'role:panel_user'])->group(function () {
+    Route::get('/konsultasi-list', function () {
+        return view('pages.konsultasi.list');
+    })->name('konsultasi.list');
+    
+    Route::get('/konsultasi-create', function () {
+        return view('pages.konsultasi.create');
+    })->name('konsultasi.create');
+    
+    Route::get('/konsultasi-histori', function () {
+        return view('pages.konsultasi.histori');
+    })->name('histori.konsultasi');
+});
 
-Route::get('/konsultasi-create', function () {
-    return view('pages.konsultasi.create');
-})->name('konsultasi.create');
 
 Route::get('/dashboard', function () {
     return redirect()->route('home');
@@ -44,9 +48,10 @@ Route::get('/chat', function () {
     return view('pages.chat.index');
 })->name('chat');
 
+Route::middleware(['auth', 'roleName:dokter'])->group(function () {
 Route::get('/tenaga', [TenagaProviderController::class, 'index'])->name('tenaga.index');
 Route::get('/tenaga/{category}', [TenagaProviderController::class, 'getSpesialis'])->name('tenaga.getSpesialis');
-
+});
 
 Route::get('/tenaga-layanan', [TenagaLayananController::class, 'index'])->name('tenaga-layanan.index');
 Route::get('/tenaga-layanan/{category}', [TenagaLayananController::class, 'getLayanan'])->name('tenaga-layanan.getLayanan');
