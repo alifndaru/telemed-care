@@ -86,9 +86,6 @@ class ChatDokter extends Component
             ->get()
             ->toArray();
     }
-
-
-
     public function selectConsultation($consultationsId)
     {
         $consultation = Consultation::with(['transaction.doctor', 'messages'])->findOrFail($consultationsId);

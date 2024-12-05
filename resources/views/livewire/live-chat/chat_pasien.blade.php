@@ -74,6 +74,30 @@
           </x-filament::button>
         </div>
 
+        <!-- Accordion Section -->
+        <div x-data="{ open: false }" class="relative w-full border-t">
+          <button @click="open = !open"
+            class="w-full text-left p-4 bg-gray-50 border-b flex justify-between items-center">
+            <span class="font-medium text-gray-700">{{ __('Detail Konsultasi') }}</span>
+            <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+            <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+            </svg>
+          </button>
+          <div x-show="open" x-cloak
+            class="absolute left-0 w-full bg-white border-t shadow-lg p-4 z-50 max-h-60 overflow-y-auto">
+            <h4 class="font-semibold text-gray-800 mb-2">{{ __('Judul Konsultasi') }}</h4>
+            <p class="text-gray-600 mb-4">{{ $consultation['judul_konsultasi'] }}</p>
+            <h4 class="font-semibold text-gray-800 mb-2">{{ __('Penjelasan') }}</h4>
+            <p class="text-gray-600">{{ $consultation['penjelasan'] }}</p>
+          </div>
+        </div>
+
+
         <!-- Chat Messages -->
         <div class="h-screen flex-1 overflow-y-auto p-6 bg-white dark:bg-gray-900 custom-scrollbar">
           @forelse ($this->messages as $message)

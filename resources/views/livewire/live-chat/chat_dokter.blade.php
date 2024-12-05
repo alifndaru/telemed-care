@@ -61,22 +61,46 @@
   <div class="md:col-span-2 bg-gray-100 flex flex-col h-[calc(100vh-100px)] overflow-y-auto">
     @if ($this->activeConsultation)
       <!-- Chat Header -->
-      <div class="bg-blue-500 py-4 px-6 flex justify-between items-center">
+      <div class="bg-white py-4 px-6 flex justify-between items-center">
         <div class="flex items-center gap-5">
           <x-filament::avatar
             src="https://ui-avatars.com/api/?name={{ urlencode($this->activeConsultation['other_person_name']) }}"
             alt="{{ $this->activeConsultation['other_person_name'] }}" class="w-10 h-10 rounded-full" />
           <div class="detail-profile">
-            <h2 class="text-lg font-bold text-white">
+            <h2 class="text-lg font-bold ">
               {{ $this->activeConsultation['other_person_name'] }}
             </h2>
-            <span class="text-gray-100">{{ $consultation['other_person_spesialis'] }}</span>
+            <span class="text-gray-500">{{ $consultation['other_person_spesialis'] }}</span>
           </div>
         </div>
-        <h5 class="text-white">Jadwal: {{ substr($consultation['jadwal_start'], 0, 5) }} -
+        <h5>Jadwal: {{ substr($consultation['jadwal_start'], 0, 5) }} -
           {{ substr($consultation['jadwal_end'], 0, 5) }}</h5>
-        <h5 class="text-lg font-bold text-white">{{ $consultation['klinik'] }}</h5>
+        <h5 class="text-lg font-bold ">{{ $consultation['klinik'] }}</h5>
       </div>
+      <!-- Accordion Section -->
+      <div x-data="{ open: false }" class="relative w-full border-t">
+        <button @click="open = !open"
+          class="w-full text-left p-4 bg-gray-50 border-b flex justify-between items-center">
+          <span class="font-medium text-gray-700">{{ __('Detail Konsultasi') }}</span>
+          <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+          <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+          </svg>
+        </button>
+        <div x-show="open" x-cloak
+          class="absolute left-0 w-full bg-white border-t shadow-lg p-4 z-50 max-h-60 overflow-y-auto">
+          <h4 class="font-semibold text-gray-800 mb-2">{{ __('Judul Konsultasi') }}</h4>
+          <p class="text-gray-600 mb-4">{{ $consultation['judul_konsultasi'] }}</p>
+          <h4 class="font-semibold text-gray-800 mb-2">{{ __('Penjelasan') }}</h4>
+          <p class="text-gray-600">{{ $consultation['penjelasan'] }}</p>
+        </div>
+      </div>
+
+
 
       <!-- Chat Messages -->
       <div class="flex-1 p-4 bg-blue-50 custom-scrollbar h-[calc(100vh-100px)] overflow-y-auto"
