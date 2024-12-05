@@ -69,33 +69,35 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-wrap justify-center gap-6 mt-16">
+      <div class="flex flex-wrap justify-center gap-6 mt-16 ">
     <!-- Box 1 -->
         <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center justify-center">
             <i class="fa-solid fa-user-doctor text-4xl"></i>
             <div class="px-2 text-center">
                 <!-- Menampilkan total tenaga provider secara dinamis -->
-                <p class="text-3xl font-bold">{{ $totalProviders }}</p>
-                <p class="mt-2 font-bold">TENAGA PROFESIONAL & TERPERCAYA</p>
+                <p class="text-3xl font-bold text-white">{{ $totalProviders }}</p>
+                <p class="mt-2 font-bold text-white">TENAGA PROFESIONAL & TERPERCAYA</p>
             </div>
         </div>
 
         <!-- Box 2 -->
-        <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center justify-center">
-            <i class="fa-solid fa-file-medical text-4xl"></i>
-            <div class="px-2 text-center">
-                <p class="text-3xl font-bold">{{ $totalLayanan }}</p>
-                <p class="mt-2 font-bold">LAYANAN KESPRO SESUAI STANDARD WHO</p>
+        <a href="{{ route('tenaga-layanan.index') }}" class="no-underline">
+            <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center justify-center hover:bg-blue-700 transition">
+                <i class="fa-solid fa-file-medical text-4xl"></i>
+                <div class="px-2 text-center">
+                    <p class="text-3xl font-bold text-white">{{ $totalLayanan }}</p>
+                    <p class="mt-2 font-bold text-white">LAYANAN KESPRO SESUAI STANDARD WHO</p>
+                </div>
             </div>
-        </div>
+        </a>
 
         <!-- Box 3 -->
         <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center justify-center">
             <i class="fa-solid fa-map-location-dot text-4xl"></i>
             <div class="px-2 text-center">
                 <!-- Menampilkan total lokasi klinik secara dinamis -->
-                <p class="text-3xl font-bold">{{ $totalLokasi }}</p>
-                <p class="mt-2 font-bold">LOKASI DI SELURUH WILAYAH INDONESIA</p>
+                <p class="text-3xl font-bold text-white">{{ $totalLokasi }}</p>
+                <p class="mt-2 font-bold text-white">LOKASI DI SELURUH WILAYAH INDONESIA</p>
             </div>
         </div>
     </div>
