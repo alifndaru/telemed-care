@@ -16,20 +16,20 @@ class CheckRole
      */
     public function handle(Request $request, Closure $next, ): Response
     {
-      
+
         if (!Auth::guard('web')->check()) {
             return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
         }
 
         // Periksa apakah pengguna memiliki role 'super_admin' pada guard 'admin'
-        $user = Auth::guard('web')->user();
-    //    dd($user);
+        // $user = Auth::guard('web')->user();
+        //    dd($user);
 
         // Periksa apakah pengguna memiliki role admin
-        if ($user->role->name !== 'super_admin') {
-            return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
-        }
-       
+        // if ($user->role->name !== 'super_admin') {
+        //     return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
+        // }
+
         return $next($request);
     }
 }

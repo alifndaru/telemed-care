@@ -5,12 +5,14 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
+use Filament\Models\Contracts\HasAvatar;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements HasAvatar
 {
     use HasFactory, Notifiable, HasRoles, HasPanelShield;
     protected $fillable = [
@@ -20,7 +22,8 @@ class User extends Authenticatable
         'role_id',
         'spesialis_id',
         'klinik_id',
-        'pelayanan_id'
+        'pelayanan_id',
+        'avatar_url',
     ];
     protected $hidden = [
         'password',
@@ -33,6 +36,12 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->avatar_url ? Storage::url("$this->avatar_url") : null;
+    }
+
     public function role()
     {
         return $this->belongsTo(Role::class);
