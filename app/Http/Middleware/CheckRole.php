@@ -23,7 +23,7 @@ class CheckRole
         $user = Auth::guard('web')->user();
 
         // Cek apakah pengguna memiliki role 'panel_user' dan mencegah login di admin Filament
-        if ($user->role->name === 'pasien' && $request->is('admin') && !$request->is('admin/*') || $user->role->name === 'panel_user' && $request->is('admin') && !$request->is('admin/*')) {
+        if ($user->role->name === 'panel_user' && $request->is('admin') && !$request->is('admin/*')) {
             return redirect('/')->with('error', 'Anda tidak memiliki akses ke halaman ini.');
         }
 
