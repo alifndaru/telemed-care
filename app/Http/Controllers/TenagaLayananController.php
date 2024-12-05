@@ -11,24 +11,24 @@ class TenagaLayananController extends Controller
     public function index()
     {
 
-        $data = Cache::remember('user.layanan', 60, function(){
-            return User::whereNotNull('spesialis_id')->whereNotNull('klinik_id')
+       
+            $data = User::whereNotNull('pelayanan_id')->whereNotNull('klinik_id')->where('role_id', 3)
             ->with([
+                'pelayanan:id,name',
                 'spesialis:id,name',
                 'klinik:id,namaKlinik,province_id',
                 'klinik.provinsi:id,name'
             ])
             ->orderBy('name')
-            ->take(10)
             ->get();
-        });
         return view('tenaga-layanan', compact('data'));
     } 
 
     public function getLayanan($category)
     {
-        $data = User::where('spesialis_id', $category)
+        $data = User::where('pelayanan_id', $category)
             ->with([
+                'pelayanan:id,name',
                 'spesialis:id,name',
                 'klinik:id,namaKlinik,province_id',
                 'klinik.provinsi:id,name'

@@ -15,15 +15,15 @@
                     <a href="javascript:void(0)" class="category font-semibold text-sky-600 text-md" data-category="5"><i class="fas fa-caret-right mr-2"></i>Kesehatan Ibu & Anak </a>
                     <a href="javascript:void(0)" class="category font-semibold text-sky-600 text-md" data-category="6"><i class="fas fa-caret-right mr-2"></i>Papsmear</a>
                     <div>
-                        <a href="#" onclick="toggleDropdown('dropdownSGBV')" class="text-blue-600  font-semibold block"><i class="fas fa-caret-right mr-2"></i>SGBV</a>
+                        <a href="javascript:void(0)" onclick="toggleDropdown('dropdownSGBV')" class="text-blue-600  font-semibold block"><i class="fas fa-caret-right mr-2"></i>SGBV</a>
                         <div id="dropdownSGBV" class="hidden pl-4 mt-2 space-y-2">
-                          <a href="javascript:void(0)" class="category text-sky-600 hover:text-sky-700 block" data-category="1">Kekerasan Dalam Rumah Tangga</a>
-                          <a href="javascript:void(0)" class="category text-sky-600 hover:text-sky-700 block" data-category="2">Kekerasan Dalam Berpacaran</a>
-                          <a href="javascript:void(0)" class="category text-sky-600 hover:text-sky-700 block" data-category="3">Kekerasan Seksual</a>
+                          <a href="javascript:void(0)" class="category text-sky-600 hover:text-sky-700 block" data-category="7">Kekerasan Dalam Rumah Tangga</a>
+                          <a href="javascript:void(0)" class="category text-sky-600 hover:text-sky-700 block" data-category="8">Kekerasan Dalam Berpacaran</a>
+                          <a href="javascript:void(0)" class="category text-sky-600 hover:text-sky-700 block" data-category="9">Kekerasan Seksual</a>
                         </div>
                       </div>
 
-                    <a href="javascript:void(0)" class="category font-semibold text-sky-600 text-lg " data-category="4"><i class="fas fa-caret-right mr-2"></i>Psikologi </a>
+                    <a href="javascript:void(0)" class="category font-semibold text-sky-600 text-lg " data-category="10"><i class="fas fa-caret-right mr-2"></i>Psikologi </a>
                 </div>
             </div>
             
@@ -116,17 +116,14 @@
          $(document).ready(function(){
             $('.category').on('click', function(){
                 let category = $(this).data('category');
+                if (!category) {
+        console.error('Data category tidak ditemukan');
+        return;
+    }
                 let categoryName = this.textContent.trim();
 
                 let breadcrumbCategory = document.getElementById('breadcrumb-category');
                 breadcrumbCategory.textContent = categoryName;
-
-                document.querySelectorAll('.category i').forEach(icon=>{
-                                icon.classList.remove('text-black');
-                            });
-
-                const icon = this.querySelector('i');
-                icon.classList.add('text-black');
 
                 $.ajax({
                     url: `/tenaga-layanan/${category}`,

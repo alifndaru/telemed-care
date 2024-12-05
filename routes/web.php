@@ -52,10 +52,9 @@ Route::get('/chat', function () {
     return view('pages.chat.index');
 })->name('chat');
 
-Route::middleware(['auth', 'roleName:dokter'])->group(function () {
+
 Route::get('/tenaga', [TenagaProviderController::class, 'index'])->name('tenaga.index');
 Route::get('/tenaga/{category}', [TenagaProviderController::class, 'getSpesialis'])->name('tenaga.getSpesialis');
-});
 
 Route::get('/tenaga-layanan', [TenagaLayananController::class, 'index'])->name('tenaga-layanan.index');
 Route::get('/tenaga-layanan/{category}', [TenagaLayananController::class, 'getLayanan'])->name('tenaga-layanan.getLayanan');
