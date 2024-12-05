@@ -23,6 +23,7 @@ class KlinikSeeder extends Seeder
             'noRekening' => '1234567890',
             'atasNama' => 'Nama Pemilik A',
             'status' => true,
+            'province_id' => 11,
         ]);
 
         Klinik::create([
@@ -35,6 +36,7 @@ class KlinikSeeder extends Seeder
             'noRekening' => '0987654321',
             'atasNama' => 'Nama Pemilik B',
             'status' => true,
+            'province_id' => 12
         ]);
 
         Klinik::create([
@@ -47,6 +49,7 @@ class KlinikSeeder extends Seeder
             'noRekening' => '1122334455',
             'atasNama' => 'Nama Pemilik C',
             'status' => true,
+            'province_id' => 13,
         ]);
 
         Klinik::create([
@@ -59,6 +62,7 @@ class KlinikSeeder extends Seeder
             'noRekening' => '1238123712',
             'atasNama' => 'Nama Pemilik D',
             'status' => true,
+            'province_id' => 14,
         ]);
 
         Klinik::create([
@@ -71,6 +75,7 @@ class KlinikSeeder extends Seeder
             'noRekening' => '123872872',
             'atasNama' => 'Nama Pemilik E',
             'status' => true,
+            'province_id' => 15,
         ]);
 
         Klinik::create([
@@ -83,6 +88,7 @@ class KlinikSeeder extends Seeder
             'noRekening' => '1928398128',
             'atasNama' => 'Nama Pemilik F',
             'status' => true,
+            'province_id' => 16,
         ]);
 
         Klinik::create([
@@ -95,6 +101,7 @@ class KlinikSeeder extends Seeder
             'noRekening' => '18273817238',
             'atasNama' => 'Nama Pemilik G',
             'status' => true,
+            'province_id' => 17,
         ]);
     }
 }

@@ -5,13 +5,25 @@
 @section('content')
   <section class="flex items-center justify-center h-screen bg-gray-100">
     <div class="w-full max-w-md bg-white rounded-lg shadow-md p-8">
-      <h2 class="text-2xl font-semibold text-center text-blue-600">Welcome Back</h2>
-      <p class="mt-2 text-sm text-center text-gray-600">Please login to your account</p>
+        @if(session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong class="font-bold">Error!</strong>
+                <span class="block sm:inline">{{ session('error') }}</span>
+                <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
+                    <svg class="fill-current h-6 w-6 text-red-500" role="button" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" onclick="this.parentElement.parentElement.style.display='none';">
+                        <title>Close</title>
+                        <path d="M14.348 5.652a1 1 0 00-1.414 0L10 8.586 7.066 5.652a1 1 0 10-1.414 1.414L8.586 10l-2.934 2.934a1 1 0 101.414 1.414L10 11.414l2.934 2.934a1 1 0 001.414-1.414L11.414 10l2.934-2.934a1 1 0 000-1.414z"/>
+                    </svg>
+                </span>
+            </div>
+        @endif
+      <h2 class="text-2xl font-semibold text-center text-blue-600">Selamat Datang</h2>
+      <p class="mt-2 text-sm text-center text-gray-600">Masuk ke akun PKBI-mu</p>
 
       <!-- Session Status -->
       @if (session('status'))
         <div id="status-message"
-          class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4">
+          class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative my-4">
           {{ session('status') }}
           <button id="close-btn" class="absolute top-0 right-0 mt-2 mr-2 text-green-700">&times;</button>
         </div>
@@ -25,7 +37,7 @@
           <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
           <input type="email" id="email" name="email"
             class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
-            placeholder="you@example.com" value="{{ old('email') }}" required autofocus>
+            placeholder="@gmail.com" value="{{ old('email') }}" required autofocus>
           <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
@@ -43,10 +55,10 @@
           <label for="remember_me" class="flex items-center">
             <input id="remember_me" type="checkbox" class="text-blue-600 focus:ring-blue-500 h-4 w-4 rounded"
               name="remember">
-            <span class="ml-2 text-sm text-gray-600">Remember me</span>
+            <span class="ml-2 text-sm text-gray-600">Ingat saya</span>
           </label>
           @if (Route::has('password.request'))
-            <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:underline">Forgot password?</a>
+            <a href="{{ route('password.request') }}" class="text-sm text-blue-600 hover:underline">Lupa password?</a>
           @endif
         </div>
 
@@ -59,8 +71,8 @@
 
       <!-- Divider -->
       <div class="mt-6 flex items-center justify-center">
-        <span class="text-sm text-gray-600">Don't have an account?</span>
-        <a href="{{ route('register') }}" class="ml-2 text-sm text-blue-600 font-medium hover:underline">Sign up</a>
+        <span class="text-sm text-gray-600">Belum Punya Akun?</span>
+        <a href="{{ route('register') }}" class="ml-2 text-sm text-blue-600 font-medium hover:underline">Daftar disini</a>
       </div>
     </div>
   </section>

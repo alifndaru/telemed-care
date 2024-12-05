@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('modul_web');
+        Schema::dropIfExists('table_modul_web');
     }
 };

@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Http\Middleware\CheckRole;
 use App\Models\ModulWeb;
 use Filament\Http\Middleware\Authenticate;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
@@ -28,6 +29,7 @@ class AdminPanelProvider extends PanelProvider
         $brandName = $modulWeb && $modulWeb->namaWebsite ? $modulWeb->namaWebsite : 'Telemed-Care';
 
         return $panel
+            // ->authGuard('pasien_session')
             ->default()
             ->brandName($brandName)
             ->sidebarCollapsibleOnDesktop()
@@ -43,7 +45,8 @@ class AdminPanelProvider extends PanelProvider
                 Pages\Dashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
-            ->widgets([Widgets\AccountWidget::class
+            ->widgets([
+                Widgets\AccountWidget::class
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -55,12 +58,15 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+            // CheckRole::class
             ])
             ->plugins([
                 FilamentShieldPlugin::make(),
             ])
             ->authMiddleware([
                 Authenticate::class,
+                \App\Http\Middleware\CheckRole::class,
+
             ]);
     }
 }

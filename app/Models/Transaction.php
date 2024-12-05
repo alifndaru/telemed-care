@@ -23,6 +23,12 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    public function doctor()
+    {
+        return $this->belongsTo(User::class, 'dokter_id')->where('role_id', 3);
+    }
+
     public function klinik()
     {
         return $this->belongsTo(Klinik::class, 'klinik_id', 'id');
@@ -31,8 +37,17 @@ class Transaction extends Model
     {
         return $this->belongsTo(Jadwal::class, 'jadwal_id', 'id');
     }
+    public function consultations()
+    {
+        return $this->hasMany(Consultation::class, 'transactions_id');
+    }
     public function voucher()
     {
         return $this->belongsTo(Voucher::class, 'voucher_id', 'id');
     }
+    public function conversation()
+    {
+        return $this->hasOne(Conversation::class);
+    }
+
 }
