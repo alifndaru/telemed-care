@@ -52,7 +52,7 @@
           </div>
         </div>
       @empty
-        <p class="text-blue-500 text-center">{{ __('Belum ada percakapan') }}</p>
+        <p class="mt-6 text-blue-500 text-center">{{ __('Belum ada percakapan') }}</p>
       @endforelse
     </div>
   </div>
@@ -119,7 +119,7 @@
             </div>
           </div>
         @empty
-          <div class="text-center">
+          <div class="mt-6 text-center">
             <p>{{ __('Belum ada pesan.') }}</p>
           </div>
         @endforelse
@@ -139,7 +139,7 @@
           </form>
         @else
           <div class="p-4 border-t border-gray-200 dark:border-gray-700 text-center text-gray-500 dark:text-gray-400">
-            Chat has ended. You cannot send messages.
+            Chat berakhir. Kamu tidak dapat mengirim pesan lagi.
           </div>
         @endif
       </div>

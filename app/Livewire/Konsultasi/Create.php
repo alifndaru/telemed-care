@@ -76,9 +76,6 @@ class Create extends Component
 
         $this->currentStep = Session::get('currentStep') ?? 1;
 
-        
-
-
         $this->provinces = Province::all();
         $this->clinics = $this->selectedProvince
             ? Klinik::where('province_id', $this->selectedProvince)->get()
@@ -86,12 +83,12 @@ class Create extends Component
 
         // Filter dokter berdasarkan klinik yang dipilih
         $this->doctors = $this->selectedClinic
-            ? User::where('role_id', 3)->where('klinik_id', $this->selectedClinic)->get()
+            ? Admin::where('role_id', 3)->where('klinik_id', $this->selectedClinic)->get()
             : collect(); // Kosongkan jika tidak ada klinik terpilih
 
         // Filter jadwal berdasarkan dokter yang dipilih
         $this->jadwals = $this->selectedDoctor
-            ? Jadwal::where('users_id', $this->selectedDoctor)->get()
+            ? Jadwal::where('admin_id', $this->selectedDoctor)->get()
             : collect();
 
         //filter biaya sesuai dengan jadwal    
@@ -124,11 +121,10 @@ class Create extends Component
         if ($this->transactionId) {
             $konsultasi = Transaction::find($this->transactionId);
             $this->isPaymentApproved = $konsultasi && $konsultasi->status === true;
-         
         } else {
             dd($this->transactionId);
         }
-    }   
+    }
 
     // Metode untuk menyimpan data ke session
     private function saveDataToSession()
@@ -180,7 +176,7 @@ class Create extends Component
     public function updatedSelectedDoctor($doctorId)
     {
         $this->reset(['selectedJadwal', 'jadwals']);
-        $this->jadwals = Jadwal::where('users_id', $doctorId)->get();
+        $this->jadwals = Jadwal::where('admin_id', $doctorId)->get();
     }
 
     public function updatedSelectedJadwal($jadwalId)
@@ -239,13 +235,8 @@ class Create extends Component
         }
     }
 
-
-
-
     public function applyVoucher()
     {
-
-
         $this->validate([
             'voucher_code' => 'required|string|exists:voucher,kode_voucher',
         ]);
@@ -311,7 +302,7 @@ class Create extends Component
 
         // Pindah ke step berikutnya
         $this->currentStep++;
-       
+
         Session::put('currentStep', $this->currentStep);
     }
 
@@ -348,7 +339,7 @@ class Create extends Component
                 $this->reset('paymentProof');
                 // Session::forget(['consultation_data', 'currentStep']);
                 $this->transactionId = $transaction->id;
-              
+
                 $this->checkPaymentStatus();
                 $this->currentStep++;
                 Session::put('currentStep', $this->currentStep);

@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Auth;
 
 class JadwalDokterResource extends Resource
 {
+
     protected static ?string $model = Jadwal::class;
     protected static ?string $navigationGroup = 'Modul Klinik'; // Organize navigation
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
@@ -32,40 +33,37 @@ class JadwalDokterResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('users_id')
+                Select::make('admin_id')
                     ->label('Doctor')
                     ->options(
-                Admin::whereHas('role', function ($query) {
-                            $query->where('name', 'dokter'); // Filter by role name 'dokter'
+                        Admin::whereHas('role', function ($query): void {
+                            $query->where('name', 'dokter');
                         })
-                        ->where('klinik_id', Auth::user()->klinik_id) // Filter by the same klinik_id as the logged-in user
-                        ->pluck('name', 'id')
-                        ->toArray()
+                            ->pluck('name', 'id')
+                            ->toArray()
                     )
                     ->required()
                     ->searchable(),
-
                 Select::make('klinik_id')
                     ->label('Clinic')
                     ->options(Klinik::pluck('namaKlinik', 'id')->toArray())
                     ->required()
                     ->searchable()
-                // ->default(fn() => Auth::user()->klinik_id)
-                ->default(fn() => Auth::user()->klinik_id)
-            ->disabled(fn() => Auth::user() && Auth::user()->role && Auth::user()->role->name == 'klinik'),
+                    ->default(fn() => Auth::user()->klinik_id)
+                    ->disabled(fn() => Auth::user() && Auth::user()->role && Auth::user()->role->name == 'klinik'),
                 Hidden::make('klinik_id')
                     ->default(fn() => Auth::user()->klinik_id)
                     ->required(),
 
                 TimePicker::make('start')
                     ->label('Start Time')
-                ->required()
-                ->format('H:i'),
+                    ->required()
+                    ->format('H:i'),
 
                 TimePicker::make('end')
                     ->label('End Time')
-                ->required()
-                ->format('H:i'),
+                    ->required()
+                    ->format('H:i'),
 
                 TextInput::make('biaya')
                     ->label('Cost')
@@ -82,8 +80,9 @@ class JadwalDokterResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->query(fn() => Jadwal::where('klinik_id', Auth::user()->klinik_id)) // Filter by klinik_id of the logged-in user
-            ->columns([TextColumn::make('admins.name')
+            ->query(fn() => Jadwal::where('klinik_id', Auth::user()->klinik_id))
+            ->columns([
+                TextColumn::make('admins.name')
                     ->label('Doctor')
                     ->sortable()
                     ->searchable(), // Enable search by doctor's name

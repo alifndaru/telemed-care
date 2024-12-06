@@ -28,6 +28,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'user_id', 'id');
+    }
+    public function jadwals()
+    {
+        return $this->hasMany(Jadwal::class, 'users_id', 'id');
+    }
     public function province()
     {
         return $this->belongsTo(Province::class, 'province_id', 'id');

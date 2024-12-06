@@ -13,23 +13,20 @@ class Consultation extends Model
         'penjelasan',
         'status'
     ];
-
     public function transaction()
     {
         return $this->belongsTo(Transaction::class, 'transactions_id', 'id');
     }
-
     public function user()
     {
         return $this->belongsTo(User::class, 'users_id');
     }
     public function admins()
     {
-        return $this->belongsTo(Admin::class, 'users_id');
+        return $this->belongsTo(Admin::class, 'admin_id');
     }
-
     public function messages()
     {
-        return $this->hasMany(ChatKonsultasi::class);
+        return $this->hasMany(ChatKonsultasi::class, 'consultation_id');
     }
 }

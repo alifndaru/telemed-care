@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\TransactionResource\Pages;
+use App\Models\Admin;
 use App\Models\Transaction;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -30,11 +31,8 @@ class TransactionResource extends Resource
 
     public static function table(Table $table): Table
     {
-
-        // \Log::info('User Klinik ID: ' . Auth::user()->klinik_id);
-
         return $table
-            ->query(fn() => Transaction::where('klinik_id', Auth::user()->klinik_id))
+            // ->query(fn() => Transaction::where('klinik_id', Auth::user()->klinik_id))
             ->columns([
                 TextColumn::make('invoice_number')
                     ->searchable()
@@ -48,7 +46,7 @@ class TransactionResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->getStateUsing(function ($record) {
-                        $dokter = User::find($record->dokter_id);
+                        $dokter = Admin::find($record->dokter_id);
                         return $dokter?->name;
                     }),
                 TextColumn::make('klinik.namaKlinik')

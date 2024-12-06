@@ -10,7 +10,7 @@ class Jadwal extends Model
 {
     protected $table = 'jadwals';
     protected $fillable = [
-        'users_id',
+        'admin_id',
         'klinik_id',
         'start',
         'end',

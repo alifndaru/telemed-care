@@ -25,15 +25,16 @@ class Transaction extends Model
     }
     public function admins()
     {
-        return $this->belongsTo(admin::class, 'user_id', 'id');
+        return $this->belongsTo(admin::class, 'dokter_id', 'id');
     }
-
-
     public function doctor()
     {
-        return $this->belongsTo(User::class, 'dokter_id')->where('role_id', 3);
+        return $this->belongsTo(Admin::class, 'dokter_id');
     }
-
+    public function consultation()
+    {
+        return $this->hasOne(Consultation::class);
+    }
     public function klinik()
     {
         return $this->belongsTo(Klinik::class, 'klinik_id', 'id');
@@ -41,10 +42,6 @@ class Transaction extends Model
     public function jadwal()
     {
         return $this->belongsTo(Jadwal::class, 'jadwal_id', 'id');
-    }
-    public function consultations()
-    {
-        return $this->hasMany(Consultation::class, 'transactions_id');
     }
     public function voucher()
     {
@@ -54,5 +51,4 @@ class Transaction extends Model
     {
         return $this->hasOne(Conversation::class);
     }
-
 }

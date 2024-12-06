@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Admin;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -30,53 +31,64 @@ class ChatDokter extends Component
 
     public function loadConsultations()
     {
-        $user = Auth::user();
+        $user = Auth::user(); // Pasien (tabel users)
+        $doctor = Auth::guard('admin')->user(); // Dokter (tabel admins)
         $query = Consultation::query();
 
-        $doctorRoleId = Role::where('name', 'dokter')->first()->id;
-        // $patientRoleId = Role::where('name', 'panel_user')->first()->id;
-        $patientRoleId = Auth::guard('web')->user()->id;
-
-        // Query berdasarkan role
-        if ($user->role_id == $doctorRoleId) {
-            $query->whereHas('transaction', function ($q) use ($user) {
-                $q->where('dokter_id', $user->id); // Memastikan konsultasi milik dokter
+        // dd($doctor);
+        if ($doctor) {
+            // Dokter: Filter berdasarkan dokter_id di tabel transactions
+            $query->whereHas('transaction', function ($q) use ($doctor) {
+                $q->where('dokter_id', $doctor->id);
             });
-        } else if ($user->role_id == $patientRoleId) {
-            $query->where('users_id', $user->id); // Memastikan konsultasi milik pasien
+        } elseif ($user) {
+            // Pasien: Filter berdasarkan user_id di tabel transactions
+            $query->whereHas('transaction', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
         } else {
+            // Jika tidak ada pengguna yang valid
             abort(403, 'Unauthorized access');
         }
 
         // Ambil konsultasi dengan relasi yang diperlukan
-        $this->consultations = $query->with(['transaction.doctor', 'messages', 'user', 'transaction.jadwal'])
+        $this->consultations = $query->with([
+            'transaction.doctor', // Relasi ke dokter (tabel admins)
+            'transaction.user',   // Relasi ke pasien (tabel users)
+            'messages',
+            'transaction.jadwal'
+        ])
             ->orderBy('updated_at', 'desc')
             ->get()
-            ->map(function ($consultation) use ($user) {
-                $otherUser = $user->role_id == 3
-                    ? $consultation->user
-                    : User::where('role_id', 3)->find($consultation->transaction->dokter_id);
+            ->map(function ($consultation) use ($user, $doctor) {
+                // Tentukan apakah yang login dokter atau pasien
+                $otherUser = $doctor
+                    ? $consultation->transaction->user // Dokter melihat pasien
+                    : $consultation->transaction->doctor; // Pasien melihat dokter
 
                 // Ambil pesan terakhir
                 $latestMessage = $consultation->messages()->latest()->first();
 
-                // Kembalikan data yang diinginkan
                 return [
                     'id' => $consultation->id,
                     'jadwal_start' => $consultation->transaction->jadwal->start ?? null,
                     'jadwal_end' => $consultation->transaction->jadwal->end ?? null,
                     'judul_konsultasi' => $consultation->judulKonsultasi,
                     'penjelasan' => $consultation->penjelasan,
-                    'other_person_name' => $otherUser->name ?? 'Unknown', // Pastikan nama pasien yang benar
-                    'other_person_spesialis' => $otherUser->spesialis->name ?? 'Pasien', // Nama spesialis dokter atau status 'Pasien'
+                    'other_person_name' => $otherUser->name ?? 'Unknown',
+                    'other_person_spesialis' => $doctor
+                        ? 'Pasien'
+                        : $otherUser->spesialis->name ?? 'Dokter',
                     'klinik' => $otherUser->klinik->namaKlinik ?? '',
                     'latest_message' => $latestMessage ? $latestMessage->message : '',
                     'last_message_time' => $latestMessage ? $latestMessage->created_at : null,
                     'unread_count' => $consultation->messages()
                         ->where('is_read', false)
-                        ->where('from_user_id', '!=', $user->id)
+                        ->where('from_user_id', '!=', $user ? $user->id : $doctor->id)
                         ->count(),
-                    'is_sender' => $latestMessage ? $latestMessage->from_user_id == $user->id : false,
+                    'is_sender' => $latestMessage
+                        ? $latestMessage->from_user_id == ($doctor ? $doctor->id : $user->id)
+                        : false,
                 ];
             })->toArray();
 
@@ -87,37 +99,48 @@ class ChatDokter extends Component
             ->get()
             ->toArray();
     }
+
+
+
     public function selectConsultation($consultationsId)
     {
         $consultation = Consultation::with(['transaction.doctor', 'messages'])->findOrFail($consultationsId);
         $user = Auth::user();
+        $doctor = Auth::guard('admin')->user();
 
         // Verifikasi akses pengguna terhadap konsultasi ini
-        if (
-            ($user->role_id == 3 && $consultation->transaction->dokter_id != $user->id) ||
-            ($user->role_id == 1 && $consultation->users_id != $user->id)
-        ) {
+        if ($doctor) {
+            if ($consultation->transaction->dokter_id != $doctor->id) {
+                abort(403, 'Unauthorized access');
+            }
+        } elseif ($user) {
+            if ($consultation->users_id != $user->id) {
+                abort(403, 'Unauthorized access');
+            }
+        } else {
             abort(403, 'Unauthorized access');
         }
 
-        $otherUser = $user->role_id == 3
+        $otherUser = $doctor
             ? $consultation->user
-            : User::where('role_id', 3)->find($consultation->transaction->dokter_id);
+            : Admin::find($consultation->transaction->dokter_id);
 
         $this->activeConsultation = [
             'id' => $consultation->id,
             'judul_konsultasi' => $consultation->judulKonsultasi,
             'penjelasan' => $consultation->penjelasan,
             'other_person_name' => $otherUser->name ?? 'Unknown',
-            'other_person_spesialis' => $doctor->spesialis->name ?? 'Pasien',
-            'klinik' => $doctor->klinik->namaKlinik ?? '',
+            'other_person_spesialis' => $doctor
+                ? 'Pasien'
+                : $otherUser->spesialis->name ?? 'Dokter',
+            'klinik' => $otherUser->klinik->namaKlinik ?? '',
             'last_message_time' => $consultation->updated_at,
             'status' => $consultation->status
         ];
 
         // Tandai semua pesan sebagai sudah dibaca
-        ChatKonsultasi::where('consultation_id', operator: $consultationsId)
-            ->where('from_user_id', '!=', $user->id)
+        ChatKonsultasi::where('consultation_id', $consultationsId)
+            ->where('from_user_id', '!=', $doctor ? $doctor->id : $user->id)
             ->update(['is_read' => true]);
 
         $this->messages = $consultation->messages()
@@ -158,6 +181,7 @@ class ChatDokter extends Component
         ]);
 
         $user = Auth::user();
+        $doctor = Auth::guard('admin')->user();
 
         if (!$this->activeConsultation) {
             return;
@@ -165,10 +189,10 @@ class ChatDokter extends Component
 
         ChatKonsultasi::create([
             'consultation_id' => $this->activeConsultation['id'],
-            'from_user_id' => $user->id,
+            'from_user_id' => $doctor ? $doctor->id : $user->id,
             'message' => $this->newMessage,
             'is_read' => false,
-            'type' => $user->role_id == 3 ? 'dokter' : 'pasien'
+            'type' => $doctor ? 'dokter' : 'pasien'
         ]);
 
         $consultation = Consultation::find($this->activeConsultation['id']);

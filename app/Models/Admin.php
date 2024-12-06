@@ -36,9 +36,9 @@ class Admin extends Authenticatable
     }
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_id');
     }
-    public function spesialis()
+    public function spesialisasi()
     {
         return $this->belongsTo(SpesialisasiDokter::class, 'spesialis_id', 'id');
     }
@@ -56,13 +56,9 @@ class Admin extends Authenticatable
     {
         return $this->belongsTo(Province::class, 'province_id', 'id');
     }
-    public function spesialisasi()
-    {
-        return $this->belongsTo(SpesialisasiDokter::class, 'spesialis_id');
-    }
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'user_id', 'id');
+        return $this->hasMany(Transaction::class, 'dokter_id', 'id');
     }
     public function jadwals()
     {
