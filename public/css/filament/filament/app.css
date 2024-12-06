@@ -5253,3 +5253,11 @@ input:focus-visible
 .h-\[calc\(50vh-160px\)\] {
     height: calc(50vh - 160px);
 }
+
+.break-words {
+    overflow-wrap: break-word;
+}
+
+.max-w-\[70\%\] {
+    max-width: 70%;
+}
