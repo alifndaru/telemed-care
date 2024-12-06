@@ -53,7 +53,8 @@
                         
                     <div class="flex flex-col lg:flex-row justify-between p-3 lg:items-center shadow-lg rounded-lg mb-4 border">
                         <div class="dokter-profile flex flex-row items-center">
-                            <img src="https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="h-auto max-w-40" alt="image:" />
+                            <img src="{{ $item->image ? asset($item->image) : 'https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }}"  class="h-auto max-w-40 center" alt="image:" />
+                       
                             <div class="dokter-info ml-8 p-2">
                             <div class="dokter-name font-bold text-sky-600 text-lg">{{$item->name}}</div>
                             <div class="dokter-title font-bold text-slate-300 text-sm">{{$item->spesialis->name}}</div>
@@ -64,14 +65,26 @@
                         </div>
                         </div>
                         <div class="profile-action flex lg:flex-col justify-end lg:justify-start gap-1">
-                        <a href="#" class="flex lg:flex-col gap-2 lg:gap-0 rounded-lg text-xs lg:text-sm py-1 px-2 lg:py-1 lg:px-2 bg-sky-600 lg:justify-center items-center text-white text-center font-bold">
+                        <button onclick="openModal('modal-{{ $item->id }}')" class="flex lg:flex-col gap-2 lg:gap-0 rounded-lg text-xs lg:text-sm py-1 px-2 lg:py-1 lg:px-2 bg-sky-600 lg:justify-center items-center text-white text-center font-bold">
                             <span><i class="far fa-user"></i></span>PROFILE
-                        </a>
-                        <a href="#" class="flex lg:flex-col gap-2 lg:gap-0 rounded-lg text-xs lg:text-sm py-1 px-2 lg:py-1 lg:px-2 bg-yellow-400 lg:justify-center items-center text-sky-700 font-bold">
+                        </button>
+                        <a href="{{route('konsultasi.create')}}" class="flex lg:flex-col gap-2 lg:gap-0 rounded-lg text-xs lg:text-sm py-1 px-2 lg:py-1 lg:px-2 bg-yellow-400 lg:justify-center items-center text-sky-700 font-bold">
                         <span><i class="far fa-comments"></i></span>KONSULTASI
                         </a>
                         </div>
                      </div>
+
+                     <div id="modal-{{ $item->id }}" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden">
+                        <div class="flex bg-white rounded-lg w-11/12 md:w-3/4 lg:w-[20%] p-6 relative justify-center">
+                            <div class="text-center">
+                                <button onclick="closeModal('modal-{{ $item->id }}')" class="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-lg">&times;</button>
+                                <img src="{{ $item->image ? asset($item->image) : 'https://plus.unsplash.com/premium_photo-1658506671316-0b293df7c72b?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' }}"  class="h-auto max-w-40 center" alt="image:" />
+                                <h2 class="text-gray-700 text-lg font-bold mt-4 mb-2">{{ $item->name }}</h2>
+                                <p class="text-gray-700 mb-2">{{ $item->spesialis->name }}</p>
+
+                            </div>
+                        </div>
+                    </div>
                     @endforeach
                 </div>
 
@@ -81,6 +94,14 @@
 
         @section('script')
             <script>
+                   function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+        }
+
                 $(document).ready(function(){
             $('.category').on('click', function(){
                 let category = $(this).data('category');

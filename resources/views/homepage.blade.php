@@ -69,33 +69,38 @@
           </div>
         </div>
       </div>
-      <div class="flex flex-wrap justify-around gap-4 mt-16">
-        <!-- Box 1 -->
-        <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center">
-          <i class="fa-solid fa-user-doctor text-4xl"></i>
-          <div class="px-2">
-            <p class="text-center text-3xl font-bold text-white">112</p>
-            <p class="text-center mt-2 font-bold text-white">TENAGA PROFESIONAL & TERPERCAYA</p>
-          </div>
+      <div class="flex flex-wrap justify-center gap-6 mt-16 ">
+    <!-- Box 1 -->
+        <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center justify-center">
+            <i class="fa-solid fa-user-doctor text-4xl"></i>
+            <div class="px-2 text-center">
+                <!-- Menampilkan total tenaga provider secara dinamis -->
+                <p class="text-3xl font-bold text-white">{{ $totalProviders }}</p>
+                <p class="mt-2 font-bold text-white">TENAGA PROFESIONAL & TERPERCAYA</p>
+            </div>
         </div>
 
         <!-- Box 2 -->
-        <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center">
-          <i class="fa-solid fa-file-medical text-4xl"></i>
-          <div class="px-2">
-            <p class="text-center text-3xl font-bold text-white">10</p>
-            <p class="text-center mt-2 font-bold text-white">LAYANAN KESPRO SESUAI STANDARD WHO</p>
-          </div>
-        </div>
+        <a href="{{ route('tenaga-layanan.index') }}" class="no-underline">
+            <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center justify-center hover:bg-blue-700 transition">
+                <i class="fa-solid fa-file-medical text-4xl"></i>
+                <div class="px-2 text-center">
+                    <p class="text-3xl font-bold text-white">{{ $totalLayanan }}</p>
+                    <p class="mt-2 font-bold text-white">LAYANAN KESPRO SESUAI STANDARD WHO</p>
+                </div>
+            </div>
+        </a>
 
         <!-- Box 3 -->
-        <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center">
-          <i class="fa-solid fa-map-location-dot text-4xl"></i>
-          <div class="px-2">
-            <p class="text-center text-3xl font-bold text-white">31</p>
-            <p class="text-center mt-2 font-bold text-white">LOKASI DI SELURUH WILAYAH INDONESIA</p>
-          </div>
+        <div class="bg-blue-600 gap-4 rounded-lg shadow-lg p-6 w-96 flex text-white items-center justify-center">
+            <i class="fa-solid fa-map-location-dot text-4xl"></i>
+            <div class="px-2 text-center">
+                <!-- Menampilkan total lokasi klinik secara dinamis -->
+                <p class="text-3xl font-bold text-white">{{ $totalLokasi }}</p>
+                <p class="mt-2 font-bold text-white">LOKASI DI SELURUH WILAYAH INDONESIA</p>
+            </div>
         </div>
+    </div>
       </div>
     </div>
   </section>
@@ -145,18 +150,17 @@
       <!-- Horizontal Scrollable Container with Scroll Snap -->
       <div class="overflow-x-auto scroll-snap-container">
         <div class="flex gap-6 w-max scroll-snap-inner">
-          <!-- Card Start -->
+          @foreach($providers as $provider)
           <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
-            <img src="https://via.placeholder.com/300x200" alt="Professional Image" class="w-full h-48 object-cover">
+            <img src="{{ $provider->image_url ?? 'https://via.placeholder.com/300x200' }}" alt="Professional Image" class="w-full h-48 object-cover">
             <div class="p-6">
-              <h3 class="text-2xl font-semibold text-blue-900">dr. Muvitasari</h3>
-              <p class="text-sm text-gray-600 mt-2">Dokter Umum</p>
-              <p class="text-xs text-gray-500">Klinik Mitra Sehat Sejahtera, PKU Cabang Tegal</p>
+              <h3 class="text-2xl font-semibold text-blue-900">{{ $provider->name }}</h3>
+              <p class="text-sm text-gray-600 mt-2">{{ $provider->specialization }}</p>
+              <p class="text-xs text-gray-500">{{ $provider->clinic_name }}</p>
               <div class="mt-4">
                 <p class="text-gray-700 text-sm leading-relaxed">
                   Konsultasikan kesehatan Anda secara langsung dengan profesional yang terpercaya. Kami menjamin
-                  keamanan
-                  dan kerahasiaan data Anda.
+                  keamanan dan kerahasiaan data Anda.
                 </p>
               </div>
               <div class="mt-6">
@@ -170,105 +174,11 @@
               </div>
             </div>
           </div>
-          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
-            <img src="https://via.placeholder.com/300x200" alt="Professional Image" class="w-full h-48 object-cover">
-            <div class="p-6">
-              <h3 class="text-2xl font-semibold text-blue-900">dr. Muvitasari</h3>
-              <p class="text-sm text-gray-600 mt-2">Dokter Umum</p>
-              <p class="text-xs text-gray-500">Klinik Mitra Sehat Sejahtera, PKU Cabang Tegal</p>
-              <div class="mt-4">
-                <p class="text-gray-700 text-sm leading-relaxed">
-                  Konsultasikan kesehatan Anda secara langsung dengan profesional yang terpercaya. Kami menjamin
-                  keamanan
-                  dan kerahasiaan data Anda.
-                </p>
-              </div>
-              <div class="mt-6">
-                <button
-                  class="w-full bg-yellow-400 text-blue-900 font-semibold py-2 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300">
-                  <span class="flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-comments text-xl mr-4"></i>
-                    <span>KONSULTASI</span>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
-            <img src="https://via.placeholder.com/300x200" alt="Professional Image" class="w-full h-48 object-cover">
-            <div class="p-6">
-              <h3 class="text-2xl font-semibold text-blue-900">dr. Muvitasari</h3>
-              <p class="text-sm text-gray-600 mt-2">Dokter Umum</p>
-              <p class="text-xs text-gray-500">Klinik Mitra Sehat Sejahtera, PKU Cabang Tegal</p>
-              <div class="mt-4">
-                <p class="text-gray-700 text-sm leading-relaxed">
-                  Konsultasikan kesehatan Anda secara langsung dengan profesional yang terpercaya. Kami menjamin
-                  keamanan
-                  dan kerahasiaan data Anda.
-                </p>
-              </div>
-              <div class="mt-6">
-                <button
-                  class="w-full bg-yellow-400 text-blue-900 font-semibold py-2 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300">
-                  <span class="flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-comments text-xl mr-4"></i>
-                    <span>KONSULTASI</span>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
-            <img src="https://via.placeholder.com/300x200" alt="Professional Image" class="w-full h-48 object-cover">
-            <div class="p-6">
-              <h3 class="text-2xl font-semibold text-blue-900">dr. Muvitasari</h3>
-              <p class="text-sm text-gray-600 mt-2">Dokter Umum</p>
-              <p class="text-xs text-gray-500">Klinik Mitra Sehat Sejahtera, PKU Cabang Tegal</p>
-              <div class="mt-4">
-                <p class="text-gray-700 text-sm leading-relaxed">
-                  Konsultasikan kesehatan Anda secara langsung dengan profesional yang terpercaya. Kami menjamin
-                  keamanan
-                  dan kerahasiaan data Anda.
-                </p>
-              </div>
-              <div class="mt-6">
-                <button
-                  class="w-full bg-yellow-400 text-blue-900 font-semibold py-2 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300">
-                  <span class="flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-comments text-xl mr-4"></i>
-                    <span>KONSULTASI</span>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
-            <img src="https://via.placeholder.com/300x200" alt="Professional Image" class="w-full h-48 object-cover">
-            <div class="p-6">
-              <h3 class="text-2xl font-semibold text-blue-900">dr. Muvitasari</h3>
-              <p class="text-sm text-gray-600 mt-2">Dokter Umum</p>
-              <p class="text-xs text-gray-500">Klinik Mitra Sehat Sejahtera, PKU Cabang Tegal</p>
-              <div class="mt-4">
-                <p class="text-gray-700 text-sm leading-relaxed">
-                  Konsultasikan kesehatan Anda secara langsung dengan profesional yang terpercaya. Kami menjamin
-                  keamanan
-                  dan kerahasiaan data Anda.
-                </p>
-              </div>
-              <div class="mt-6">
-                <button
-                  class="w-full bg-yellow-400 text-blue-900 font-semibold py-2 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300">
-                  <span class="flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-comments text-xl mr-4"></i>
-                    <span>KONSULTASI</span>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
+          @endforeach
         </div>
       </div>
     </div>
-  </section>
+</section>
+
 
 @endsection

@@ -9,6 +9,7 @@
         "azishapidin/indoregion": "^3.0",
         "bezhansalleh/filament-shield": "^3.3",
         "filament/filament": "^3.2",
+        "joaopaulolndev/filament-edit-profile": "^1.0",
         "laravel/framework": "^11.9",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.5"
