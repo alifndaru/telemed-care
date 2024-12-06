@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
+use App\Models\Admin;
 use App\Models\User;
-
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -11,134 +11,98 @@ class UserPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(Admin $admin): bool
     {
-        return $user->can('view_any_user::management');
+        return $admin->can('view_any_user::management');
     }
 
     /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can view the model.
      */
-    public function view(User $user): bool
+    public function view(Admin $admin, User $user): bool
     {
-        return $user->can('view_user::management');
+        return $admin->can('view_user::management');
     }
 
     /**
-     * Determine whether the user can create models.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can create models.
      */
-    public function create(User $user): bool
+    public function create(Admin $admin): bool
     {
-        return $user->can('create_user::management');
+        return $admin->can('create_user::management');
     }
 
     /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can update the model.
      */
-    public function update(User $user): bool
+    public function update(Admin $admin, User $user): bool
     {
-        return $user->can('update_user::management');
+        return $admin->can('update_user::management');
     }
 
     /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can delete the model.
      */
-    public function delete(User $user): bool
+    public function delete(Admin $admin, User $user): bool
     {
-        return $user->can('delete_user::management');
+        return $admin->can('delete_user::management');
     }
 
     /**
-     * Determine whether the user can bulk delete.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can bulk delete.
      */
-    public function deleteAny(User $user): bool
+    public function deleteAny(Admin $admin): bool
     {
-        return $user->can('delete_any_user::management');
+        return $admin->can('delete_any_user::management');
     }
 
     /**
-     * Determine whether the user can permanently delete.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can permanently delete.
      */
-    public function forceDelete(User $user): bool
+    public function forceDelete(Admin $admin, User $user): bool
     {
-        return $user->can('force_delete_user::management');
+        return $admin->can('force_delete_user::management');
     }
 
     /**
-     * Determine whether the user can permanently bulk delete.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can permanently bulk delete.
      */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(Admin $admin): bool
     {
-        return $user->can('force_delete_any_user::management');
+        return $admin->can('force_delete_any_user::management');
     }
 
     /**
-     * Determine whether the user can restore.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can restore.
      */
-    public function restore(User $user): bool
+    public function restore(Admin $admin, User $user): bool
     {
-        return $user->can('restore_user::management');
+        return $admin->can('restore_user::management');
     }
 
     /**
-     * Determine whether the user can bulk restore.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can bulk restore.
      */
-    public function restoreAny(User $user): bool
+    public function restoreAny(Admin $admin): bool
     {
-        return $user->can('restore_any_user::management');
+        return $admin->can('restore_any_user::management');
     }
 
     /**
-     * Determine whether the user can bulk restore.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can replicate.
      */
-    public function replicate(User $user): bool
+    public function replicate(Admin $admin, User $user): bool
     {
-        return $user->can('replicate_user::management');
+        return $admin->can('replicate_user::management');
     }
 
     /**
-     * Determine whether the user can reorder.
-     *
-     * @param  \App\Models\User  $user
-     * @return bool
+     * Determine whether the admin can reorder.
      */
-    public function reorder(User $user): bool
+    public function reorder(Admin $admin): bool
     {
-        return $user->can('reorder_user::management');
+        return $admin->can('reorder_user::management');
     }
 }
