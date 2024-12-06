@@ -113,15 +113,13 @@ class ChatDokter extends Component
         $consultation = Consultation::with(['transaction.doctor', 'transaction.user', 'messages'])
             ->findOrFail($consultationsId);
 
-        $user = Auth::user(); // User yang sedang login
+        $user = Auth::user();
         if (!$user) {
             abort(403, 'Unauthorized access');
         }
 
-        // Cek apakah pengguna adalah dokter berdasarkan role (default false jika role tidak ada)
         $isDoctor = isset($user->role) && $user->role->name === "dokter";
 
-        // Verifikasi akses pengguna terhadap konsultasi ini
         if ($isDoctor) {
             // Jika dokter, pastikan dia memiliki akses ke konsultasi ini
             if ($consultation->transaction->dokter_id != $user->id) {
@@ -158,15 +156,6 @@ class ChatDokter extends Component
             'last_message_time' => $consultation->updated_at,
             'status' => $consultation->status,
         ];
-        Log::info('Selected Consultation Details', [
-            'id' => $consultation->id,
-            'judul_konsultasi' => $consultation->judulKonsultasi,
-            'penjelasan' => $consultation->penjelasan
-        ]);
-
-        Log::info('Active Consultation Array', [
-            'activeConsultation' => $this->activeConsultation
-        ]);
 
         // Tandai semua pesan sebagai sudah dibaca
         ChatKonsultasi::where('consultation_id', $consultationsId)

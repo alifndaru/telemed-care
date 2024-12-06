@@ -31,7 +31,6 @@ Route::middleware(['auth', 'role:panel_user'])->group(function () {
     })->name('histori.konsultasi');
 });
 
-
 Route::get('/konsultasi-chat', function () {
     return view('pages.chat-dokter');
 })->name('konsultasi.chat');
@@ -47,10 +46,6 @@ Route::middleware('auth')->group(function () {
 });
 
 require __DIR__ . '/auth.php';
-
-Route::get('/chat', function () {
-    return view('pages.chat.index');
-})->name('chat');
 
 Route::get('/tenaga', [TenagaProviderController::class, 'index'])->name('tenaga.index');
 Route::get('/tenaga/{category}', [TenagaProviderController::class, 'getSpesialis'])->name('tenaga.getSpesialis');

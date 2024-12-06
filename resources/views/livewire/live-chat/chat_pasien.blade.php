@@ -2,7 +2,7 @@
   use Carbon\Carbon;
 @endphp
 
-<div wire:poll class="h-screen grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 dark:bg-gray-900">
+<div class="h-screen grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 dark:bg-gray-900">
   <!-- Left Sidebar: Conversation List -->
   <div class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 rounded-lg shadow-sm h-full"
     wire:poll.1s="loadConsultations">
@@ -75,26 +75,26 @@
           </div>
           <h5 class="text-black dark:text-white">Jadwal: {{ substr($consultation['jadwal_start'], 0, 5) }} -
             {{ substr($consultation['jadwal_end'], 0, 5) }}</h5>
-          <x-filament::button wire:click="endChat" color="danger" size="sm">
+          {{-- <x-filament::button wire:click="endChat" color="danger" size="sm">
             {{ __('End Chat') }}
-          </x-filament::button>
+          </x-filament::button> --}}
         </div>
 
         <!-- Accordion Section -->
         <div x-data="{ open: false }" class="relative w-full border-t">
-        <button @click="open = !open"
+          <button @click="open = !open"
             class="w-full text-left p-4 bg-gray-50 border-b flex justify-between items-center">
             <span class="text-sm text-gray-700">{{ __('Detail Konsultasi') }}</span>
             <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
             </svg>
             <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
             </svg>
-        </button>
-        <div x-show="open" x-cloak
+          </button>
+          <div x-show="open" x-cloak
             class="absolute left-0 w-full bg-white border-t shadow-lg p-4 z-50 max-h-60 overflow-y-auto">
             <!-- Debug information -->
             <div class="mb-4 bg-yellow-100 p-2 rounded">
@@ -102,13 +102,13 @@
 
             <h4 class="font-semibold text-sm text-gray-800 mb-2">{{ __('Judul Konsultasi') }}</h4>
             <p class="text-gray-600 text-sm mb-4">
-            {{ $this->activeConsultation['judul_konsultasi'] ?? 'No title available' }}
+              {{ $this->activeConsultation['judul_konsultasi'] ?? 'No title available' }}
             </p>
             <h4 class="font-semibold text-sm text-gray-800 mb-2">{{ __('Penjelasan') }}</h4>
             <p class="text-gray-600 text-sm">
-            {{ $this->activeConsultation['penjelasan'] ?? 'No explanation available' }}
+              {{ $this->activeConsultation['penjelasan'] ?? 'No explanation available' }}
             </p>
-        </div>
+          </div>
         </div>
 
         <!-- Chat Messages -->
@@ -134,26 +134,27 @@
           @endforelse
         </div>
 
+        <!-- Message Input -->
         <div class="bg-gray-200 p-4 border-t">
-            @if (Carbon::parse($this->activeConsultation['jadwal_start'])->isFuture())
+          @if (Carbon::parse($this->activeConsultation['jadwal_start'])->isFuture())
             <div class="text-center text-gray-700 dark:text-gray-400">
-                Chat belum dimulai.
+              Chat belum dimulai.
             </div>
-            @elseif ($chatEnded)
+          @elseif ($chatEnded)
             <div class="text-center text-gray-700 dark:text-gray-400">
-                Chat telah selesai.
+              Chat telah selesai.
             </div>
-            @else
+          @else
             <form wire:submit.prevent="sendMessage">
-                <div class="flex items-center space-x-3">
+              <div class="flex items-center space-x-3">
                 <input type="text" wire:model="newMessage" placeholder="Tulis sebuah pesan..."
-                    class="flex-1 p-2 border border-blue-300 rounded-lg focus:outline-none"
-                    @if ($chatEnded) disabled @endif>
+                  class="flex-1 p-2 border border-blue-300 rounded-lg focus:outline-none"
+                  @if ($chatEnded) disabled @endif>
                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-                    @if ($chatEnded) disabled @endif>{{ __('Kirim') }} </button>
-                </div>
+                  @if ($chatEnded) disabled @endif>{{ __('Kirim') }} </button>
+              </div>
             </form>
-            @endif
+          @endif
         </div>
       </div>
     @else
