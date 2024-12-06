@@ -60,7 +60,7 @@ class Klinik extends Model
     }
     public function admins()
     {
-        return $this->hasMany(User::class, 'klinik_id', 'id');
+        return $this->hasMany(Admin::class, 'klinik_id', 'id');
     }
 
     public function transactions()

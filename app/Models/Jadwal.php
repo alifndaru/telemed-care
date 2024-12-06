@@ -31,7 +31,7 @@ class Jadwal extends Model
     }
     public function admins()
     {
-        return $this->belongsTo(Admin::class, 'users_id', 'id');
+        return $this->belongsTo(Admin::class, 'admin_id', 'id');
     }
 
 

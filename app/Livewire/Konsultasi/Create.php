@@ -7,7 +7,6 @@ use Livewire\WithFileUploads;
 use App\Models\Province;
 use App\Models\Klinik;
 use App\Models\Jadwal;
-use App\Models\User; // For doctors and users
 use App\Models\Admin; // For clinics
 use App\Models\Transaction;
 use App\Models\Voucher;
@@ -79,19 +78,24 @@ class Create extends Component
         $this->provinces = Province::all();
         $this->clinics = $this->selectedProvince
             ? Klinik::where('province_id', $this->selectedProvince)->get()
-            : collect(); // Kosongkan jika tidak ada provinsi terpilih
-
+            ->where('status', true)
+        : collect(); // Kosongkan jika tidak ada provinsi terpilih
         // Filter dokter berdasarkan klinik yang dipilih
         $this->doctors = $this->selectedClinic
-            ? Admin::where('role_id', 3)->where('klinik_id', $this->selectedClinic)->get()
-            : collect(); // Kosongkan jika tidak ada klinik terpilih
+            ? Admin::where('klinik_id', $this->selectedClinic)
+            ->whereHas('role', function ($query) {
+                $query->where('name', 'dokter');
+            })
+            ->get()
+            : collect();
 
         // Filter jadwal berdasarkan dokter yang dipilih
         $this->jadwals = $this->selectedDoctor
             ? Jadwal::where('admin_id', $this->selectedDoctor)->get()
+            ->where('status', true)
             : collect();
 
-        //filter biaya sesuai dengan jadwal    
+        //filter biaya sesuai dengan jadwal
         $this->biaya = $this->selectedJadwal
             ? Jadwal::find($this->selectedJadwal)->biaya
             : null;
@@ -167,7 +171,9 @@ class Create extends Component
     {
         $this->getRekening($value);
         $this->doctors = Admin::where('klinik_id', $value)
-            ->where('role_id', 3)
+            ->whereHas('role', function ($query) {
+                $query->where('name', 'dokter');
+            })
             ->get();
         $this->selectedDoctor = null;
         $this->jadwals = [];
