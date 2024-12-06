@@ -19,7 +19,8 @@ class Admin extends Authenticatable
         'role_id',
         'spesialis_id',
         'klinik_id',
-        'pelayanan_id'
+        'pelayanan_id',
+        'avatar_url',
     ];
 
     protected $hidden = [

@@ -15,6 +15,10 @@ class Pelayanan extends Model
     {
         return $this->hasMany(User::class, 'pelayanan_id', 'id');
     }
+    public function admins()
+    {
+        return $this->hasMany(Admin::class, 'pelayanan_id', 'id');
+    }
 
 
 }

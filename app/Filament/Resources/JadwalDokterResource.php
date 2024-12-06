@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\JadwalDokterResource\Pages;
+use App\Models\Admin;
 use App\Models\Jadwal;
 use App\Models\Klinik;
 use App\Models\User;
@@ -34,7 +35,7 @@ class JadwalDokterResource extends Resource
                 Select::make('users_id')
                     ->label('Doctor')
                     ->options(
-                        User::whereHas('role', function ($query) {
+                Admin::whereHas('role', function ($query) {
                             $query->where('name', 'dokter'); // Filter by role name 'dokter'
                         })
                         ->where('klinik_id', Auth::user()->klinik_id) // Filter by the same klinik_id as the logged-in user
@@ -49,9 +50,9 @@ class JadwalDokterResource extends Resource
                     ->options(Klinik::pluck('namaKlinik', 'id')->toArray())
                     ->required()
                     ->searchable()
-                    ->default(fn() => Auth::user()->klinik_id)
-                    ->disabled(fn() => Auth::user()->role->name == 'klinik'),
-
+                // ->default(fn() => Auth::user()->klinik_id)
+                ->default(fn() => Auth::user()->klinik_id)
+            ->disabled(fn() => Auth::user() && Auth::user()->role && Auth::user()->role->name == 'klinik'),
                 Hidden::make('klinik_id')
                     ->default(fn() => Auth::user()->klinik_id)
                     ->required(),
@@ -82,8 +83,7 @@ class JadwalDokterResource extends Resource
     {
         return $table
             ->query(fn() => Jadwal::where('klinik_id', Auth::user()->klinik_id)) // Filter by klinik_id of the logged-in user
-            ->columns([
-                TextColumn::make('user.name')
+            ->columns([TextColumn::make('admins.name')
                     ->label('Doctor')
                     ->sortable()
                     ->searchable(), // Enable search by doctor's name

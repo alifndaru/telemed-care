@@ -58,6 +58,10 @@ class Klinik extends Model
     {
         return $this->hasMany(User::class, 'klinik_id', 'id');
     }
+    public function admins()
+    {
+        return $this->hasMany(User::class, 'klinik_id', 'id');
+    }
 
     public function transactions()
     {

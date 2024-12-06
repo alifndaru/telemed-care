@@ -8,6 +8,7 @@ use App\Models\Province;
 use App\Models\Klinik;
 use App\Models\Jadwal;
 use App\Models\User; // For doctors and users
+use App\Models\Admin; // For clinics
 use App\Models\Transaction;
 use App\Models\Voucher;
 use App\Models\Consultation;
@@ -124,7 +125,7 @@ class Create extends Component
     public function updatedSelectedClinic($value)
     {
         $this->getRekening($value);
-        $this->doctors = User::where('klinik_id', $value)
+        $this->doctors = Admin::where('klinik_id', $value)
             ->where('role_id', 3)
             ->get();
         $this->selectedDoctor = null;

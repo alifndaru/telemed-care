@@ -23,6 +23,11 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+    public function admins()
+    {
+        return $this->belongsTo(admin::class, 'user_id', 'id');
+    }
+
 
     public function doctor()
     {

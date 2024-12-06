@@ -17,10 +17,6 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role_id',
-        'spesialis_id',
-        'klinik_id',
-        'pelayanan_id'
     ];
     protected $hidden = [
         'password',
@@ -37,35 +33,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
-
-    public function spesialis()
-    {
-        return $this->belongsTo(SpesialisasiDokter::class, 'spesialis_id', 'id');
-    }
-
-    public function klinik()
-    {
-        return $this->belongsTo(Klinik::class, 'klinik_id', 'id');
-    }
-
-    public function pelayanan()
-    {
-        return $this->belongsTo(Pelayanan::class, 'pelayanan_id', 'id');
-    }
     public function province()
     {
         return $this->belongsTo(Province::class, 'province_id', 'id');
-    }
-    public function spesialisasi()
-    {
-        return $this->belongsTo(SpesialisasiDokter::class, 'spesialis_id');
-    }
-    public function transactions()
-    {
-        return $this->hasMany(Transaction::class, 'user_id', 'id');
-    }
-    public function jadwals()
-    {
-        return $this->hasMany(Jadwal::class, 'users_id', 'id');
     }
 }

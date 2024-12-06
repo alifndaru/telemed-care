@@ -34,7 +34,8 @@ class ChatDokter extends Component
         $query = Consultation::query();
 
         $doctorRoleId = Role::where('name', 'dokter')->first()->id;
-        $patientRoleId = Role::where('name', 'panel_user')->first()->id;
+        // $patientRoleId = Role::where('name', 'panel_user')->first()->id;
+        $patientRoleId = Auth::guard('web')->user()->id;
 
         // Query berdasarkan role
         if ($user->role_id == $doctorRoleId) {

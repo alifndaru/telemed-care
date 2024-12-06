@@ -23,6 +23,10 @@ class Consultation extends Model
     {
         return $this->belongsTo(User::class, 'users_id');
     }
+    public function admins()
+    {
+        return $this->belongsTo(Admin::class, 'users_id');
+    }
 
     public function messages()
     {

@@ -237,20 +237,38 @@ class ModulKlinikResource extends Resource
         ];
     }
 
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     // Mendapatkan user yang sedang login
+    //     $user = auth()->user();
+
+    //     // Dapatkan query dasar
+    //     $query = parent::getEloquentQuery();
+
+    //     // Jika user role adalah klinik atau dokter, filter klinik berdasarkan user klinik_id
+    //     if ($user && ($user->role->name == 'klinik' || $user->role->name == 'dokter')) {
+    //         // Menggunakan whereHas untuk memfilter berdasarkan relasi user
+    //         $query->whereHas('users', function (Builder $query) use ($user) {
+    //             $query->where('id', $user->id);
+    //         });
+    //     }
+
+    //     // Query lainnya tetap seperti semula, menampilkan data terbaru
+    //     return $query->latest();
+    // }
+
     public static function getEloquentQuery(): Builder
     {
         // Mendapatkan user yang sedang login
-        $user = auth()->user();
+        $admin = auth()->guard('admin')->user();
 
         // Dapatkan query dasar
         $query = parent::getEloquentQuery();
 
-        // Jika user role adalah klinik atau dokter, filter klinik berdasarkan user klinik_id
-        if ($user && ($user->role->name == 'klinik' || $user->role->name == 'dokter')) {
-            // Menggunakan whereHas untuk memfilter berdasarkan relasi user
-            $query->whereHas('users', function (Builder $query) use ($user) {
-                $query->where('id', $user->id);
-            });
+        // Jika user ada dan memiliki role, filter berdasarkan klinik_id pengguna
+        if ($admin && $admin->role && ($admin->role->name == 'klinik' || $admin->role->name == 'dokter')) {
+            // Filter berdasarkan klinik_id yang ada pada user
+            $query->where('id', $admin->klinik_id);
         }
 
         // Query lainnya tetap seperti semula, menampilkan data terbaru
