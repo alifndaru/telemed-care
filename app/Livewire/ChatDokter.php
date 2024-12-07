@@ -18,6 +18,7 @@ class ChatDokter extends Component
     public $messages = [];
     public $newMessage = '';
     public $chatEnded = false;
+    public $consultationId;
 
     public function render()
     {
@@ -94,12 +95,16 @@ class ChatDokter extends Component
                 ];
             })->toArray();
 
-        // Ambil semua pesan dari konsultasi yang dimuat
-        $consultationIds = array_column($this->consultations, 'id');
-        $this->messages = ChatKonsultasi::whereIn('consultation_id', $consultationIds)
-            ->orderBy('created_at', 'asc')
-            ->get()
-            ->toArray();
+
+        if ($this->activeConsultation) {
+            // Ambil messages berdasarkan consultation_id
+            $this->messages = ChatKonsultasi::where('consultation_id', $this->activeConsultation['id'])
+                ->orderBy('created_at', 'asc')
+                ->get()
+                ->toArray();
+        } else {
+            $this->messages = [];
+        }
     }
 
     public function selectConsultation($consultationsId)
@@ -138,6 +143,8 @@ class ChatDokter extends Component
         $this->activeConsultation = [
             'id' => $consultation->id,
             'judul_konsultasi' => $consultation->judulKonsultasi,
+            'jadwal_start' => $consultation->transaction->jadwal->start ?? null,
+            'jadwal_end' => $consultation->transaction->jadwal->end ?? null,
             'penjelasan' => $consultation->penjelasan,
             'other_person_name' => $otherUser->name ?? 'Unknown',
             'other_person_spesialis' => $isDoctor
@@ -160,6 +167,13 @@ class ChatDokter extends Component
             ->toArray();
     }
 
+    public function checkChatStatus()
+    {
+        if ($this->activeConsultation && Carbon::parse($this->activeConsultation['jadwal_end'])->isPast()) {
+            $this->endChat();
+        }
+    }
+
     public function endChat()
     {
         if (!$this->activeConsultation) {
@@ -170,7 +184,7 @@ class ChatDokter extends Component
 
         if ($consultation) {
             $consultation->status = true;
-            $consultation->completed_at = Carbon::now();
+            // $consultation->completed_at = Carbon::now();
             $consultation->save();
 
             $this->chatEnded = true;

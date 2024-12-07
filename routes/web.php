@@ -7,6 +7,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LokasiController;
 use App\Http\Controllers\TenagaLayananController;
 use App\Http\Controllers\TenagaProviderController;
+use App\Livewire\ChatDokter;
+
 // use App\Livewire\Konsultasi;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -14,7 +16,6 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/feedback', function () {
     return view('homepage');
 })->name('feedback');
-
 
 Route::middleware(['auth', 'role:panel_user'])->group(function () {
     Route::get('/konsultasi-list', function () {

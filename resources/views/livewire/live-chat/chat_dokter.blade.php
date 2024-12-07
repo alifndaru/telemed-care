@@ -4,11 +4,11 @@
 <div class="h-[calc(100vh-100px)] grid grid-cols-1 md:grid-cols-3 bg-white">
   <!-- Left Sidebar: Conversation List -->
   <div class="border-r bg-white">
-    <div class="bg-blue-500 p-4 border-b border-blue-200" wire:poll.1s="loadConsultations">
+    <div class="bg-gray-100 p-4 border-b" wire:poll.1s="loadConsultations">
       <div class="flex items-center justify-between space-x-3">
-        <x-filament::icon icon="heroicon-m-chat-bubble-left-right" class="w-6 h-6 text-white" />
-        <h2 class="text-lg font-bold text-white">{{ __('Chat Konsultasi') }}</h2>
-        <x-filament::badge class="bg-white font-bold text-blue-700 ring-2">
+        <x-filament::icon icon="heroicon-m-chat-bubble-left-right" class="w-6 h-6 text-gray-700" />
+        <h2 class="text-lg font-bold text-gray-700">{{ __('Chat Konsultasi') }}</h2>
+        <x-filament::badge class="font-bold text-blue-700 ring-2">
           {{ count($this->consultations) }}
         </x-filament::badge>
       </div>
@@ -20,7 +20,7 @@
         <div wire:key="{{ $consultation['id'] }}" wire:click="selectConsultation({{ $consultation['id'] }})"
           class="p-4 mb-2 rounded-lg cursor-pointer transition-all duration-200 
                 {{ $this->activeConsultation && $this->activeConsultation['id'] === $consultation['id']
-                    ? 'bg-blue-200'
+                    ? 'bg-blue-100'
                     : 'hover:bg-blue-100' }}">
           <div class="flex items-center space-x-4">
             <x-filament::avatar
@@ -38,7 +38,7 @@
               <div class="flex items-center justify-between">
                 <p class="text-gray-800 truncate pr-2">
                   @if ($consultation['is_sender'])
-                    <span class="text-blue-600 dark:text-blue-400 font-bold">Kamu: </span>
+                    <span class="text-blue-600 dark:text-blue-500 font-bold">Kamu: </span>
                   @endif
                   {{ $consultation['latest_message'] }}
                 </p>
@@ -58,10 +58,11 @@
   </div>
 
   <!-- Right Side: Chat Room -->
-  <div class="md:col-span-2 bg-gray-100 flex flex-col h-[calc(100vh-100px)] overflow-y-auto">
+  <div class="md:col-span-2 bg-white flex flex-col h-[calc(100vh-100px)] overflow-y-auto"
+    wire:poll.1s="checkChatStatus">
     @if ($this->activeConsultation)
       <!-- Chat Header -->
-      <div class="bg-white py-4 px-6 flex justify-between items-center">
+      <div class="bg-gray-100 py-4 px-6 flex justify-between items-center">
         <div class="flex items-center gap-5">
           <x-filament::avatar
             src="https://ui-avatars.com/api/?name={{ urlencode($this->activeConsultation['other_person_name']) }}"
@@ -102,11 +103,11 @@
       </div>
 
       <!-- Chat Messages -->
-      <div class="flex-1 p-4 bg-blue-50 custom-scrollbar h-[calc(100vh-100px)] overflow-y-auto"
-        wire:poll.1s=loadConsultations>
+      <div class="flex-1 p-4 bg-white custom-scrollbar h-[calc(100vh-100px)] overflow-y-auto"
+        wire:poll.1s="loadConsultations">
         @forelse ($this->messages as $message)
           <div class="flex {{ $message['from_user_id'] === auth()->id() ? 'justify-end' : 'justify-start' }} mb-4"
-            wire:poll.1s=loadConsultations>
+            wire:poll.1s="loadConsultations">
             <div
               class="max-w-[70%] p-3 rounded-lg shadow {{ $message['from_user_id'] === auth()->id() ? 'bg-blue-500 text-white' : 'bg-blue-100' }}">
               <p class="{{ $message['from_user_id'] === auth()->id() ? 'text-white' : 'text-gray-700' }} break-words">
@@ -119,15 +120,23 @@
             </div>
           </div>
         @empty
-          <div class="mt-6 text-center">
+          <div class="flex items-center h-full justify-center">
             <p>{{ __('Belum ada pesan.') }}</p>
           </div>
         @endforelse
       </div>
 
       <!-- Message Input -->
-      <div class="bg-blue-100 p-4 border-t border-blue-200">
-        @if ($activeConsultation && $activeConsultation['status'] !== true)
+      <div class="bg-gray-200 p-4 border-t">
+        @if (Carbon::parse($this->activeConsultation['jadwal_start'])->isFuture())
+          <div class="text-center text-gray-700 dark:text-gray-400">
+            Chat belum dimulai.
+          </div>
+        @elseif ($chatEnded)
+          <div class="text-center text-gray-700 dark:text-gray-400">
+            Chat telah selesai.
+          </div>
+        @else
           <form wire:submit.prevent="sendMessage">
             <div class="flex items-center space-x-3">
               <input type="text" wire:model="newMessage" placeholder="Tulis sebuah pesan..."
@@ -137,10 +146,6 @@
                 @if ($chatEnded) disabled @endif>{{ __('Kirim') }} </button>
             </div>
           </form>
-        @else
-          <div class="p-4 border-t border-gray-200 dark:border-gray-700 text-center text-gray-500 dark:text-gray-400">
-            Chat berakhir. Kamu tidak dapat mengirim pesan lagi.
-          </div>
         @endif
       </div>
     @else
