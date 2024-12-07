@@ -11,6 +11,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -32,7 +33,7 @@ class TransactionResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            // ->query(fn() => Transaction::where('klinik_id', Auth::user()->klinik_id))
+            ->query(fn() => Transaction::where('klinik_id', Auth::user()->klinik_id))
             ->columns([
                 TextColumn::make('invoice_number')
                     ->searchable()
@@ -69,7 +70,7 @@ class TransactionResource extends Resource
                     ->label('Total Biaya')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('buktiPembayaran')
+                ImageColumn::make('buktiPembayaran')
                     ->label('Bukti Pembayaran')
                     ->searchable()
                     ->sortable(),

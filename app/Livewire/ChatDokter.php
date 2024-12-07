@@ -106,7 +106,6 @@ class ChatDokter extends Component
             $this->messages = [];
         }
     }
-
     public function selectConsultation($consultationsId)
     {
         // Ambil konsultasi dengan relasi yang diperlukan
