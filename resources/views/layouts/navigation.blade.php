@@ -2,7 +2,7 @@
   <div class="container">
     <div class="flex justify-between items-center navbar">
       <!-- Logo -->
-      <a href="{{ route('dashboard') }}">
+      <a href="{{ route('home') }}">
         <img src="{{ url('images/pkbi.png') }}" alt="Logo" class="w-[100px]">
       </a>
 

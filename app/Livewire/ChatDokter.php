@@ -19,6 +19,7 @@ class ChatDokter extends Component
     public $messages = [];
     public $newMessage = '';
     public $chatEnded = false;
+    public $chatNotStarted = false;
     public $consultationId;
 
     public function render()
@@ -136,6 +137,8 @@ class ChatDokter extends Component
             ? $consultation->transaction->user
             : $consultation->transaction->doctor;
 
+
+
         // Format data konsultasi aktif
         $this->activeConsultation = [
             'id' => $consultation->id,
@@ -170,10 +173,20 @@ class ChatDokter extends Component
 
     public function checkChatStatus()
     {
-        if ($this->activeConsultation && Carbon::parse($this->activeConsultation['jadwal_end'])->isPast()) {
-            $this->endChat();
+        // Cek apakah data konsultasi aktif ada
+        if ($this->activeConsultation) {
+            if (Carbon::parse($this->activeConsultation['jadwal_start'])->isFuture()) {
+                $this->chatNotStarted = true;
+            } elseif (Carbon::parse($this->activeConsultation['jadwal_end'])->isPast()) {
+                $this->endChat();
+                return;
+            } elseif ($this->activeConsultation['status'] === true) {
+                $this->chatEnded = true;
+                return;
+            }
         }
     }
+
 
     public function endChat()
     {

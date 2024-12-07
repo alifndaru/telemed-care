@@ -74,8 +74,8 @@
             <span class="text-gray-500">{{ $consultation['other_person_spesialis'] }}</span>
           </div>
         </div>
-        <h5>Jadwal: {{ substr($consultation['jadwal_start'], 0, 5) }} -
-          {{ substr($consultation['jadwal_end'], 0, 5) }}</h5>
+        <h5>Jadwal: {{ substr($activeConsultation['jadwal_start'], 0, 5) }} -
+          {{ substr($this->activeConsultation['jadwal_end'], 0, 5) }}</h5>
         <h5 class="font-bold">{{ $consultation['klinik'] }}</h5>
       </div>
 
@@ -132,11 +132,15 @@
 
       <!-- Message Input -->
       <div class="bg-gray-200 p-4 border-t">
-        @if (Carbon::parse($this->activeConsultation['jadwal_start'])->isFuture())
+        @if ($this->activeConsultation['status'] === true)
+          <div class="text-center text-gray-700 dark:text-gray-400">
+            Chat telah selesai.
+          </div>
+        @elseif (Carbon::parse($this->activeConsultation['jadwal_start'])->isFuture())
           <div class="text-center text-gray-700 dark:text-gray-400">
             Chat belum dimulai.
           </div>
-        @elseif ($chatEnded)
+        @elseif ($this->chatEnded)
           <div class="text-center text-gray-700 dark:text-gray-400">
             Chat telah selesai.
           </div>
