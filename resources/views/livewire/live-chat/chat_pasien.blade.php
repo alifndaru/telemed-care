@@ -41,6 +41,11 @@
                 @endif
                 {{ $consultation['latest_message'] }}
               </p>
+              @if ($consultation['unread_count'] > 0)
+                <x-filament::badge color="primary" size="sm">
+                  {{ $consultation['unread_count'] }}
+                </x-filament::badge>
+              @endif
             </div>
           </div>
         </div>

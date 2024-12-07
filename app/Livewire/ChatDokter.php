@@ -150,6 +150,10 @@ class ChatDokter extends Component
             'other_person_spesialis' => $isDoctor
                 ? 'Pasien'
                 : $otherUser->spesialis->name ?? 'Dokter',
+            'unread_count' => $consultation->messages()
+                ->where('is_read', false)
+                ->where('from_user_id', '!=', $user->id)
+                ->count(),
             'klinik' => $otherUser->klinik->namaKlinik ?? '',
             'last_message_time' => $consultation->updated_at,
             'status' => $consultation->status,
