@@ -18,7 +18,7 @@
     <div class="overflow-y-auto custom-scrollbar p-2">
       @forelse ($this->consultations as $consultation)
         <div wire:key="{{ $consultation['id'] }}" wire:click="selectConsultation({{ $consultation['id'] }})"
-          class="p-4 mb-2 rounded-lg cursor-pointer transition-all duration-200 
+          class="p-4 mb-2 rounded-lg cursor-pointer transition-all duration-200
                 {{ $this->activeConsultation && $this->activeConsultation['id'] === $consultation['id']
                     ? 'bg-blue-100'
                     : 'hover:bg-blue-100' }}">
@@ -80,7 +80,7 @@
       </div>
 
       <!-- Accordion Section -->
-      <div x-data="{ open: false }" class="relative w-full border-t">
+      {{-- <div x-data="{ open: false }" class="relative w-full border-t">
         <button @click="open = !open"
           class="w-full text-left p-4 bg-gray-50 border-b flex justify-between items-center">
           <span class="text-sm text-gray-700">{{ __('Detail Konsultasi') }}</span>
@@ -100,7 +100,36 @@
           <h4 class="font-semibold text-gray-800 mb-2">{{ __('Penjelasan') }}</h4>
           <p class="text-gray-600 text-sm">{{ $consultation['penjelasan'] }}</p>
         </div>
-      </div>
+      </div> --}}
+         <div x-data="{ open: false }" class="relative w-full border-t">
+            <button @click="open = !open"
+                class="w-full text-left p-4 bg-gray-50 border-b flex justify-between items-center">
+                <span class="text-sm text-gray-700">{{ __('Detail Konsultasi') }}</span>
+                <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+                <svg x-show="open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                </svg>
+            </button>
+            <div x-show="open" x-cloak
+                class="absolute left-0 w-full bg-white border-t shadow-lg p-4 z-50 max-h-60 overflow-y-auto">
+                <!-- Debug information -->
+                <div class="mb-4 bg-yellow-100 p-2 rounded">
+                </div>
+
+                <h4 class="font-semibold text-sm text-gray-800 mb-2">{{ __('Judul Konsultasi') }}</h4>
+                <p class="text-gray-600 text-sm mb-4">
+                {{ $this->activeConsultation['judul_konsultasi'] ?? 'No title available' }}
+                </p>
+                <h4 class="font-semibold text-sm text-gray-800 mb-2">{{ __('Penjelasan') }}</h4>
+                <p class="text-gray-600 text-sm">
+                {{ $this->activeConsultation['penjelasan'] ?? 'No explanation available' }}
+                </p>
+            </div>
+        </div>
 
       <!-- Chat Messages -->
       <div class="flex-1 p-4 bg-white custom-scrollbar h-[calc(100vh-100px)] overflow-y-auto"

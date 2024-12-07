@@ -10,6 +10,7 @@ use App\Models\Consultation;
 use App\Models\ChatKonsultasi;
 use App\Models\Role;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class ChatDokter extends Component
 {
@@ -95,7 +96,6 @@ class ChatDokter extends Component
                 ];
             })->toArray();
 
-
         if ($this->activeConsultation) {
             // Ambil messages berdasarkan consultation_id
             $this->messages = ChatKonsultasi::where('consultation_id', $this->activeConsultation['id'])
@@ -158,6 +158,15 @@ class ChatDokter extends Component
             'last_message_time' => $consultation->updated_at,
             'status' => $consultation->status,
         ];
+        Log::info('Selected Consultation Details', [
+            'id' => $consultation->id,
+            'judul_konsultasi' => $consultation->judulKonsultasi,
+            'penjelasan' => $consultation->penjelasan
+        ]);
+
+        Log::info('Active Consultation Array', [
+            'activeConsultation' => $this->activeConsultation
+        ]);
 
         // Tandai semua pesan sebagai sudah dibaca
         ChatKonsultasi::where('consultation_id', $consultationsId)
