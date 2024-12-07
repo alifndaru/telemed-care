@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\SpesialisasiDokter;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -12,16 +13,16 @@ class TenagaProviderController extends Controller
 {
     public function index()
     {
-        $data = Cache::remember('users.provider', 60, function () {
-            return   User::whereNotNull('spesialis_id')->whereNotNull('klinik_id')
-            ->with([
-                'spesialis:id,name',
-                'klinik:id,namaKlinik,province_id',
-                'klinik.provinsi:id,name'
-            ])
-            ->orderBy('name')
-            ->take(10)
-            ->get();
+        $data = Cache::remember('admin.provider', 60, function () {
+            return Admin::whereNotNull('spesialis_id')->whereNotNull('klinik_id')
+                ->with([
+                    'spesialisasi:id,name',
+                    'klinik:id,namaKlinik,province_id',
+                    'klinik.provinsi:id,name'
+                ])
+                ->orderBy('name')
+                ->take(10)
+                ->get();
         });
 
         return view('tenaga-provider', compact('data'));
@@ -29,14 +30,14 @@ class TenagaProviderController extends Controller
 
     public function getSpesialis($category)
     {
-        $data = User::where('spesialis_id', $category)
-        ->with([
-            'spesialis:id,name',
-            'klinik:id,namaKlinik,province_id',
-            'klinik.provinsi:id,name'
-        ])
-        ->orderBy('name')
-        ->get();
+        $data = Admin::where('spesialis_id', $category)
+            ->with([
+                'spesialisasi:id,name',
+                'klinik:id,namaKlinik,province_id',
+                'klinik.provinsi:id,name'
+            ])
+            ->orderBy('name')
+            ->get();
         return response()->json($data);
     }
 }

@@ -10,7 +10,7 @@ class Jadwal extends Model
 {
     protected $table = 'jadwals';
     protected $fillable = [
-        'users_id',
+        'admin_id',
         'klinik_id',
         'start',
         'end',
@@ -29,6 +29,11 @@ class Jadwal extends Model
     {
         return $this->belongsTo(User::class, 'users_id', 'id');
     }
+    public function admins()
+    {
+        return $this->belongsTo(Admin::class, 'admin_id', 'id');
+    }
+
 
     public function transaction()
     {

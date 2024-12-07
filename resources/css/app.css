@@ -1989,3 +1989,7 @@ p {
     background: rgba(30, 144, 255, 0.3);
     border-radius: 4px;
 }
+
+.break-words {
+    overflow-wrap: break-word;
+}

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('jadwals', function (Blueprint $table) {
             $table->id(); // Primary key otomatis
-            $table->bigInteger('users_id')->unsigned();
+            $table->bigInteger('admin_id')->unsigned();
             $table->bigInteger('klinik_id')->unsigned();
             $table->time('start');
             $table->time('end');

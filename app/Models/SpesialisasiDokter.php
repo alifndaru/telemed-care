@@ -16,6 +16,10 @@ class SpesialisasiDokter extends Model
     {
         return $this->hasMany(User::class, 'spesialis_id');
     }
+    public function admins()
+    {
+        return $this->hasMany(Admin::class, 'spesialis_id');
+    }
 
     public function jadwal()
     {

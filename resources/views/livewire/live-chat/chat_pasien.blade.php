@@ -2,9 +2,10 @@
   use Carbon\Carbon;
 @endphp
 
-<div wire:poll class="h-screen grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 dark:bg-gray-900">
+<div class="h-screen grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 dark:bg-gray-900">
   <!-- Left Sidebar: Conversation List -->
-  <div class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 rounded-lg shadow-sm h-full">
+  <div class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 rounded-lg shadow-sm h-full"
+    wire:poll.1s="loadConsultations">
     <div
       class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-4 border-b dark:border-gray-600 flex items-center justify-between">
       <x-filament::icon icon="heroicon-m-chat-bubble-left-right" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -40,6 +41,11 @@
                 @endif
                 {{ $consultation['latest_message'] }}
               </p>
+              @if ($consultation['unread_count'] > 0)
+                <x-filament::badge color="primary" size="sm">
+                  {{ $consultation['unread_count'] }}
+                </x-filament::badge>
+              @endif
             </div>
           </div>
         </div>
@@ -53,7 +59,7 @@
   </div>
 
   <!-- Right Sidebar: Chat Room -->
-  <div class="md:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow-sm h-screen">
+  <div class="md:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow-sm h-screen" wire:poll.1s="loadConsultations">
     @if ($this->activeConsultation)
       <div class="flex flex-col h-full">
         <!-- Chat Header -->
@@ -63,7 +69,7 @@
             <x-filament::avatar
               src="https://ui-avatars.com/api/?name={{ urlencode($this->activeConsultation['other_person_name']) }}"
               alt="{{ $this->activeConsultation['other_person_name'] }}" class="w-10 h-10 rounded-full m-10" />
-            <h2 class="text-lg font-bold text-black dark:text-white">
+            <h2 class="font-bold text-black dark:text-white">
               {{ $this->activeConsultation['other_person_name'] }}
             </h2>
           </div>
@@ -78,7 +84,7 @@
         <div x-data="{ open: false }" class="relative w-full border-t">
           <button @click="open = !open"
             class="w-full text-left p-4 bg-gray-50 border-b flex justify-between items-center">
-            <span class="font-medium text-gray-700">{{ __('Detail Konsultasi') }}</span>
+            <span class="text-sm text-gray-700">{{ __('Detail Konsultasi') }}</span>
             <svg x-show="!open" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -90,16 +96,24 @@
           </button>
           <div x-show="open" x-cloak
             class="absolute left-0 w-full bg-white border-t shadow-lg p-4 z-50 max-h-60 overflow-y-auto">
-            <h4 class="font-semibold text-gray-800 mb-2">{{ __('Judul Konsultasi') }}</h4>
-            <p class="text-gray-600 mb-4">{{ $consultation['judul_konsultasi'] }}</p>
-            <h4 class="font-semibold text-gray-800 mb-2">{{ __('Penjelasan') }}</h4>
-            <p class="text-gray-600">{{ $consultation['penjelasan'] }}</p>
+            <!-- Debug information -->
+            <div class="mb-4 bg-yellow-100 p-2 rounded">
+            </div>
+
+            <h4 class="font-semibold text-sm text-gray-800 mb-2">{{ __('Judul Konsultasi') }}</h4>
+            <p class="text-gray-600 text-sm mb-4">
+              {{ $this->activeConsultation['judul_konsultasi'] ?? 'No title available' }}
+            </p>
+            <h4 class="font-semibold text-sm text-gray-800 mb-2">{{ __('Penjelasan') }}</h4>
+            <p class="text-gray-600 text-sm">
+              {{ $this->activeConsultation['penjelasan'] ?? 'No explanation available' }}
+            </p>
           </div>
         </div>
 
-
         <!-- Chat Messages -->
-        <div class="h-screen flex-1 overflow-y-auto p-6 bg-white dark:bg-gray-900 custom-scrollbar">
+        <div class="h-screen flex-1 overflow-y-auto p-6 bg-white dark:bg-gray-900 custom-scrollbar"
+          wire:poll.1s="loadConsultations">
           @forelse ($this->messages as $message)
             <div class="flex {{ $message['from_user_id'] === auth()->id() ? 'justify-end' : 'justify-start' }} mb-4 ">
               <div
@@ -122,19 +136,24 @@
 
         <!-- Message Input -->
         <div class="sticky bottom-0 p-4 bg-gray-100 dark:bg-gray-800 border-t dark:border-gray-700">
-          @if (!$chatEnded)
+          @if (Carbon::parse($this->activeConsultation['jadwal_start'])->isFuture())
+            <div class="text-center text-gray-700 dark:text-gray-400">
+              Chat belum dimulai.
+            </div>
+          @elseif ($chatEnded)
+            <div class="text-center text-gray-700 dark:text-gray-400">
+              Chat telah selesai.
+            </div>
+          @else
             <form wire:submit.prevent="sendMessage">
               <div class="flex items-center space-x-3">
-                <input type="text" wire:model="newMessage" placeholder="Type your message..."
-                  class="flex-1 p-2 rounded-lg border text-black border-gray-300 dark:text-black" />
-                <button type="submit"
-                  class="px-4 py-2 bg-gray-500 dark:bg-white text-black dark:text-white rounded-lg">
-                  Send
-                </button>
+                <input type="text" wire:model="newMessage" placeholder="Tulis sebuah pesan..."
+                  class="flex-1 p-2 rounded-lg border text-black border-gray-300 dark:text-black"
+                  @if ($chatEnded) disabled @endif>
+                <button type="submit" class="px-4 py-2 bg-gray-500 dark:bg-white text-black dark:text-white rounded-lg"
+                  @if ($chatEnded) disabled @endif>{{ __('Kirim') }} </button>
               </div>
             </form>
-          @else
-            <p class="text-center text-gray-500 dark:text-gray-400">Chat has ended.</p>
           @endif
         </div>
       </div>

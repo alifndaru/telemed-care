@@ -21,7 +21,7 @@
                   Dapatkan solusi terbaik dengan privasi dan keamanan data yang terjaga.
                 </p>
                 <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                  <a href="https://www.youtube.com/@smalabschoolcirendeu996" target="_blank">
+                  <a href="{{route('konsultasi.create')}}" target="">
                     <button
                       class="px-10 mt-1  bg-yellow-400 text-blue-900 font-semibold py-5 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300 shadow-lg">
                       <i class="fa-solid fa-comments text-xl mr-4"></i>

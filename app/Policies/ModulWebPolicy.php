@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\User;
+use App\Models\Admin;
 use App\Models\ModulWeb;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -11,98 +11,98 @@ class ModulWebPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the admin can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(Admin $admin): bool
     {
-        return $user->can('view_any_modul::web');
+        return $admin->can('view_any_modul::web');
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the admin can view the model.
      */
-    public function view(User $user, ModulWeb $modulWeb): bool
+    public function view(Admin $admin, ModulWeb $modulWeb): bool
     {
-        return $user->can('view_modul::web');
+        return $admin->can('view_modul::web');
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the admin can create models.
      */
-    public function create(User $user): bool
+    public function create(Admin $admin): bool
     {
-        return $user->can('create_modul::web');
+        return $admin->can('create_modul::web');
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the admin can update the model.
      */
-    public function update(User $user, ModulWeb $modulWeb): bool
+    public function update(Admin $admin, ModulWeb $modulWeb): bool
     {
-        return $user->can('update_modul::web');
+        return $admin->can('update_modul::web');
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the admin can delete the model.
      */
-    public function delete(User $user, ModulWeb $modulWeb): bool
+    public function delete(Admin $admin, ModulWeb $modulWeb): bool
     {
-        return $user->can('delete_modul::web');
+        return $admin->can('delete_modul::web');
     }
 
     /**
-     * Determine whether the user can bulk delete.
+     * Determine whether the admin can bulk delete.
      */
-    public function deleteAny(User $user): bool
+    public function deleteAny(Admin $admin): bool
     {
-        return $user->can('delete_any_modul::web');
+        return $admin->can('delete_any_modul::web');
     }
 
     /**
-     * Determine whether the user can permanently delete.
+     * Determine whether the admin can permanently delete.
      */
-    public function forceDelete(User $user, ModulWeb $modulWeb): bool
+    public function forceDelete(Admin $admin, ModulWeb $modulWeb): bool
     {
-        return $user->can('force_delete_modul::web');
+        return $admin->can('force_delete_modul::web');
     }
 
     /**
-     * Determine whether the user can permanently bulk delete.
+     * Determine whether the admin can permanently bulk delete.
      */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(Admin $admin): bool
     {
-        return $user->can('force_delete_any_modul::web');
+        return $admin->can('force_delete_any_modul::web');
     }
 
     /**
-     * Determine whether the user can restore.
+     * Determine whether the admin can restore.
      */
-    public function restore(User $user, ModulWeb $modulWeb): bool
+    public function restore(Admin $admin, ModulWeb $modulWeb): bool
     {
-        return $user->can('restore_modul::web');
+        return $admin->can('restore_modul::web');
     }
 
     /**
-     * Determine whether the user can bulk restore.
+     * Determine whether the admin can bulk restore.
      */
-    public function restoreAny(User $user): bool
+    public function restoreAny(Admin $admin): bool
     {
-        return $user->can('restore_any_modul::web');
+        return $admin->can('restore_any_modul::web');
     }
 
     /**
-     * Determine whether the user can replicate.
+     * Determine whether the admin can replicate.
      */
-    public function replicate(User $user, ModulWeb $modulWeb): bool
+    public function replicate(Admin $admin, ModulWeb $modulWeb): bool
     {
-        return $user->can('replicate_modul::web');
+        return $admin->can('replicate_modul::web');
     }
 
     /**
-     * Determine whether the user can reorder.
+     * Determine whether the admin can reorder.
      */
-    public function reorder(User $user): bool
+    public function reorder(Admin $admin): bool
     {
-        return $user->can('reorder_modul::web');
+        return $admin->can('reorder_modul::web');
     }
 }

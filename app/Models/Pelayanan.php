@@ -11,10 +11,12 @@ class Pelayanan extends Model
         'name',
         'status'
     ];
-    public function users()
+    public function admin()
     {
         return $this->hasMany(User::class, 'pelayanan_id', 'id');
     }
-
-
+    public function admins()
+    {
+        return $this->hasMany(Admin::class, 'pelayanan_id', 'id');
+    }
 }

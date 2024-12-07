@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\User;
+use App\Models\Admin;
 use App\Models\Pelayanan;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -11,98 +11,98 @@ class PelayananPolicy
     use HandlesAuthorization;
 
     /**
-     * Determine whether the user can view any models.
+     * Determine whether the admin can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(Admin $admin): bool
     {
-        return $user->can('view_any_pelayanan');
+        return $admin->can('view_any_pelayanan');
     }
 
     /**
-     * Determine whether the user can view the model.
+     * Determine whether the admin can view the model.
      */
-    public function view(User $user, Pelayanan $pelayanan): bool
+    public function view(Admin $admin, Pelayanan $pelayanan): bool
     {
-        return $user->can('view_pelayanan');
+        return $admin->can('view_pelayanan');
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the admin can create models.
      */
-    public function create(User $user): bool
+    public function create(Admin $admin): bool
     {
-        return $user->can('create_pelayanan');
+        return $admin->can('create_pelayanan');
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Determine whether the admin can update the model.
      */
-    public function update(User $user, Pelayanan $pelayanan): bool
+    public function update(Admin $admin, Pelayanan $pelayanan): bool
     {
-        return $user->can('update_pelayanan');
+        return $admin->can('update_pelayanan');
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the admin can delete the model.
      */
-    public function delete(User $user, Pelayanan $pelayanan): bool
+    public function delete(Admin $admin, Pelayanan $pelayanan): bool
     {
-        return $user->can('delete_pelayanan');
+        return $admin->can('delete_pelayanan');
     }
 
     /**
-     * Determine whether the user can bulk delete.
+     * Determine whether the admin can bulk delete.
      */
-    public function deleteAny(User $user): bool
+    public function deleteAny(Admin $admin): bool
     {
-        return $user->can('delete_any_pelayanan');
+        return $admin->can('delete_any_pelayanan');
     }
 
     /**
-     * Determine whether the user can permanently delete.
+     * Determine whether the admin can permanently delete.
      */
-    public function forceDelete(User $user, Pelayanan $pelayanan): bool
+    public function forceDelete(Admin $admin, Pelayanan $pelayanan): bool
     {
-        return $user->can('force_delete_pelayanan');
+        return $admin->can('force_delete_pelayanan');
     }
 
     /**
-     * Determine whether the user can permanently bulk delete.
+     * Determine whether the admin can permanently bulk delete.
      */
-    public function forceDeleteAny(User $user): bool
+    public function forceDeleteAny(Admin $admin): bool
     {
-        return $user->can('force_delete_any_pelayanan');
+        return $admin->can('force_delete_any_pelayanan');
     }
 
     /**
-     * Determine whether the user can restore.
+     * Determine whether the admin can restore.
      */
-    public function restore(User $user, Pelayanan $pelayanan): bool
+    public function restore(Admin $admin, Pelayanan $pelayanan): bool
     {
-        return $user->can('restore_pelayanan');
+        return $admin->can('restore_pelayanan');
     }
 
     /**
-     * Determine whether the user can bulk restore.
+     * Determine whether the admin can bulk restore.
      */
-    public function restoreAny(User $user): bool
+    public function restoreAny(Admin $admin): bool
     {
-        return $user->can('restore_any_pelayanan');
+        return $admin->can('restore_any_pelayanan');
     }
 
     /**
-     * Determine whether the user can replicate.
+     * Determine whether the admin can replicate.
      */
-    public function replicate(User $user, Pelayanan $pelayanan): bool
+    public function replicate(Admin $admin, Pelayanan $pelayanan): bool
     {
-        return $user->can('replicate_pelayanan');
+        return $admin->can('replicate_pelayanan');
     }
 
     /**
-     * Determine whether the user can reorder.
+     * Determine whether the admin can reorder.
      */
-    public function reorder(User $user): bool
+    public function reorder(Admin $admin): bool
     {
-        return $user->can('reorder_pelayanan');
+        return $admin->can('reorder_pelayanan');
     }
 }

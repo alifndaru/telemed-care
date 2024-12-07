@@ -27,6 +27,10 @@ class Conversation extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+    public function admins()
+    {
+        return $this->belongsTo(Admin::class, 'user_id');
+    }
 
     public function messages()
     {

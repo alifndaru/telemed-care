@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\UserManagementResource\Pages;
+use App\Models\Admin;
 use App\Models\User;
 use App\Models\Spesialis;
 use App\Models\Klinik;
@@ -22,8 +23,8 @@ use Illuminate\Support\Facades\Auth;
 
 class UserManagementResource extends Resource
 {
-    protected static ?string $model = User::class;
-    protected static ?string $navigationGroup = 'Users Management';
+    protected static ?string $model = Admin::class;
+    protected static ?string $navigationGroup = 'Admin Users Management';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
@@ -117,18 +118,36 @@ class UserManagementResource extends Resource
             'edit' => Pages\EditUserManagement::route('/{record}/edit'),
         ];
     }
+    // public static function getEloquentQuery(): Builder
+    // {
+    //     // Mendapatkan user yang sedang login
+    //     $admin = auth()->guard('admin')->user();
+    //     // dd($admin);
+
+    //     // Dapatkan query dasar
+    //     $query = parent::getEloquentQuery();
+
+    //     // Jika user role adalah klinik atau dokter, filter berdasarkan klinik_id pengguna
+    //     if ($admin && ($admin->role->name == 'klinik' || $admin->role->name == 'dokter')) {
+    //         // Filter berdasarkan klinik_id yang ada pada user
+    //         $query->where('klinik_id', $admin->klinik_id);
+    //     }
+
+    //     // Query lainnya tetap seperti semula, menampilkan data terbaru
+    //     return $query->latest();
+    // }
     public static function getEloquentQuery(): Builder
     {
         // Mendapatkan user yang sedang login
-        $user = auth()->user();
+        $admin = auth()->guard('admin')->user();
 
         // Dapatkan query dasar
         $query = parent::getEloquentQuery();
 
-        // Jika user role adalah klinik atau dokter, filter berdasarkan klinik_id pengguna
-        if ($user && ($user->role->name == 'klinik' || $user->role->name == 'dokter')) {
+        // Jika user ada dan memiliki role, filter berdasarkan klinik_id pengguna
+        if ($admin && $admin->role && ($admin->role->name == 'klinik' || $admin->role->name == 'dokter')) {
             // Filter berdasarkan klinik_id yang ada pada user
-            $query->where('klinik_id', $user->klinik_id);
+            $query->where('klinik_id', $admin->klinik_id);
         }
 
         // Query lainnya tetap seperti semula, menampilkan data terbaru
