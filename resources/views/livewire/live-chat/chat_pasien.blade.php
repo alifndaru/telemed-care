@@ -134,22 +134,26 @@
           @endforelse
         </div>
 
-        <!-- Message Input -->
-        <div class="sticky bottom-0 p-4 bg-gray-100 dark:bg-gray-800 border-t dark:border-gray-700">
-          @if (!$chatEnded)
+        <div class="bg-gray-200 p-4 border-t">
+            @if (Carbon::parse($this->activeConsultation['jadwal_start'])->isFuture())
+            <div class="text-center text-gray-700 dark:text-gray-400">
+                Chat belum dimulai.
+            </div>
+            @elseif ($chatEnded)
+            <div class="text-center text-gray-700 dark:text-gray-400">
+                Chat telah selesai.
+            </div>
+            @else
             <form wire:submit.prevent="sendMessage">
-              <div class="flex items-center space-x-3">
-                <input type="text" wire:model="newMessage" placeholder="Type your message..."
-                  class="flex-1 p-2 rounded-lg border text-black border-gray-300 dark:text-black" />
-                <button type="submit"
-                  class="px-4 py-2 bg-gray-500 dark:bg-white text-black dark:text-white rounded-lg">
-                  Send
-                </button>
-              </div>
+                <div class="flex items-center space-x-3">
+                <input type="text" wire:model="newMessage" placeholder="Tulis sebuah pesan..."
+                    class="flex-1 p-2 border border-blue-300 rounded-lg focus:outline-none"
+                    @if ($chatEnded) disabled @endif>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                    @if ($chatEnded) disabled @endif>{{ __('Kirim') }} </button>
+                </div>
             </form>
-          @else
-            <p class="text-center text-gray-500 dark:text-gray-400">Chat has ended.</p>
-          @endif
+            @endif
         </div>
       </div>
     @else
