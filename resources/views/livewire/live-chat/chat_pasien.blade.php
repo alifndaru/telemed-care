@@ -35,17 +35,19 @@
                       : '' }}
                 </span>
               </div>
-              <p class="text-sm text-gray-600 dark:text-gray-400 truncate">
-                @if ($consultation['is_sender'])
-                  <span class="text-blue-600 dark:text-blue-400 font-bold">You: </span>
+              <div class="flex items-center justify-between">
+                <p class="text-sm text-gray-600 dark:text-gray-400 truncate">
+                  @if ($consultation['is_sender'])
+                    <span class="text-blue-600 dark:text-blue-400 font-bold">You: </span>
+                  @endif
+                  {{ $consultation['latest_message'] }}
+                </p>
+                @if ($consultation['unread_count'] > 0)
+                  <x-filament::badge color="primary" size="sm">
+                    {{ $consultation['unread_count'] }}
+                  </x-filament::badge>
                 @endif
-                {{ $consultation['latest_message'] }}
-              </p>
-              @if ($consultation['unread_count'] > 0)
-                <x-filament::badge color="primary" size="sm">
-                  {{ $consultation['unread_count'] }}
-                </x-filament::badge>
-              @endif
+              </div>
             </div>
           </div>
         </div>
@@ -73,8 +75,9 @@
               {{ $this->activeConsultation['other_person_name'] }}
             </h2>
           </div>
-          <h5 class="text-black dark:text-white">Jadwal: {{ substr($consultation['jadwal_start'], 0, 5) }} -
-            {{ substr($consultation['jadwal_end'], 0, 5) }}</h5>
+          <h5 class="text-black dark:text-white">Jadwal: {{ substr($this->activeConsultation['jadwal_start'], 0, 5) }}
+            -
+            {{ substr($this->activeConsultation['jadwal_end'], 0, 5) }}</h5>
           <x-filament::button wire:click="endChat" color="danger" size="sm">
             {{ __('End Chat') }}
           </x-filament::button>
@@ -96,10 +99,6 @@
           </button>
           <div x-show="open" x-cloak
             class="absolute left-0 w-full bg-white border-t shadow-lg p-4 z-50 max-h-60 overflow-y-auto">
-            <!-- Debug information -->
-            <div class="mb-4 bg-yellow-100 p-2 rounded">
-            </div>
-
             <h4 class="font-semibold text-sm text-gray-800 mb-2">{{ __('Judul Konsultasi') }}</h4>
             <p class="text-gray-600 text-sm mb-4">
               {{ $this->activeConsultation['judul_konsultasi'] ?? 'No title available' }}
@@ -136,11 +135,15 @@
 
         <!-- Message Input -->
         <div class="sticky bottom-0 p-4 bg-gray-100 dark:bg-gray-800 border-t dark:border-gray-700">
-          @if (Carbon::parse($this->activeConsultation['jadwal_start'])->isFuture())
+          @if ($this->activeConsultation['status'] === true)
+            <div class="text-center text-gray-700 dark:text-gray-400">
+              Chat telah selesai.
+            </div>
+          @elseif (Carbon::parse($this->activeConsultation['jadwal_start'])->isFuture())
             <div class="text-center text-gray-700 dark:text-gray-400">
               Chat belum dimulai.
             </div>
-          @elseif ($chatEnded)
+          @elseif ($this->chatEnded)
             <div class="text-center text-gray-700 dark:text-gray-400">
               Chat telah selesai.
             </div>
