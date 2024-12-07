@@ -4,7 +4,8 @@
 
 <div wire:poll class="h-screen grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 dark:bg-gray-900">
   <!-- Left Sidebar: Conversation List -->
-  <div class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 rounded-lg shadow-sm h-full">
+  <div class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 rounded-lg shadow-sm h-full"
+    wire:poll.1s="loadConsultations">
     <div
       class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-4 border-b dark:border-gray-600 flex items-center justify-between">
       <x-filament::icon icon="heroicon-m-chat-bubble-left-right" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
@@ -53,7 +54,7 @@
   </div>
 
   <!-- Right Sidebar: Chat Room -->
-  <div class="md:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow-sm h-screen">
+  <div class="md:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow-sm h-screen" wire:poll.1s="loadConsultations">
     @if ($this->activeConsultation)
       <div class="flex flex-col h-full">
         <!-- Chat Header -->
@@ -98,7 +99,8 @@
         </div>
 
         <!-- Chat Messages -->
-        <div class="h-screen flex-1 overflow-y-auto p-6 bg-white dark:bg-gray-900 custom-scrollbar">
+        <div class="h-screen flex-1 overflow-y-auto p-6 bg-white dark:bg-gray-900 custom-scrollbar"
+          wire:poll.1s="loadConsultations">
           @forelse ($this->messages as $message)
             <div class="flex {{ $message['from_user_id'] === auth()->id() ? 'justify-end' : 'justify-start' }} mb-4 ">
               <div

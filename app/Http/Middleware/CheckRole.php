@@ -14,15 +14,15 @@ class CheckRole
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next, ): Response
+    public function handle(Request $request, Closure $next,): Response
     {
 
-        // if (!Auth::guard('web')->check()) {
+        // if (Auth::guard('web')->check()) {
         //     return redirect()->route('login')->with('error', 'Anda harus login untuk mengakses halaman ini.');
         // }
-        if (!Auth::guard('admin')->check()) {
-            return redirect()->route('admin.login')->with('error', 'Anda harus login sebagai admin untuk mengakses halaman ini.');
-        }
+        // if (Auth::guard('admin')->check()) {
+        //     return redirect()->route('admin.login')->with('error', 'Anda harus login sebagai admin untuk mengakses halaman ini.');
+        // }
         return $next($request);
     }
 }

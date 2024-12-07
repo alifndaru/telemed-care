@@ -4,7 +4,7 @@
 <div class="h-[calc(100vh-100px)] grid grid-cols-1 md:grid-cols-3 bg-white">
   <!-- Left Sidebar: Conversation List -->
   <div class="border-r bg-white">
-    <div class="bg-blue-500 p-4 border-b border-blue-200">
+    <div class="bg-blue-500 p-4 border-b border-blue-200" wire:poll.1s="loadConsultations">
       <div class="flex items-center justify-between space-x-3">
         <x-filament::icon icon="heroicon-m-chat-bubble-left-right" class="w-6 h-6 text-white" />
         <h2 class="text-lg font-bold text-white">{{ __('Chat Konsultasi') }}</h2>

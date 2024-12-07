@@ -21,6 +21,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
+
 class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -59,19 +60,20 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->plugins([FilamentShieldPlugin::make(),
-            FilamentEditProfilePlugin::make()
-                ->setIcon('heroicon-o-user')
-                ->shouldShowDeleteAccountForm(false)
-                ->shouldShowBrowserSessionsForm(false)
-                ->shouldShowAvatarForm(
-                    value: true,
-                    directory: 'profile-dokter', // image will be stored in 'storage/app/public/avatars
-                    rules: 'mimes:jpeg,png|max:1024' //only accept jpeg and png files with a maximum size of 1MB
-                )
-            // ->customProfileComponents([
-            //     \App\Livewire\Profile::class,
-            // ]),
+            ->plugins([
+                FilamentShieldPlugin::make(),
+                FilamentEditProfilePlugin::make()
+                    ->setIcon('heroicon-o-user')
+                    ->shouldShowDeleteAccountForm(false)
+                    ->shouldShowBrowserSessionsForm(false)
+                    ->shouldShowAvatarForm(
+                        value: true,
+                        directory: 'profile-dokter', // image will be stored in 'storage/app/public/avatars
+                        rules: 'mimes:jpeg,png|max:1024' //only accept jpeg and png files with a maximum size of 1MB
+                    )
+                // ->customProfileComponents([
+                //     \App\Livewire\Profile::class,
+                // ]),
             ])
             ->authMiddleware([
                 Authenticate::class,
