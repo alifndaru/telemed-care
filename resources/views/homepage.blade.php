@@ -166,10 +166,10 @@
               <div class="mt-6">
                 <button
                   class="w-full bg-yellow-400 text-blue-900 font-semibold py-2 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300">
-                  <span class="flex items-center justify-center space-x-2">
+                  <a href="/konsultasi-create" class="flex items-center justify-center space-x-2">
                     <i class="fa-solid fa-comments text-xl mr-4"></i>
                     <span>KONSULTASI</span>
-                  </span>
+                  </a>
                 </button>
               </div>
             </div>
