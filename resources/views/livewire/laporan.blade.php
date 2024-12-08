@@ -135,11 +135,11 @@
             }
 
             consultationChartPelayanan = new Chart(ctxPelayanan, {
-                type: 'bar',
+                type: 'line',
                 data: {
                     labels: pelayananLabels, // Extract labels like 'HIV'
                     datasets: [{
-                        label: 'Jumlah Konsultasi',
+                        label: 'Jumlah Konsultasi Per-Pelayanan',
                         data: pelayananData, // Extract corresponding counts like 2
                         backgroundColor: '#10B981',
                     }]
