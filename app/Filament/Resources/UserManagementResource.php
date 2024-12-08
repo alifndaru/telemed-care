@@ -27,35 +27,39 @@ class UserManagementResource extends Resource
     protected static ?string $navigationGroup = 'Admin Users Management';
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
-
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([Select::make('role_id')
-                ->relationship('roles', 'name')
+            ->schema([
+                Select::make('role_id')
+                    ->relationship('roles', 'name')
                 ->reactive()
                 ->afterStateUpdated(function ($state, callable $set) {
-                    $roleName = \App\Models\Role::find($state)?->name;
+                $role = \App\Models\Role::find($state);
+                $roleName = optional($role)->name;  // Safe access
                     $set('roleName', $roleName);
                 })
                 ->required(),
+
                 TextInput::make('name')
-                    ->required()
+            ->required()
                     ->maxLength(255),
+
                 TextInput::make('email')
-                    ->email()
+            ->email()
                     ->required()
+            ->unique('admins', 'email')
                     ->maxLength(255),
+
                 TextInput::make('password')
-                    ->password()
+            ->password()
                     ->required()
                     ->minLength(8)
             ->maxLength(255),
 
-
             Select::make('spesialis_id')
                 ->label('Spesialis')
-                ->relationship('spesialis', 'name')
+                ->relationship('spesialisasi', 'name')
                 ->options(SpesialisasiDokter::all()->pluck('name', 'id'))
                 ->visible(fn($get) => $get('roleName') == 'dokter')
                 ->required(),
@@ -72,10 +76,10 @@ class UserManagementResource extends Resource
                 ->relationship('pelayanan', 'name')
                 ->options(Pelayanan::all()->pluck('name', 'id'))
                 ->visible(fn($get) => $get('roleName') == 'dokter')
-                ->required(),
-
+            ->required(),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -118,40 +122,22 @@ class UserManagementResource extends Resource
             'edit' => Pages\EditUserManagement::route('/{record}/edit'),
         ];
     }
-    // public static function getEloquentQuery(): Builder
-    // {
-    //     // Mendapatkan user yang sedang login
-    //     $admin = auth()->guard('admin')->user();
-    //     // dd($admin);
-
-    //     // Dapatkan query dasar
-    //     $query = parent::getEloquentQuery();
-
-    //     // Jika user role adalah klinik atau dokter, filter berdasarkan klinik_id pengguna
-    //     if ($admin && ($admin->role->name == 'klinik' || $admin->role->name == 'dokter')) {
-    //         // Filter berdasarkan klinik_id yang ada pada user
-    //         $query->where('klinik_id', $admin->klinik_id);
-    //     }
-
-    //     // Query lainnya tetap seperti semula, menampilkan data terbaru
-    //     return $query->latest();
-    // }
     public static function getEloquentQuery(): Builder
     {
-        // Mendapatkan user yang sedang login
+        // Get the currently authenticated admin
         $admin = auth()->guard('admin')->user();
 
-        // Dapatkan query dasar
+        // Get the base query
         $query = parent::getEloquentQuery();
 
-        // Jika user ada dan memiliki role, filter berdasarkan klinik_id pengguna
-        if ($admin && $admin->role && ($admin->role->name == 'klinik' || $admin->role->name == 'dokter')) {
-            // Filter berdasarkan klinik_id yang ada pada user
+        // Filter by klinik_id for dokter or klinik role
+        if ($admin && $admin->role && ($admin->role->name == 'dokter' || $admin->role->name == 'klinik')) {
             $query->where('klinik_id', $admin->klinik_id);
         }
 
-        // Query lainnya tetap seperti semula, menampilkan data terbaru
+        // Return the query, sorted by the latest
         return $query->latest();
     }
+
 
 }
