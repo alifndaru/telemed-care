@@ -1,10 +1,11 @@
 @php
   use Carbon\Carbon;
 @endphp
-<div class="h-[calc(100vh-100px)] grid grid-cols-1 md:grid-cols-3 bg-white">
+<div x-data="{ activeChat: false }" class="h-[calc(100vh-100px)] grid grid-cols-1 md:grid-cols-3 bg-white">
   <!-- Left Sidebar: Conversation List -->
-  <div class="border-r bg-white">
-    <div class="bg-gray-100 p-4 border-b" wire:poll.1s="loadConsultations">
+  <div class="border-r bg-white md:block"
+    :class="{ 'hidden': activeChat, 'block': !activeChat && window.innerWidth < 768 }">
+    <div class="bg-gray-100 p-4 border-b" wire:poll.5s="loadConsultations">
       <div class="flex items-center justify-between space-x-3">
         <x-filament::icon icon="heroicon-m-chat-bubble-left-right" class="w-6 h-6 text-gray-700" />
         <h2 class="text-lg font-bold text-gray-700">{{ __('Chat Konsultasi') }}</h2>
@@ -18,7 +19,8 @@
     <div class="overflow-y-auto custom-scrollbar p-2">
       @forelse ($this->consultations as $consultation)
         <div wire:key="{{ $consultation['id'] }}" wire:click="selectConsultation({{ $consultation['id'] }})"
-          class="p-4 mb-2 rounded-lg cursor-pointer transition-all duration-200
+          @click="activeChat = true"
+          class="p-4 mb-2 rounded-lg cursor-pointer
                 {{ $this->activeConsultation && $this->activeConsultation['id'] === $consultation['id']
                     ? 'bg-blue-100'
                     : 'hover:bg-blue-100' }}">
@@ -59,14 +61,17 @@
 
   <!-- Right Side: Chat Room -->
   <div class="md:col-span-2 bg-white flex flex-col h-[calc(100vh-100px)] overflow-y-auto"
-    wire:poll.1s="checkChatStatus">
+    :class="{ 'hidden': !activeChat && window.innerWidth < 768, 'block': activeChat }" wire:poll.5s="checkChatStatus">
+    <!-- Chat Header -->
     @if ($this->activeConsultation)
-      <!-- Chat Header -->
       <div class="bg-gray-100 py-4 px-6 flex justify-between items-center">
-        <div class="flex items-center gap-5">
+        <div class="flex items-center gap-3 md:gap-5">
+          <button @click="activeChat = false" class="md:hidden text-gray-600">
+            <x-filament::icon icon="heroicon-o-chevron-left" class="w-6 h-6" />
+          </button>
           <x-filament::avatar
             src="https://ui-avatars.com/api/?name={{ urlencode($this->activeConsultation['other_person_name']) }}"
-            alt="{{ $this->activeConsultation['other_person_name'] }}" class="w-10 h-10 rounded-full" />
+            alt="{{ $this->activeConsultation['other_person_name'] }}" class="w-10 h-10 rounded-full" loading="lazy" />
           <div class="detail-profile">
             <h2 class="font-bold ">
               {{ $this->activeConsultation['other_person_name'] }}
@@ -74,8 +79,6 @@
             <span class="text-gray-500">{{ $consultation['other_person_spesialis'] }}</span>
           </div>
         </div>
-        <h5>Jadwal: {{ substr($activeConsultation['jadwal_start'], 0, 5) }} -
-          {{ substr($this->activeConsultation['jadwal_end'], 0, 5) }}</h5>
         <h5 class="font-bold">{{ $consultation['klinik'] }}</h5>
       </div>
 
@@ -95,6 +98,9 @@
         </button>
         <div x-show="open" x-cloak
           class="absolute left-0 w-full bg-white border-t shadow-lg p-4 z-50 max-h-60 overflow-y-auto">
+          <h5 class="font-semibold text-sm text-gray-800 mb-2">Jadwal</h5>
+          <p class="text-gray-600 text-sm mb-4">{{ substr($activeConsultation['jadwal_start'], 0, 5) }} -
+            {{ substr($this->activeConsultation['jadwal_end'], 0, 5) }}</p>
           <h4 class="font-semibold text-sm text-gray-800 mb-2">{{ __('Judul Konsultasi') }}</h4>
           <p class="text-gray-600 text-sm mb-4">
             {{ $this->activeConsultation['judul_konsultasi'] ?? 'No title available' }}
@@ -106,19 +112,16 @@
         </div>
       </div>
 
-      <!-- Chat Messages -->
-      <div class="flex-1 p-4 bg-white custom-scrollbar h-[calc(100vh-100px)] overflow-y-auto"
-        wire:poll.1s="loadConsultations">
+      <div class="flex-1 p-4 bg-white custom-scrollbar overflow-y-auto">
         @forelse ($this->messages as $message)
-          <div class="flex {{ $message['from_user_id'] === auth()->id() ? 'justify-end' : 'justify-start' }} mb-4"
-            wire:poll.1s="loadConsultations">
+          <div class="flex {{ $message['from_user_id'] === auth()->id() ? 'justify-end' : 'justify-start' }} mb-4">
             <div
               class="max-w-[70%] p-3 rounded-lg shadow {{ $message['from_user_id'] === auth()->id() ? 'bg-blue-500 text-white' : 'bg-blue-100' }}">
               <p class="{{ $message['from_user_id'] === auth()->id() ? 'text-white' : 'text-gray-700' }} break-words">
                 {{ $message['message'] }}
               </p>
               <span
-                class="text-xs {{ $message['from_user_id'] === auth()->id() ? 'text-white' : 'text-gray-700 text-end' }} mt-1 block">
+                class="text-xs {{ $message['from_user_id'] === auth()->id() ? 'text-white' : 'text-gray-700' }} mt-1 block">
                 {{ Carbon::parse($message['created_at'])->format('H:i') }}
               </span>
             </div>
@@ -160,8 +163,7 @@
       <div class="h-[calc(100vh-100px)] flex flex-col justify-center">
         <img src="{{ asset('images/logo_telemedicine.png') }}" alt="pkbi"
           class="w-36 md:w-44 lg:w-52 h-auto mx-auto object-cover" loading="lazy">
-        <h5 class="text-center text-lg  p-4 text-blue-600">{{ __('Pilih room chat untuk memulai konsultasi') }}
-        </h5>
+        <h5 class="text-center text-lg  p-4 text-blue-600">{{ __('Pilih room chat untuk memulai konsultasi') }}</h5>
       </div>
     @endif
   </div>

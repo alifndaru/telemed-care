@@ -12,9 +12,8 @@
   <link href="\js\user_app\summernote-0.9.0-dist\summernote-lite.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/494c64a86b.js" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/flowbite@1.5.1/dist/flowbite.min.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-  @vite(['resources/css/app.css', 'resources/js/app.js'])
+  @vite('resources/css/app.css')
+  @livewireStyles
 </head>
 
 <body>
@@ -39,7 +38,9 @@
     @include('layouts.footer')
   </div>
 
-  <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+  @livewireScripts
+
+  {{-- <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
   <script src="{{ asset('js/user_app/carousel.js') }}"></script>
   <script src="{{ asset('js/user_app/slick.min.js') }}"></script>
   <script src="{{ asset('js/user_app/scrolling-nav.js') }}"></script>
@@ -64,7 +65,7 @@
       ]
     });
   </script>
-  @yield('script')
+  @yield('script') --}}
 </body>
 
 </html>

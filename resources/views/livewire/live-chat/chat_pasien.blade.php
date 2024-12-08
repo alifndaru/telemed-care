@@ -1,23 +1,26 @@
 @php
   use Carbon\Carbon;
 @endphp
-
-<div class="h-screen grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 dark:bg-gray-900">
+<div x-data="{ activeChat: false }"
+  class="h-[calc(100vh-100px)] md:h-screen grid grid-cols-1 md:grid-cols-3 gap-4 bg-gray-50 dark:bg-gray-900">
   <!-- Left Sidebar: Conversation List -->
-  <div class="bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 rounded-lg shadow-sm h-full"
-    wire:poll.1s="loadConsultations">
+  <div class="border-r bg-white md:block"
+    :class="{ 'hidden': activeChat, 'block': !activeChat && window.innerWidth < 768 }" wire:poll.1s="loadConsultations">
     <div
       class="sticky top-0 z-10 bg-gray-100 dark:bg-gray-700 p-4 border-b dark:border-gray-600 flex items-center justify-between">
       <x-filament::icon icon="heroicon-m-chat-bubble-left-right" class="w-6 h-6 text-blue-600 dark:text-blue-400" />
       <h2 class="text-lg font-bold text-gray-800 dark:text-gray-200">{{ __('Chat Konsultasi') }}</h2>
       <x-filament::badge>{{ count($this->consultations) }}</x-filament::badge>
     </div>
+
+    <!-- Chat List -->
     <div class="overflow-y-auto custom-scrollbar p-2">
       @forelse ($this->consultations as $consultation)
         <div wire:key="{{ $consultation['id'] }}" wire:click="selectConsultation({{ $consultation['id'] }})"
+          @click="activeChat = true"
           class="p-4 mb-2 rounded-lg cursor-pointer transition-all duration-200
                             {{ $this->activeConsultation && $this->activeConsultation['id'] === $consultation['id']
-                                ? 'bg-blue-100 dark:bg-blue-900/30 ring-2 ring-blue-200 dark:ring-blue-700'
+                                ? 'bg-blue-100 dark:bg-blue-900/30 ring-2 ring-blue-200 dark:ring-gray-700'
                                 : 'hover:bg-gray-100 dark:hover:bg-gray-700' }}">
           <div class="flex items-center gap-3">
             <x-filament::avatar
@@ -61,26 +64,27 @@
   </div>
 
   <!-- Right Sidebar: Chat Room -->
-  <div class="md:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow-sm h-screen" wire:poll.1s="loadConsultations">
+  <div class="md:col-span-2 bg-white dark:bg-gray-900 rounded-lg shadow-sm h-screen"
+    :class="{ 'hidden': !activeChat && window.innerWidth < 768, 'block': activeChat }" wire:poll.5s="checkChatStatus">
     @if ($this->activeConsultation)
       <div class="flex flex-col h-full">
         <!-- Chat Header -->
         <div
           class="sticky top-0 z-10 flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-800 border-b dark:border-gray-700">
           <div class="flex items-center gap-3">
+            <button @click="activeChat = false" class="md:hidden text-gray-600">
+              <x-filament::icon icon="heroicon-o-chevron-left" class="w-6 h-6" />
+            </button>
             <x-filament::avatar
               src="https://ui-avatars.com/api/?name={{ urlencode($this->activeConsultation['other_person_name']) }}"
               alt="{{ $this->activeConsultation['other_person_name'] }}" class="w-10 h-10 rounded-full m-10" />
-            <h2 class="font-bold text-black dark:text-white">
+            <h2 class="font-bold text-black dark:text-white text-sm md:text-lg">
               {{ $this->activeConsultation['other_person_name'] }}
             </h2>
           </div>
-          <h5 class="text-black dark:text-white">Jadwal: {{ substr($this->activeConsultation['jadwal_start'], 0, 5) }}
-            -
-            {{ substr($this->activeConsultation['jadwal_end'], 0, 5) }}</h5>
-          <x-filament::button wire:click="endChat" color="danger" size="sm">
-            {{ __('End Chat') }}
-          </x-filament::button>
+          <h5 class="text-black dark:text-white text-xs md:text-sm">Jadwal:
+            {{ substr($this->activeConsultation['jadwal_start'], 0, 5) }}
+            - {{ substr($this->activeConsultation['jadwal_end'], 0, 5) }}</h5>
         </div>
 
         <!-- Accordion Section -->

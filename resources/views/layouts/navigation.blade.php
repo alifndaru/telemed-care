@@ -106,5 +106,56 @@
         </svg>
       </button>
     </div>
-  </div>
+    <!-- Responsive Navigation Menu -->
+    <div :class="{ 'block': open, 'hidden': !open }" class="hidden md:hidden">
+      <div class="pt-2 pb-3 space-y-1">
+        <x-responsive-nav-link :href="route('home')" :active="request()->routeIs('home')">
+          {{ __('Beranda') }}
+        </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('konsultasi.list')" :active="request()->routeIs('konsultasi.list')">
+          {{ __('Konsultasi') }}
+        </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('tenaga.index')" :active="request()->routeIs('tenaga.index')">
+          {{ __('Tenaga Kayanan') }}
+        </x-responsive-nav-link>
+        <x-responsive-nav-link :href="route('lokasi')" :active="request()->routeIs('lokasi')">
+          {{ __('Lokasi') }}
+        </x-responsive-nav-link>
+      </div>
+
+      <!-- Responsive Auth Links -->
+      <div class="pt-4 pb-1 border-t border-gray-200">
+        @auth
+          <div class="px-4">
+            <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+            <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+          </div>
+          <div class="mt-3 space-y-1">
+            <x-responsive-nav-link :href="route('konsultasi.chat')">
+              <i class="fa-solid fa-comments mr-2"></i>{{ __('Chat') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('profile.edit')">
+              <i class="fa-solid fa-user mr-3"></i>{{ __('Profile') }}
+            </x-responsive-nav-link>
+            <form method="POST" action="{{ route('logout') }}">
+              @csrf
+              <x-responsive-nav-link :href="route('logout')"
+                onclick="event.preventDefault();
+                              this.closest('form').submit();">
+                <i class="fa-solid fa-right-from-bracket mr-2"></i>{{ __('Log Out') }}
+              </x-responsive-nav-link>
+            </form>
+          </div>
+        @else
+          <div class="mt-3 space-y-1">
+            <x-responsive-nav-link :href="route('login')">
+              {{ __('Login') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('register')">
+              {{ __('Register') }}
+            </x-responsive-nav-link>
+          </div>
+        @endauth
+      </div>
+    </div>
 </nav>

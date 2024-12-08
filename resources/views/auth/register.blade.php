@@ -57,7 +57,7 @@
         </div>
 
         <!-- Jenis Kelamin -->
-        <div>
+        <div class="col-span-2 md:col-span-1">
           <label for="jenis_kelamin" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
           <select id="jenis_kelamin" name="jenis_kelamin"
             class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
@@ -72,7 +72,7 @@
         </div>
 
         <!-- Tempat Lahir -->
-        <div>
+        <div class="col-span-2 md:col-span-1">
           <label for="tempat_lahir" class="block text-sm font-medium text-gray-700">Tempat Lahir</label>
           <input type="text" id="tempat_lahir" name="tempat_lahir"
             class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
@@ -83,7 +83,7 @@
         </div>
 
         <!-- Tanggal Lahir -->
-        <div>
+        <div class="col-span-2 md:col-span-1">
           <label for="tanggal_lahir" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
           <input type="date" id="tanggal_lahir" name="tanggal_lahir"
             class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
@@ -94,7 +94,7 @@
         </div>
 
         <!-- Status Pernikahan -->
-        <div>
+        <div class="col-span-2 md:col-span-1">
           <label for="status_pernikahan" class="block text-sm font-medium text-gray-700">Status Pernikahan</label>
           <select id="status_pernikahan" name="status_pernikahan"
             class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
@@ -110,7 +110,7 @@
         </div>
 
         <!-- Agama -->
-        <div>
+        <div class="col-span-2 md:col-span-1">
           <label for="agama" class="block text-sm font-medium text-gray-700">Agama</label>
           <input type="text" id="agama" name="agama"
             class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
@@ -121,7 +121,7 @@
         </div>
 
         <!-- No Telp -->
-        <div>
+        <div class="col-span-2 md:col-span-1">
           <label for="no_telp" class="block text-sm font-medium text-gray-700">No Telp</label>
           <input type="text" id="no_telp" name="no_telp"
             class="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
