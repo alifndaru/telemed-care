@@ -40,4 +40,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Province::class, 'province_id', 'id');
     }
+    public function dataUser()
+    {
+        return $this->hasOne(DataUser::class, 'user_id', 'id');
+    }
 }
