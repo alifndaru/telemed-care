@@ -11,32 +11,31 @@ use PhpParser\Builder\Function_;
 
 class TenagaProviderController extends Controller
 {
+
     public function index()
     {
-        $data = Cache::remember('admin.provider', 60, function () {
-            return Admin::whereNotNull('spesialis_id')->whereNotNull('klinik_id')
-                ->with([
-                    'spesialisasi:id,name',
-                    'klinik:id,namaKlinik,province_id',
-                    'klinik.provinsi:id,name'
-                ])
-                ->orderBy('name')
-                ->take(10)
-                ->get();
-        });
 
-        return view('tenaga-provider', compact('data'));
-    }
-
-    public function getSpesialis($category)
-    {
-        $data = Admin::where('spesialis_id', $category)
+       
+            $data = Admin::whereNotNull('spesialis_id')->whereNotNull('klinik_id')->where('role_id', 3)
             ->with([
-                'spesialisasi:id,name',
+                'spesialis:id,name',
                 'klinik:id,namaKlinik,province_id',
                 'klinik.provinsi:id,name'
             ])
             ->orderBy('name')
+            ->get();
+        return view('tenaga-layanan', compact('data'));
+    } 
+
+    public function getLayanan($category)
+    {
+        $data = Admin::where('spesialis_id', $category)
+            ->with([
+                'spesialis:id,name',
+                'klinik:id,namaKlinik,province_id',
+                'klinik.provinsi:id,name'
+            ])
+
             ->get();
         return response()->json($data);
     }
