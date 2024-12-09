@@ -22,32 +22,76 @@
                   <span
                     class="px-3 py-1 font-semibold rounded {{ $consultation->status ? 'bg-green-200 text-green-800' : 'bg-yellow-200 text-yellow-800' }}">
                     <i class="{{ $consultation->status ? 'fas fa-check-circle' : 'fas fa-hourglass-half' }}"></i>
-                    {{ $consultation->status ? 'Selesai' : 'Menunggu' }}
+                    <span class="text-sm md:text-base">{{ $consultation->status ? 'Selesai' : 'Menunggu' }}</span>
                   </span>
-                  <p class="text-sm font-light text-gray-500">
-                    <i class="fas fa-receipt mr-2"></i>#Transaksi ID: {{ $consultation->transaction->invoice_number }}
+
+                  <!-- Transaksi ID -->
+                  <p class="text-sm font-light text-gray-500 flex items-center">
+                    <i class="fas fa-receipt mr-2"></i>#ID: {{ $consultation->transaction->invoice_number }}
                   </p>
                 </div>
 
                 <!-- Informasi -->
                 <div class="flex justify-between">
                   <div>
-                    <p><strong>Dokter:</strong> {{ $consultation->transaction->doctor->name }} - {{ $consultation->transaction->doctor->spesialisasi->name }}</p>
-                    <p><strong>Keluhan:</strong> {{ $consultation->judulKonsultasi }}</p>
+
+                    <div class="mb-5">
+                      <span class="font-extrabold text-sm md:text-base">
+                        Dokter:
+                      </span>
+                      <h2 class="text-base md:text-xl font-light">{{ $consultation->transaction->doctor->name }} -
+                        <span
+                          class="text-sm md:text-base text-gray-500">{{ $consultation->transaction->doctor->spesialisasi->name }}</span>
+                      </h2>
+                    </div>
+                    <div>
+                      <span class="font-extrabold text-sm md:text-base">
+                        Keluhan:
+                      </span>
+                      <h2 class="text-base md:text-xl font-light">{{ $consultation->judulKonsultasi }}</h2>
+                    </div>
                   </div>
-                  <div>
-                    <p><strong>Total biaya:</strong></p>
-                    <p class="text-blue-600 font-bold">Rp {{ number_format($consultation->transaction->totalBiaya, 0, ',', '.') }}</p>
+                  <div class="flex flex-col justify-end">
+                    <span class="text-sm md:text-base">Total biaya</span>
+                    <p class="text-blue-600 font-bold text-base md:text-xl">Rp
+                      {{ number_format($consultation->transaction->totalBiaya, 0, ',', '.') }}</p>
                   </div>
                 </div>
 
-                <!-- Informasi Jam -->
-                <div class="flex items-center">
-                  <p>
-                    <i class="fa-solid fa-clock mr-2"></i>
-                    {{ substr($consultation->transaction->jadwal->start, 0, 5) }} WIB -
-                    {{ substr($consultation->transaction->jadwal->end, 0, 5) }} WIB
-                  </p>
+                <!-- Tombol Aksi -->
+                <div class="flex space-x-3 flex-col md:flex-row justify-between  items-start md:items-end">
+                  <div class="flex items-center mb-5 md:m-0">
+                    <h2 class="text-base md:text-xl">
+                      <i class="fa-solid fa-clock mr-2"></i>
+                      {{ substr($consultation->transaction->jadwal->start, 0, 5) }} WIB -
+                      {{ substr($consultation->transaction->jadwal->end, 0, 5) }} WIB
+                    </h2>
+                  </div>
+                  <div class="flex space-x-3 justify-between md:justify-normal !m-0">
+                    @php
+                      $now = now();
+                      $start = \Carbon\Carbon::createFromFormat('H:i:s', $consultation->transaction->jadwal->start);
+                      $end = \Carbon\Carbon::createFromFormat('H:i:s', $consultation->transaction->jadwal->end);
+                      $isDisabled = $now->lt($start) || $now->gt($end);
+                    @endphp
+
+                    <!-- Tombol Mulai Konsultasi -->
+                    @if (!$consultation->status)
+                      <button wire:key="{{ $consultation['id'] }}" wire:click="selectConsultation()"
+                        class="bg-blue-600 text-white px-4 py-2 rounded-lg transition hover:bg-blue-700 flex items-center space-x-2 {{ $isDisabled ? 'opacity-50 cursor-not-allowed' : '' }}"
+                        {{ $isDisabled ? 'disabled' : '' }}>
+                        <i class="fa-solid fa-comments"></i>
+                        <span class="text-sm md:text-base">Mulai Konsultasi</span>
+                      </button>
+                    @endif
+
+                    <!-- Tombol Lihat Detail -->
+                    <button
+                      class="border border-blue-600 text-blue-600 px-4 py-2 rounded-lg transition hover:bg-blue-100 flex items-center space-x-2">
+                      <i class="fas fa-info-circle"></i>
+                      <span class="text-sm md:text-base">Lihat Detail</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 
@@ -80,10 +124,14 @@
             </div>
           @endif
         @else
-          <p class="text-gray-500">Transaksi tidak ditemukan untuk konsultasi ini.</p>
+          <div class="bg-white rounded-lg shadow p-6 mb-6">
+            <p class="text-gray-500 text-center">Transaksi tidak ditemukan untuk konsultasi ini.</p>
+          </div>
         @endif
       @empty
-        <p class="text-gray-500 text-center">Belum ada jadwal konsultasi yang tersedia.</p>
+        <div class="bg-white rounded-lg shadow p-6 mb-6">
+          <p class="text-gray-500 text-center">Transaksi tidak ditemukan untuk konsultasi ini.</p>
+        </div>
       @endforelse
     </div>
   </div>
