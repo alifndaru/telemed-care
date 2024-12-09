@@ -116,14 +116,14 @@
                 <div id="dynamic-modal-{{ $consultation['id'] }}" tabindex="-1" aria-hidden="true"
                   class="fixed top-0 left-0 right-0 z-50 hidden w-full h-full p-4 overflow-x-hidden overflow-y-auto md:inset-0">
                   <div class="relative w-full h-full max-w-2xl md:h-auto">
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <div class="relative bg-white rounded-lg shadow">
                       <!-- Modal Header -->
-                      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
-                        <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                      <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+                        <h3 class="text-xl font-semibold text-gray-900">
                           Detail Konsultasi
                         </h3>
                         <button type="button"
-                          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                          class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center"
                           data-modal-hide="dynamic-modal-{{ $consultation['id'] }}">
                           <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                             viewBox="0 0 14 14">
@@ -195,7 +195,7 @@
                       </div>
                       <!-- Modal Footer -->
                       <div
-                        class="flex flex-col md:flex-row justify-between items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600 gap-3 md:gap-0">
+                        class="flex flex-col md:flex-row justify-between items-center p-4 md:p-5 border-t border-gray-200 rounded-b gap-3 md:gap-0">
                         <div class="flex space-x-2 items-center">
                           <span class="font-extrabold text-sm md:text-lg">Dibuat pada:</span>
                           <span
