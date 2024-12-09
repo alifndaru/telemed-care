@@ -50,6 +50,7 @@
   <script src="/js/user_app/summernote-0.9.0-dist/summernote-lite.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
     $('#summernote').summernote({
       tabsize: 2,

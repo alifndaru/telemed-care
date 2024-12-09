@@ -38,6 +38,7 @@ class JadwalDokterResource extends Resource
                     ->options(
                         Admin::whereHas('role', function ($query): void {
                             $query->where('name', 'dokter');
+                    $query->where('klinik_id', Auth::guard('admin')->user()->klinik_id);
                         })
                             ->pluck('name', 'id')
                             ->toArray()
@@ -50,9 +51,9 @@ class JadwalDokterResource extends Resource
                     ->required()
                     ->searchable()
                     ->default(fn() => Auth::user()->klinik_id)
-                    ->disabled(fn() => Auth::user() && Auth::user()->role && Auth::user()->role->name == 'klinik'),
+            ->disabled(fn() => Auth::user() && Auth::guard('admin')->user()->role && Auth::guard('admin')->user()->role->name == 'klinik'),
                 Hidden::make('klinik_id')
-                    ->default(fn() => Auth::user()->klinik_id)
+                ->default(fn() => Auth::guard('admin')->user()->klinik_id)
                     ->required(),
 
                 TimePicker::make('start')

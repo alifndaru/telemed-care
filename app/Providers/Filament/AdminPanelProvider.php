@@ -26,12 +26,9 @@ class AdminPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
-        $modulWeb = ModulWeb::first();
-        $brandName = $modulWeb && $modulWeb->namaWebsite ? $modulWeb->namaWebsite : 'Telemed-Care';
-
         return $panel
             ->default()
-            ->brandName($brandName)
+            ->brandName("Telemad")
             ->sidebarCollapsibleOnDesktop()
             ->id('admin')
             ->path('admin')
