@@ -26,10 +26,9 @@ class HomeController extends Controller
                 ->count();
         });
 
-        // Mengambil daftar dokter yang terdaftar sebagai tenaga provider
         $providers = Admin::whereNotNull('spesialis_id')
             ->whereNotNull('klinik_id')
-            ->get(); // Menampilkan data Admin yang memiliki spesialis dan klinik
+            ->get();
 
         // Mengirim data ke view
         return view('homepage', compact('totalLokasi', 'totalProviders', 'totalLayanan', 'providers'));

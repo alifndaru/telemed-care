@@ -20,13 +20,12 @@
                 <p class="max-w-2xl mb-6 font-light text-white lg:mb-8 md:text-lg lg:text-xl leading-relaxed">
                   Dapatkan solusi terbaik dengan privasi dan keamanan data yang terjaga.
                 </p>
-                <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4">
-                  <a href="{{ route('konsultasi.create') }}" target="">
+                <div class="space-y-4 sm:flex sm:space-y-0 sm:space-x-4 md:justify-normal">
+                  <a href="{{ route('konsultasi.create') }}" class="flex justify-center">
                     <button
-                      class="px-10 mt-1  bg-yellow-400 text-blue-900 font-semibold py-5 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300 shadow-lg">
+                      class="px-6 md:px-10 mt-1 bg-yellow-400 text-blue-900 font-semibold py-3 md:py-5 rounded-lg hover:bg-yellow-300 shadow-lg text-sm md:text-base flex items-center focus:outline-none">
                       <i class="fa-solid fa-comments text-xl mr-4"></i>
-                      KONSULTASI
-                      SEKARANG
+                      Konsultasi Sekarang
                     </button>
                   </a>
                 </div>
@@ -76,7 +75,7 @@
           <div class="px-2 text-center">
             <!-- Menampilkan total tenaga provider secara dinamis -->
             <p class="text-3xl font-bold text-white">{{ $totalProviders }}</p>
-            <p class="mt-2 font-bold text-white">TENAGA PROFESIONAL & TERPERCAYA</p>
+            <p class="mt-2 font-bold text-white text-sm md:text-base">TENAGA PROFESIONAL & TERPERCAYA</p>
           </div>
         </div>
 
@@ -87,7 +86,7 @@
           <i class="fa-solid fa-file-medical text-4xl"></i>
           <div class="px-2 text-center">
             <p class="text-3xl font-bold text-white">{{ $totalLayanan }}</p>
-            <p class="mt-2 font-bold text-white">LAYANAN KESPRO SESUAI STANDARD WHO</p>
+            <p class="mt-2 font-bold text-white text-sm md:text-base">LAYANAN KESPRO SESUAI STANDARD WHO</p>
           </div>
         </div>
 
@@ -97,7 +96,7 @@
           <div class="px-2 text-center">
             <!-- Menampilkan total lokasi klinik secara dinamis -->
             <p class="text-3xl font-bold text-white">{{ $totalLokasi }}</p>
-            <p class="mt-2 font-bold text-white">LOKASI DI SELURUH WILAYAH INDONESIA</p>
+            <p class="mt-2 font-bold text-white text-sm md:text-base">LOKASI DI SELURUH WILAYAH INDONESIA</p>
           </div>
         </div>
       </div>
@@ -110,30 +109,29 @@
     <div class="container-fluid">
       <div class="flex flex-wrap lg:flex-nowrap">
 
-        <div class="w-full lg:w-1/2 lg:h-auto call-action-video">
+        <div class="w-full lg:w-1/2 lg:h-auto">
           <!-- Right column (Image) -->
           <div class="abouts-image">
             <div class="image">
               <img src="{{ asset('images/news-image1.jpg') }}" alt="abouts"
-                class="w-full !h-[200px] md:!h-[350px] lg:!h-[430px] object-cover shadow-md" loading="lazy">
+                class="w-full !h-[220px] md:!h-[350px] lg:!h-[430px] object-cover shadow-md" loading="lazy">
             </div>
           </div>
         </div>
 
         <!-- Call to Action Content -->
-        <div class="w-full lg:w-1/2 py-10 flex items-center justify-center">
+        <div class="w-full lg:w-1/2 py-14 md:py-10 flex items-center justify-center">
           <div class="px-8 text-center call-action-content flex flex-col gap-10">
             <h2 class=" text-xl font-extrabold leading-tight text-blue-800 md:text-3xl md:mb-5">
               DAPATKAN SOLUSI DARI TENAGA KERJA PROFESIONAL KAMI
             </h2>
             <img src="{{ asset('images/logo_telemedicine.png') }}" alt="pkbi"
-              class="w-36 md:w-44 lg:w-52 h-auto mx-auto object-cover shadow-md" loading="lazy">
-            <a href="https://www.youtube.com/@smalabschoolcirendeu996" target="_blank">
+              class="w-36 md:w-44 lg:w-52 h-auto mx-auto object-cover" loading="lazy">
+            <a href="{{ route('konsultasi.create') }}" class="flex justify-center">
               <button
-                class="px-10 mt-1  bg-yellow-400 text-blue-900 font-semibold py-5 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300 shadow-lg">
+                class="px-6 md:px-10 mt-1 bg-yellow-400 text-blue-900 font-semibold py-3 md:py-5 rounded-lg hover:bg-yellow-300 shadow-lg text-sm md:text-base flex items-center focus:outline-none">
                 <i class="fa-solid fa-comments text-xl mr-4"></i>
-                KONSULTASI
-                SEKARANG
+                Konsultasi Sekarang
               </button>
             </a>
           </div>
@@ -145,7 +143,7 @@
   <!------- DOCTOR SECTION -------->
   <section class="py-20 md:py-24 bg-gray-100">
     <div class="max-w-7xl mx-auto px-4 text-center">
-      <h4 class="text-3xl font-semibold text-blue-600 mb-10 md:text-5xl md:mb-20">Tenaga Profesional Kami</h4>
+      <h4 class="text-2xl font-semibold text-blue-600 mb-10 md:text-5xl md:mb-20">Tenaga Profesional Kami</h4>
 
       <!-- Horizontal Scrollable Container with Scroll Snap -->
       <div class="overflow-x-auto scroll-snap-container">
@@ -154,24 +152,24 @@
             <div class="card bg-white rounded-lg shadow-lg overflow-hidden w-80 scroll-snap-item">
               <img src="{{ $provider->image_url ?? 'https://via.placeholder.com/300x200' }}" alt="Professional Image"
                 class="w-full h-48 object-cover">
-              <div class="p-6">
-                <h3 class="text-2xl font-semibold text-blue-900">{{ $provider->name }}</h3>
-                <p class="text-sm text-gray-600 mt-2">{{ $provider->specialization }}</p>
-                <p class="text-xs text-gray-500">{{ $provider->clinic_name }}</p>
-                <div class="mt-4">
+              <div class="py-6 px-3 md:p-6">
+                <h3 class="text-lg md:text-2xl font-semibold text-blue-900">{{ $provider->name }}</h3>
+                <p class="text-gray-600">{{ $provider->spesialisasi->name }}</p>
+                <p class="text-sm text-gray-500">{{ $provider->klinik->namaKlinik }}</p>
+                <div class="mt-2 md:mt-4">
                   <p class="text-gray-700 text-sm leading-relaxed">
                     Konsultasikan kesehatan Anda secara langsung dengan profesional yang terpercaya. Kami menjamin
                     keamanan dan kerahasiaan data Anda.
                   </p>
                 </div>
-                <div class="mt-6">
-                  <button
-                    class="w-full bg-yellow-400 text-blue-900 font-semibold py-2 rounded-lg hover:bg-yellow-300 transition ease-in-out duration-300">
-                    <span class="flex items-center justify-center space-x-2">
+                <div class="mt-3 md:mt-6">
+                  <a href="{{ route('konsultasi.create') }}" class="flex justify-center">
+                    <button
+                      class="px-6 md:px-10 mt-1 bg-yellow-400 text-blue-900 font-semibold py-3 md:py-5 rounded-lg hover:bg-yellow-300 shadow-lg text-sm md:text-base flex items-center focus:outline-none">
                       <i class="fa-solid fa-comments text-xl mr-4"></i>
-                      <span>KONSULTASI</span>
-                    </span>
-                  </button>
+                      Buat Jadwal
+                    </button>
+                  </a>
                 </div>
               </div>
             </div>
