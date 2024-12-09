@@ -1,18 +1,19 @@
-<div class="p-6 md:py-16">
-  <div class="max-w-3xl mx-auto py-16 px-10 bg-white shadow-lg rounded-lg ">
+<div class="md:py-16">
+  <div class="w-full md:max-w-3xl md:h-full mx-auto py-10 md:py-14 px-10 bg-white shadow-lg rounded-lg ">
     @if ($success)
       <div class="text-center max-w-md mx-auto">
         <i class="fa-solid fa-circle-check text-7xl text-green-600 mb-6"></i>
         <h2 class="text-2xl font-semibold text-gray-800 mb-4">Jadwal konsultasi Anda berhasil dibuat.</h2>
         <p class="text-lg text-gray-600 mb-6">Silakan cek detail konsultasi Anda untuk informasi lebih lanjut.</p>
         <button
-          class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
-          <a href="{{ route('konsultasi.list') }}" class="text-lg">
+          class="px-6 py-2 bg-blue-500 focus:outline-none text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
+          <a href="{{ route('konsultasi.list') }}" class="text-sm md:text-lg">
             Lihat Detail Konsultasi
           </a>
         </button>
       </div>
     @else
+      <h1 class="text-2xl md:text-3xl text-center mb-10 md:mb-14 font-semibold">Buat Jadwal Konsultasi</h1>
       {{-- Navigasi Step --}}
       <div class="flex mb-8 space-x-4 items-center border-b-2 pb-7">
         @foreach (['Pilih Klinik', 'Pembayaran', 'Validasi Admin', 'Konsultasi'] as $index => $step)
@@ -23,7 +24,8 @@
                     flex items-center justify-center mb-2">
               {{ $index + 1 }}
             </div>
-            <span class="text-sm font-medium {{ $currentStep >= $index + 1 ? 'text-green-600' : 'text-gray-400' }}">
+            <span
+              class="text-sm font-medium hidden md:inline-block {{ $currentStep >= $index + 1 ? 'text-green-600' : 'text-gray-400' }}">
               {{ $step }}
             </span>
           </div>
@@ -70,13 +72,14 @@
               class="p-2 mt-2 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200">
               <option value="">Pilih Jadwal</option>
               @foreach ($jadwals as $jadwal)
-                <option value="{{ $jadwal->id }}">{{ $jadwal->start }} - {{ $jadwal->end }} </option>
+                <option value="{{ $jadwal->id }}">{{ substr($jadwal->start, 0, 5) }} WIB -
+                  {{ substr($jadwal->end, 0, 5) }} WIB </option>
               @endforeach
             </select>
           </div>
           <div class="flex justify-end">
             <button wire:click="goToNextStep" @disabled(!$selectedDoctor)
-              class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
+              class="px-6 py-2 bg-blue-500 focus:outline-none text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
               Lanjut
             </button>
           </div>
@@ -127,28 +130,29 @@
             </p>
             <div class="mt-4">
               @if ($bank)
-              <p class="text-black font-semibold w-10/12">Transfer Via Rekening {{$bank}}</p>       
+                <p class="font-semibold w-10/12">Transfer Via Rekening {{ $bank }}</p>
               @endif
               @if ($rekening && $atasNama)
-              <p class="text-black font-semibold w-10/12">No rek {{$rekening}} a.n {{$atasNama}}</p>
+                <p class="font-semibold w-10/12">No rek {{ $rekening }}</p>
+                <p class="font-semibold w-10/12">a.n {{ $atasNama }}</p>
               @endif
             </div>
             <div class="mb-6 mt-8">
               <label for="default-input" class="block mb-2 text-sky-600 font-bold">Bukti Bayar</label>
               <input type="file" wire:model="paymentProof" name="paymentProof" accept=".pdf,.jpg,.jpeg,.png"
                 autocomplete="off"
-                class="w-full border mb-4 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2">
+                class="w-full border mb-12 md:mb-8 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block">
               @error('paymentProof')
                 <span class="text-red-500">{{ $message }}</span>
               @enderror
             </div>
             <div class="flex justify-between">
               <button wire:click="goToPreviousStep"
-                class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition ease-in-out">
+                class="px-6 py-2 bg-gray-300 focus:outline-none rounded-lg hover:bg-gray-400 transition ease-in-out">
                 Kembali
               </button>
               <button wire:click="submitTransaction" @disabled(!$paymentProof)
-                class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
+                class="px-6 py-2 bg-blue-500 focus:outline-none text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
                 Submit Pembayaran
               </button>
             </div>
@@ -157,41 +161,42 @@
       @elseif ($currentStep === 3)
         {{-- Step 3: Menunggu Validasi Admin --}}
         <div class="text-center" wire:poll.5s="checkPaymentStatus">
-        @if ($currentStep === 3)
-      <div class="text-center" wire:poll.5s="checkPaymentStatus">
-        @if ($isPaymentApproved)
-          <div class="flex flex-col items-center space-y-4">
-            <!-- Ceklis Gambar -->
-            <img src="{{ asset('images/check-icon.png') }}" alt="Ceklis" class="w-16 h-16">
+          @if ($currentStep === 3)
+            <div class="text-center" wire:poll.5s="checkPaymentStatus">
+              @if ($isPaymentApproved)
+                <div class="flex flex-col items-center space-y-4">
+                  <!-- Ceklis Gambar -->
+                  <img src="{{ asset('images/check-icon.png') }}" alt="Ceklis" class="w-16 h-16">
 
-            <!-- Status Teks -->
-            <p class="text-lg text-green-700 font-semibold">Status: Disetujui! Anda dapat melanjutkan ke langkah
-              berikutnya.</p>
-          </div>
-          <div class="mt-6">
-            <button wire:click="goToConsultationStep"
-              class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition ease-in-out">
-              Lanjut ke Konsultasi
-            </button>
-          </div>
-        @else
-          <div class="flex flex-col items-center text-center">
-            <h2 class="text-2xl font-semibold mb-6 text-gray-800">🔒 Validasi Pembayaran</h2>
-            <div
-              class="relative bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-6 rounded-lg shadow-md flex flex-col items-center">
-              <!-- Gambar di tengah -->
-              <img src="{{ asset('images/kunci.png') }}" alt="validasi" class="w-16 h-16 mb-4 mx-auto">
+                  <!-- Status Teks -->
+                  <p class="text-lg text-green-700 font-semibold">Status: Disetujui! Anda dapat melanjutkan ke langkah
+                    berikutnya.</p>
+                </div>
+                <div class="mt-6">
+                  <button wire:click="goToConsultationStep"
+                    class="px-6 py-2 bg-blue-500 focus:outline-none text-white rounded-lg hover:bg-blue-600 transition ease-in-out">
+                    Lanjut isi keluhan
+                  </button>
+                </div>
+              @else
+                <div class="flex flex-col items-center text-center">
+                  <h2 class="text-2xl font-semibold mb-6 text-gray-800">🔒 Validasi Pembayaran</h2>
+                  <div
+                    class="relative bg-yellow-50 border-l-4 border-yellow-500 text-yellow-800 p-6 rounded-lg shadow-md flex flex-col items-center">
+                    <!-- Gambar di tengah -->
+                    <img src="{{ asset('images/kunci.png') }}" alt="validasi" class="w-16 h-16 mb-4 mx-auto">
 
-              <!-- Teks informasi -->
-              <p class="text-lg font-medium text-center">Pembayaran Anda sedang diproses dan menunggu validasi admin.
-              </p>
-              <p class="mt-2 text-gray-700 text-center">Silakan tunggu konfirmasi selanjutnya. Terima kasih atas
-                kesabarannya! 😊</p>
+                    <!-- Teks informasi -->
+                    <p class="text-lg font-medium text-center">Pembayaran Anda sedang diproses dan menunggu validasi
+                      admin.
+                    </p>
+                    <p class="mt-2 text-gray-700 text-center">Silakan tunggu konfirmasi selanjutnya. Terima kasih atas
+                      kesabarannya! 😊</p>
+                  </div>
+                </div>
+              @endif
             </div>
-          </div>
-        @endif
-      </div>
-    @endif
+          @endif
         </div>
       @elseif ($currentStep === 4)
         <h2 class="text-2xl font-semibold mb-6 text-blue-600">Isi Keluhan</h2>
@@ -209,11 +214,11 @@
         </div>
         <div class="flex justify-between">
           <button wire:click="goToPreviousStep" wire:loading.attr="disabled"
-            class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition ease-in-out">
+            class="px-6 py-2 bg-gray-300 focus:outline-none rounded-lg hover:bg-gray-400 transition ease-in-out">
             Kembali
           </button>
           <button wire:click="submitConsultation"
-            class="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
+            class="px-6 py-2 bg-blue-500 focus:outline-none text-white rounded-lg hover:bg-blue-600 disabled:opacity-50 transition ease-in-out">
             Submit
           </button>
         </div>
