@@ -44,12 +44,12 @@
         <div class="w-full lg:w-1/2 md:px-4">
           <div class="pb-10 section-title">
             <h4 class="text-3xl font-semibold mb-5 text-gray-900 md:text-5xl md:mb-5">Tentang PKBIcare</h4>
-            <p class="text mb-5 text-justify md:text-left md:w-[90%]">
+            <p class="text-sm md:text-base mb-5 text-justify md:text-left md:w-[90%]">
               Salah satu layanan konsultasi online agar masyarakat yang memiliki keterbatasan waktu dan jarak untuk
               tetap
               bisa mendapatkan layanan konseling dan konsultasi yang dibutuhkan, terutama kesehatan reproduksi.
             </p>
-            <p class="text text-justify md:text-left md:w-[90%]">
+            <p class="text-sm md:text-base text-justify md:text-left md:w-[90%]">
               PKBIcare menyediakan fitur chat konsultasi yang interaktif dan diharapkan dapat memudahkan klien
               mendapatkan
               informasi yang cepat dan tepat dari para provider yang ada dan klien bisa mendapatkan catatan medis dari
